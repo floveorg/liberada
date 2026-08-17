@@ -150,7 +150,7 @@
     
     <div class="header">
       <div class="avatar">👩<span class="avatar-badge">✓</span></div>
-      <div class="name">María Demostración</div>
+      <div class="name">María Demostración <span style="display:inline-block;padding:2px 10px;border-radius:999px;background:var(--purple);color:white;font-size:.65rem;font-weight:700;vertical-align:middle;margin-left:6px">Demo v2</span></div>
       <div class="key">@maria</div>
       <div class="bio">Profesora de yoga, amante de las risas spontáneas. Si no me río, no fue bueno.</div>
       <div class="links">
@@ -450,7 +450,10 @@
       openModal('🔒', 'Proteger cuenta', 'Configura recuperación y verificación en dos pasos.', 'Configurar');
     });
     document.getElementById('extend-btn').addEventListener('click', function() {
-      openModal('➕', 'Extender perfil', 'Añade redes sociales, logros y más.', 'Empezar');
+      openModal('💗', 'Extender a Ama', 'Navega al perfil de María en Ama liberada — el ejercicio de amar.', 'Ir a Ama →');
+      document.getElementById('action-modal-confirm').onclick = function() {
+        window.location.href = 'https://ama.liberada.net/#/u/maria';
+      };
     });
 
     document.getElementById('aplicar-btn').addEventListener('click', function() {

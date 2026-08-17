@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Marc — liberada.net</title>
+  <meta name="description" content="Perfil de Marc en las apps liberadas">
+  <style>
+    :root {
+      --ink: #2a1810;
+      --paper: #faf6f1;
+      --cream: #fff8ef;
+      --marigold: #ffb020;
+      --magenta: #e63946;
+      --sage: #a8d5ba;
+      --sky: #89c4e1;
+      --purple: #9b5de5;
+      --pink: #f472b6;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: var(--paper); color: var(--ink); line-height: 1.5; min-height: 100vh; }
+    .profile { max-width: 640px; margin: 0 auto; padding: 32px 20px 64px; }
+    .back { display: inline-flex; align-items: center; gap: 4px; margin-bottom: 24px; color: var(--magenta); text-decoration: none; font-size: .875rem; }
+    .back:hover { text-decoration: underline; }
+    .header { text-align: center; margin-bottom: 24px; }
+    .avatar { width: 96px; height: 96px; border-radius: 50%; background: linear-gradient(135deg, var(--marigold), var(--pink)); display: grid; place-items: center; font-size: 2.5rem; margin: 0 auto 16px; box-shadow: 0 4px 20px rgba(0,0,0,.15); position: relative; }
+    .avatar-badge { position: absolute; bottom: 0; right: 0; width: 28px; height: 28px; background: var(--sage); border: 3px solid var(--paper); border-radius: 50%; display: grid; place-items: center; font-size: .9rem; }
+    .name { font-size: 1.75rem; font-weight: 700; margin-bottom: 2px; }
+    .key { font-size: .8rem; color: #888; margin-bottom: 8px; }
+    .bio { font-size: .9rem; color: #555; margin-bottom: 12px; max-width: 40ch; margin-left: auto; margin-right: auto; }
+    .links { display: flex; gap: 10px; justify-content: center; align-items: center; margin-bottom: 20px; }
+    .link-icon { width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--ink); background: var(--cream); display: grid; place-items: center; font-size: 1rem; text-decoration: none; cursor: pointer; transition: all .15s; color: var(--ink); }
+    .link-icon:hover { background: var(--ink); color: white; transform: translateY(-1px); }
+    .actions { display: flex; gap: 10px; justify-content: center; margin-bottom: 24px; }
+    .action-btn { padding: 8px 18px; border: 2px solid var(--ink); background: var(--cream); font-size: .85rem; font-weight: 600; cursor: pointer; transition: all .15s; }
+    .action-btn:hover { transform: translateY(-1px); box-shadow: 2px 2px 0 rgba(42,24,16,.15); }
+    .action-btn.follow { background: var(--magenta); color: white; border-color: var(--magenta); }
+    .action-btn.follow:hover { background: #c0303d; }
+    .action-btn.share { background: var(--ink); color: white; border-color: var(--ink); }
+    .v1-badge { display: inline-block; padding: 3px 12px; border-radius: 999px; background: var(--marigold); color: var(--ink); font-size: .7rem; font-weight: 700; margin-bottom: 16px; }
+    .extender-banner { background: linear-gradient(135deg, var(--purple), var(--pink)); color: white; border-radius: 12px; padding: 20px; text-align: center; margin-bottom: 24px; }
+    .extender-banner h3 { font-size: 1.1rem; margin-bottom: 6px; }
+    .extender-banner p { font-size: .85rem; opacity: .9; margin-bottom: 12px; }
+    .extender-btn { padding: 10px 24px; border: 2px solid white; background: white; color: var(--purple); font-size: .9rem; font-weight: 700; border-radius: 999px; cursor: pointer; transition: all .15s; }
+    .extender-btn:hover { transform: translateY(-1px); box-shadow: 3px 3px 0 rgba(0,0,0,.15); }
+    .section { margin-bottom: 28px; }
+    .tabs { display: flex; gap: 0; margin-bottom: 16px; border-bottom: 2px solid #eee; }
+    .tab { padding: 8px 16px; font-size: .85rem; font-weight: 600; background: none; border: none; border-bottom: 2px solid transparent; margin-bottom: -2px; cursor: pointer; color: #888; }
+    .tab.active { color: var(--ink); border-bottom-color: var(--ink); }
+    .tab:hover { color: var(--ink); }
+    .tab-count { font-size: .7rem; color: #aaa; margin-left: 4px; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+    .clip-list { list-style: none; }
+    .clip-item { display: flex; align-items: center; gap: 12px; padding: 12px; border-bottom: 1px solid #eee; }
+    .clip-item:last-child { border-bottom: none; }
+    .clip-play { width: 36px; height: 36px; border-radius: 50%; background: var(--marigold); border: none; cursor: pointer; display: grid; place-items: center; font-size: 1rem; flex-shrink: 0; transition: transform .1s; }
+    .clip-play:hover { transform: scale(1.1); }
+    .clip-body { flex: 1; min-width: 0; }
+    .clip-title { font-weight: 600; font-size: .9rem; }
+    .clip-meta { font-size: .75rem; color: #888; }
+    .clip-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
+    .clip-tag { font-size: .65rem; padding: 2px 8px; background: var(--cream); border: 1px solid #ddd; border-radius: 999px; color: #666; }
+    .clip-actions { display: flex; gap: 8px; align-items: center; }
+    .clip-heart-wrap { display: flex; align-items: center; gap: 3px; }
+    .clip-heart { background: none; border: none; font-size: .95rem; cursor: pointer; padding: 2px; transition: transform .15s; }
+    .clip-heart:hover { transform: scale(1.2); }
+    .clip-heart.on { animation: heartPop .35s ease; }
+    .clip-heart-count { font-size: .7rem; color: #999; font-weight: 600; }
+    @keyframes heartPop { 0%{transform:scale(1)} 30%{transform:scale(1.35)} 60%{transform:scale(.95)} 100%{transform:scale(1)} }
+    .heart-float { position: absolute; top: -8px; left: 50%; transform: translateX(-50%); font-size: .7rem; animation: heartFloat .7s ease-out forwards; pointer-events: none; }
+    @keyframes heartFloat { 0%{opacity:1;transform:translateX(-50%) translateY(0) scale(1)} 100%{opacity:0;transform:translateX(-50%) translateY(-24px) scale(1.3)} }
+    .profile-actions { display: flex; gap: 8px; justify-content: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee; }
+    .profile-action-btn { padding: 8px 16px; border: 2px solid var(--ink); background: var(--cream); font-size: .8rem; font-weight: 600; cursor: pointer; transition: all .15s; }
+    .profile-action-btn:hover { transform: translateY(-1px); box-shadow: 2px 2px 0 rgba(42,24,16,.15); }
+    .profile-action-btn.edit { background: var(--sky); border-color: var(--sky); color: var(--ink); }
+    .profile-action-btn.protect { background: var(--sage); border-color: var(--sage); }
+    .profile-action-btn.extend { background: var(--purple); border-color: var(--purple); color: white; }
+    .footer { text-align: center; padding: 24px; font-size: .75rem; color: #aaa; }
+    .footer a { color: var(--magenta); text-decoration: none; }
+    .footer a:hover { text-decoration: underline; }
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(42,24,16,.5); z-index: 1000; place-items: center; }
+    .modal-overlay.open { display: grid; }
+    .modal { background: var(--paper); border: 3px solid var(--ink); box-shadow: 8px 8px 0 rgba(42,24,16,.2); padding: 32px; max-width: 400px; width: 90%; text-align: center; position: relative; }
+    .modal-icon { font-size: 2.5rem; margin-bottom: 12px; }
+    .modal-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 8px; }
+    .modal-desc { font-size: .9rem; color: #555; margin-bottom: 20px; }
+    .modal-actions { display: flex; gap: 10px; justify-content: center; }
+    .modal-btn { padding: 10px 24px; border: 2px solid var(--ink); font-size: .9rem; font-weight: 600; cursor: pointer; text-decoration: none; transition: all .15s; }
+    .modal-btn:hover { transform: translateY(-1px); }
+    .modal-btn.primary { background: var(--ink); color: white; }
+    .modal-btn.secondary { background: var(--cream); color: var(--ink); }
+    .modal-close { position: absolute; top: 12px; right: 16px; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #888; }
+  </style>
+</head>
+<body>
+  <div class="profile">
+    <a class="back" href="https://liberada.net">← liberada.net</a>
+    
+    <div class="header">
+      <div class="avatar">🧔<span class="avatar-badge">✓</span></div>
+      <div class="name">Marc</div>
+      <div class="key">@marcflove</div>
+      <div class="bio">Risas y código. Buenos Aires.</div>
+      <div class="links">
+        <a class="link-icon" href="https://github.com/marcflove" target="_blank" title="GitHub">💻</a>
+        <a class="link-icon" href="https://flove.org" target="_blank" title="Web">🌐</a>
+      </div>
+    </div>
+
+    <div style="text-align:center">
+      <span class="v1-badge">Perfil v1 · solo Risa</span>
+    </div>
+
+    <div class="extender-banner">
+      <h3>💗 Extender a Ama</h3>
+      <p>Añade amor a tu perfil — comparte voz y cariño en Ama liberada.</p>
+      <button class="extender-btn" id="extend-btn">Ir a Ama →</button>
+    </div>
+    
+    <div class="actions">
+      <button class="action-btn follow" id="follow-btn">+ Seguir</button>
+      <button class="action-btn share" id="share-btn">↗ Compartir</button>
+    </div>
+    
+    <div class="section">
+      <div class="tabs">
+        <button class="tab active" data-tab="clips">Risas <span class="tab-count" id="tab-count">0</span></button>
+      </div>
+      <div class="tab-panel active" id="panel-clips">
+        <ul class="clip-list" id="clip-list"></ul>
+      </div>
+    </div>
+    
+    <div class="profile-actions">
+      <button class="profile-action-btn edit" id="edit-btn">✏️ Editar</button>
+      <button class="profile-action-btn protect" id="protect-btn">🔒 Proteger</button>
+    </div>
+    
+    <div class="footer">
+      <p>liberada.net — <a href="https://liberada.net">apps de la comunidad</a></p>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="action-modal">
+    <div class="modal">
+      <button class="modal-close" id="action-modal-close">×</button>
+      <div class="modal-icon" id="action-modal-icon">⚙️</div>
+      <div class="modal-title" id="action-modal-title">Acción</div>
+      <div class="modal-desc" id="action-modal-desc">Descripción</div>
+      <div class="modal-actions">
+        <button class="modal-btn primary" id="action-modal-confirm">Continuar</button>
+        <button class="modal-btn secondary" id="action-modal-cancel">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var CLIPS = [
+      { id: 'q_001', t: 'De la boda', when: '2026-08-15', tags: 'boda, divertida', reactions: 12, src: '#' },
+      { id: 'q_002', t: 'Risa de oficina', when: '2026-08-16', tags: 'oficina, risa libre', reactions: 5, src: '#' },
+      { id: 'q_003', t: 'La que no para', when: '2026-08-16', tags: 'contagiosa, felicidad', reactions: 24, src: '#' },
+      { id: 'q_004', t: 'Risa épica del micrófono', when: '2026-08-14', tags: 'épica, risa libre', reactions: 31, src: '#' },
+      { id: 'q_005', t: 'Código y risas', when: '2026-08-17', tags: 'vídeo, código', reactions: 8, src: '#' },
+      { id: 'q_006', t: 'Risa suave de domingo', when: '2026-08-13', tags: 'tranquila, domingo', reactions: 7, src: '#' }
+    ];
+
+    var liked = new Set();
+
+    function timeAgo(d) {
+      var days = Math.floor((Date.now() - new Date(d)) / 86400000);
+      if (days === 0) return 'hoy';
+      if (days === 1) return 'ayer';
+      if (days < 7) return 'hace ' + days + 'd';
+      if (days < 30) return 'hace ' + Math.floor(days / 7) + 'sem';
+      return 'hace ' + Math.floor(days / 30) + 'm';
+    }
+
+    function renderLists() {
+      var cl = document.getElementById('clip-list');
+      cl.innerHTML = '';
+      document.getElementById('tab-count').textContent = CLIPS.length;
+      CLIPS.forEach(function(c) {
+        var li = document.createElement('li');
+        li.className = 'clip-item';
+        li.dataset.id = c.id;
+        var heartOn = liked.has(c.id);
+        var heartCount = c.reactions + (heartOn ? 1 : 0);
+        li.innerHTML = '<button class="clip-play">▶</button>' +
+          '<div class="clip-body"><div class="clip-title">' + c.t + '</div>' +
+          '<div class="clip-meta">' + timeAgo(c.when) + '</div>' +
+          '<div class="clip-tags">' + c.tags.split(',').map(function(t){ return '<span class="clip-tag">' + t.trim() + '</span>'; }).join('') + '</div></div>' +
+          '<div class="clip-actions">' +
+            '<div class="clip-heart-wrap"><button class="clip-heart' + (heartOn ? ' on' : '') + '" data-heart="' + c.id + '">❤️</button><span class="clip-heart-count">' + heartCount + '</span></div>' +
+            '<button class="clip-action" style="background:none;border:none;font-size:.85rem;cursor:pointer;color:#888">↗</button></div>';
+        cl.appendChild(li);
+      });
+    }
+
+    document.getElementById('clip-list').addEventListener('click', function(e) {
+      var h = e.target.closest('[data-heart]');
+      if (h) {
+        var id = h.dataset.heart;
+        if (liked.has(id)) liked.delete(id); else liked.add(id);
+        var on = liked.has(id);
+        h.classList.toggle('on', on);
+        var wrap = h.parentElement;
+        var clip = CLIPS.find(function(c){ return c.id === id; });
+        wrap.querySelector('.clip-heart-count').textContent = (clip ? clip.reactions : 0) + (on ? 1 : 0);
+        if (on) {
+          var floater = document.createElement('span');
+          floater.className = 'heart-float';
+          floater.textContent = '❤️';
+          h.appendChild(floater);
+          setTimeout(function(){ floater.remove(); }, 700);
+        }
+        e.stopPropagation();
+      }
+    });
+
+    document.querySelectorAll('.tabs .tab').forEach(function(tab) {
+      tab.addEventListener('click', function() {
+        document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
+        document.querySelectorAll('.tab-panel').forEach(function(p){ p.classList.remove('active'); });
+        tab.classList.add('active');
+        document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+      });
+    });
+
+    document.getElementById('follow-btn').addEventListener('click', function() {
+      var on = this.textContent.indexOf('Siguiendo') > -1;
+      this.textContent = on ? '+ Seguir' : '✓ Siguiendo';
+      this.style.background = on ? 'var(--magenta)' : 'var(--sage)';
+      this.style.borderColor = on ? 'var(--magenta)' : 'var(--sage)';
+      this.style.color = on ? 'white' : 'var(--ink)';
+    });
+
+    document.getElementById('share-btn').addEventListener('click', function() {
+      if (navigator.share) {
+        navigator.share({ title: 'Marc — Risa liberada', url: location.href });
+      } else {
+        navigator.clipboard.writeText(location.href);
+        this.textContent = '✓ Copiado';
+        var self = this;
+        setTimeout(function(){ self.textContent = '↗ Compartir'; }, 1500);
+      }
+    });
+
+    function openModal(icon, title, desc, btn) {
+      document.getElementById('action-modal-icon').textContent = icon;
+      document.getElementById('action-modal-title').textContent = title;
+      document.getElementById('action-modal-desc').textContent = desc;
+      document.getElementById('action-modal-confirm').textContent = btn;
+      document.getElementById('action-modal').classList.add('open');
+    }
+
+    document.getElementById('edit-btn').addEventListener('click', function() {
+      openModal('✏️', 'Editar perfil', 'Cambia tu nombre, bio, enlaces y foto.', 'Abrir editor');
+    });
+    document.getElementById('protect-btn').addEventListener('click', function() {
+      openModal('🔒', 'Proteger cuenta', 'Configura recuperación y verificación en dos pasos.', 'Configurar');
+    });
+
+    document.getElementById('extend-btn').addEventListener('click', function() {
+      openModal('💗', 'Extender a Ama', 'Navega al perfil de Marc en Ama liberada — el ejercicio de amar.', 'Ir a Ama →');
+      document.getElementById('action-modal-confirm').onclick = function() {
+        window.location.href = 'https://ama.liberada.net/#/u/marcflove';
+      };
+    });
+
+    document.getElementById('action-modal-close').addEventListener('click', function() {
+      document.getElementById('action-modal').classList.remove('open');
+    });
+    document.getElementById('action-modal-cancel').addEventListener('click', function() {
+      document.getElementById('action-modal').classList.remove('open');
+    });
+    document.getElementById('action-modal').addEventListener('click', function(e) {
+      if (e.target === e.currentTarget) e.currentTarget.classList.remove('open');
+    });
+
+    renderLists();
+  </script>
+</body>
+</html>
