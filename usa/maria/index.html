@@ -21,59 +21,13 @@
       --pink: #f472b6;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: system-ui, -apple-system, sans-serif;
-      background: var(--paper);
-      color: var(--ink);
-      line-height: 1.5;
-      min-height: 100vh;
-    }
-    .profile {
-      max-width: 640px;
-      margin: 0 auto;
-      padding: 32px 20px 64px;
-    }
-    .back {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      margin-bottom: 24px;
-      color: var(--magenta);
-      text-decoration: none;
-      font-size: .875rem;
-    }
+    body { font-family: system-ui, -apple-system, sans-serif; background: var(--paper); color: var(--ink); line-height: 1.5; min-height: 100vh; }
+    .profile { max-width: 640px; margin: 0 auto; padding: 32px 20px 64px; }
+    .back { display: inline-flex; align-items: center; gap: 4px; margin-bottom: 24px; color: var(--magenta); text-decoration: none; font-size: .875rem; }
     .back:hover { text-decoration: underline; }
-    .header {
-      text-align: center;
-      margin-bottom: 24px;
-    }
-    .avatar {
-      width: 96px;
-      height: 96px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--marigold), var(--pink));
-      display: grid;
-      place-items: center;
-      font-size: 2.5rem;
-      margin: 0 auto 16px;
-      box-shadow: 0 4px 20px rgba(0,0,0,.15);
-      position: relative;
-      overflow: hidden;
-    }
-    .avatar img { width: 100%; height: 100%; object-fit: cover; }
-    .avatar-badge {
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      width: 28px;
-      height: 28px;
-      background: var(--sage);
-      border: 3px solid var(--paper);
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      font-size: .9rem;
-    }
+    .header { text-align: center; margin-bottom: 24px; }
+    .avatar { width: 96px; height: 96px; border-radius: 50%; background: linear-gradient(135deg, var(--marigold), var(--pink)); display: grid; place-items: center; font-size: 2.5rem; margin: 0 auto 16px; box-shadow: 0 4px 20px rgba(0,0,0,.15); position: relative; }
+    .avatar-badge { position: absolute; bottom: 0; right: 0; width: 28px; height: 28px; background: var(--sage); border: 3px solid var(--paper); border-radius: 50%; display: grid; place-items: center; font-size: .9rem; }
     .name { font-size: 1.75rem; font-weight: 700; margin-bottom: 2px; }
     .key { font-size: .8rem; color: #888; margin-bottom: 8px; }
     .bio { font-size: .9rem; color: #555; margin-bottom: 12px; max-width: 40ch; margin-left: auto; margin-right: auto; }
@@ -81,299 +35,88 @@
     .link { font-size: .8rem; color: var(--magenta); text-decoration: none; }
     .link:hover { text-decoration: underline; }
     .actions { display: flex; gap: 10px; justify-content: center; margin-bottom: 24px; }
-    .action-btn {
-      padding: 8px 18px;
-      border: 2px solid var(--ink);
-      background: var(--cream);
-      font-size: .85rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all .15s;
-    }
+    .action-btn { padding: 8px 18px; border: 2px solid var(--ink); background: var(--cream); font-size: .85rem; font-weight: 600; cursor: pointer; transition: all .15s; }
     .action-btn:hover { transform: translateY(-1px); box-shadow: 2px 2px 0 rgba(42,24,16,.15); }
     .action-btn.follow { background: var(--magenta); color: white; border-color: var(--magenta); }
     .action-btn.follow:hover { background: #c0303d; }
     .action-btn.share { background: var(--ink); color: white; border-color: var(--ink); }
     .action-btn.share:hover { opacity: .9; }
-    .filter-row {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-bottom: 16px;
-    }
-    .publish-row {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 12px;
-    }
-    .publish-btn {
-      padding: 10px 28px;
-      border: 2px solid var(--ink);
-      color: white;
-      font-size: .9rem;
-      font-weight: 700;
-      border-radius: 999px;
-      cursor: pointer;
-      transition: all .15s;
-    }
+    .publish-btn { padding: 10px 28px; border: 2px solid var(--ink); color: white; font-size: .9rem; font-weight: 700; border-radius: 999px; cursor: pointer; transition: all .15s; margin-bottom: 10px; }
     .publish-btn:hover { transform: translateY(-1px); box-shadow: 2px 2px 0 rgba(42,24,16,.15); }
     .publish-risa { background: var(--marigold); border-color: var(--marigold); color: var(--ink); }
     .publish-lovy { background: var(--pink); border-color: var(--pink); }
-    .app-cards {
-      display: grid;
-      grid-template-columns: 1fr 1fr auto;
-      gap: 10px;
-      align-items: stretch;
-    }
-    .app-card-toggle {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-      padding: 16px 12px;
-      border: 2.5px solid var(--ink);
-      border-radius: 12px;
-      background: var(--cream);
-      cursor: pointer;
-      transition: all .15s;
-      min-height: 80px;
-    }
+    .app-cards { display: grid; grid-template-columns: 1fr 1fr auto; gap: 10px; align-items: stretch; margin-bottom: 20px; }
+    .app-card-col { display: flex; flex-direction: column; align-items: center; }
+    .app-card-toggle { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 16px 12px; border: 2.5px solid var(--ink); border-radius: 12px; background: var(--cream); cursor: pointer; transition: all .15s; min-height: 80px; width: 100%; }
     .app-card-toggle:hover { transform: translateY(-2px); box-shadow: 3px 3px 0 rgba(42,24,16,.15); }
     .app-card-toggle.active { background: var(--ink); color: white; }
     .app-card-toggle .emoji { font-size: 1.8rem; }
     .app-card-toggle .label { font-size: .95rem; font-weight: 700; }
     .app-card-toggle .count { font-size: .7rem; opacity: .7; }
-    .media-col {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      padding: 6px;
-      border: 1.5px solid #ddd;
-      border-radius: 10px;
-      background: var(--cream);
-      align-self: stretch;
-    }
-    .media-pill {
-      padding: 4px 8px;
-      border: none;
-      border-radius: 6px;
-      background: transparent;
-      cursor: pointer;
-      font-size: .7rem;
-      font-weight: 600;
-      color: #888;
-      transition: all .15s;
-      white-space: nowrap;
-    }
+    .media-col { display: flex; flex-direction: column; gap: 4px; padding: 6px; border: 1.5px solid #ddd; border-radius: 10px; background: var(--cream); align-self: stretch; }
+    .media-pill { padding: 4px 8px; border: none; border-radius: 6px; background: transparent; cursor: pointer; font-size: .7rem; font-weight: 600; color: #888; transition: all .15s; white-space: nowrap; }
     .media-pill.active { background: var(--ink); color: white; }
     .media-pill:hover:not(.active) { color: var(--ink); }
-    .go-btn {
-      padding: 6px 16px;
-      border: 2px solid var(--magenta);
-      border-radius: 999px;
-      background: var(--magenta);
-      color: white;
-      font-size: .8rem;
-      font-weight: 700;
-      cursor: pointer;
-      display: none;
-      transition: all .15s;
-    }
+    .go-btn { display: none; padding: 6px 16px; border: 2px solid var(--magenta); border-radius: 999px; background: var(--magenta); color: white; font-size: .8rem; font-weight: 700; cursor: pointer; }
     .go-btn.visible { display: inline-block; }
     .go-btn:hover { background: #c0303d; }
+    .aplicar-btn { display: none; padding: 10px 28px; border: 2px solid var(--sage); border-radius: 999px; background: var(--sage); color: var(--ink); font-size: .9rem; font-weight: 700; cursor: pointer; margin-top: 12px; width: 100%; }
+    .aplicar-btn.visible { display: block; }
+    .aplicar-btn:hover { background: #8fc0a0; }
     .section { margin-bottom: 28px; }
-    .tabs {
-      display: flex;
-      gap: 0;
-      margin-bottom: 16px;
-      border-bottom: 2px solid #eee;
-    }
-    .tab {
-      padding: 8px 16px;
-      font-size: .85rem;
-      font-weight: 600;
-      background: none;
-      border: none;
-      border-bottom: 2px solid transparent;
-      margin-bottom: -2px;
-      cursor: pointer;
-      color: #888;
-    }
+    .tabs { display: flex; gap: 0; margin-bottom: 16px; border-bottom: 2px solid #eee; }
+    .tab { padding: 8px 16px; font-size: .85rem; font-weight: 600; background: none; border: none; border-bottom: 2px solid transparent; margin-bottom: -2px; cursor: pointer; color: #888; }
     .tab.active { color: var(--ink); border-bottom-color: var(--ink); }
     .tab:hover { color: var(--ink); }
     .tab-count { font-size: .7rem; color: #aaa; margin-left: 4px; }
     .tab-panel { display: none; }
     .tab-panel.active { display: block; }
     .clip-list { list-style: none; }
-    .clip-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px;
-      border-bottom: 1px solid #eee;
-    }
+    .clip-item { display: flex; align-items: center; gap: 12px; padding: 12px; border-bottom: 1px solid #eee; }
     .clip-item:last-child { border-bottom: none; }
-    .clip-play {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: var(--marigold);
-      border: none;
-      cursor: pointer;
-      display: grid;
-      place-items: center;
-      font-size: 1rem;
-      flex-shrink: 0;
-      transition: transform .1s;
-    }
+    .clip-play { width: 36px; height: 36px; border-radius: 50%; background: var(--marigold); border: none; cursor: pointer; display: grid; place-items: center; font-size: 1rem; flex-shrink: 0; transition: transform .1s; }
     .clip-play:hover { transform: scale(1.1); }
     .clip-play.lovy { background: var(--pink); }
     .clip-body { flex: 1; min-width: 0; }
-    .clip-title {
-      font-weight: 600;
-      font-size: .9rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+    .clip-title { font-weight: 600; font-size: .9rem; }
     .clip-meta { font-size: .75rem; color: #888; }
     .clip-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
-    .clip-tag {
-      font-size: .65rem;
-      padding: 2px 8px;
-      background: var(--cream);
-      border: 1px solid #ddd;
-      border-radius: 999px;
-      color: #666;
-    }
-    .clip-type {
-      font-size: .6rem;
-      padding: 1px 6px;
-      border-radius: 4px;
-      font-weight: 700;
-      text-transform: uppercase;
-      margin-left: 6px;
-    }
+    .clip-tag { font-size: .65rem; padding: 2px 8px; background: var(--cream); border: 1px solid #ddd; border-radius: 999px; color: #666; }
+    .clip-type { font-size: .6rem; padding: 1px 6px; border-radius: 4px; font-weight: 700; text-transform: uppercase; margin-left: 6px; }
     .clip-type.audio { background: var(--sky); color: var(--ink); }
     .clip-type.video { background: var(--purple); color: white; }
     .clip-actions { display: flex; gap: 8px; align-items: center; }
-    .clip-action {
-      background: none;
-      border: none;
-      font-size: .85rem;
-      cursor: pointer;
-      color: #888;
-      padding: 4px;
-    }
+    .clip-action { background: none; border: none; font-size: .85rem; cursor: pointer; color: #888; padding: 4px; }
     .clip-action:hover { color: var(--magenta); }
-    .fav-star {
-      background: none;
-      border: none;
-      font-size: 1rem;
-      cursor: pointer;
-      color: #ccc;
-      padding: 4px;
-    }
+    .fav-star { background: none; border: none; font-size: 1rem; cursor: pointer; color: #ccc; padding: 4px; }
     .fav-star.on { color: var(--marigold); }
-    .profile-card {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px;
-      background: #fff;
-      border: 1.5px solid #eee;
-      text-decoration: none;
-      color: var(--ink);
-      margin-bottom: 8px;
-      transition: border-color .15s;
-    }
+    .profile-card { display: flex; align-items: center; gap: 12px; padding: 12px; background: #fff; border: 1.5px solid #eee; text-decoration: none; color: var(--ink); margin-bottom: 8px; transition: border-color .15s; }
     .profile-card:hover { border-color: var(--ink); }
-    .profile-avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      font-size: 1.1rem;
-      flex-shrink: 0;
-    }
+    .profile-avatar { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font-size: 1.1rem; flex-shrink: 0; }
     .profile-info { flex: 1; }
     .profile-name { font-weight: 600; font-size: .9rem; }
     .profile-detail { font-size: .75rem; color: #888; }
-    .profile-actions {
-      display: flex;
-      gap: 8px;
-      justify-content: center;
-      margin-top: 20px;
-      padding-top: 20px;
-      border-top: 1px solid #eee;
-    }
-    .profile-action-btn {
-      padding: 8px 16px;
-      border: 2px solid var(--ink);
-      background: var(--cream);
-      font-size: .8rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all .15s;
-    }
+    .profile-actions { display: flex; gap: 8px; justify-content: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee; }
+    .profile-action-btn { padding: 8px 16px; border: 2px solid var(--ink); background: var(--cream); font-size: .8rem; font-weight: 600; cursor: pointer; transition: all .15s; }
     .profile-action-btn:hover { transform: translateY(-1px); box-shadow: 2px 2px 0 rgba(42,24,16,.15); }
     .profile-action-btn.edit { background: var(--sky); border-color: var(--sky); color: var(--ink); }
     .profile-action-btn.protect { background: var(--sage); border-color: var(--sage); }
     .profile-action-btn.extend { background: var(--purple); border-color: var(--purple); color: white; }
-    .footer {
-      text-align: center;
-      padding: 24px;
-      font-size: .75rem;
-      color: #aaa;
-    }
+    .footer { text-align: center; padding: 24px; font-size: .75rem; color: #aaa; }
     .footer a { color: var(--magenta); text-decoration: none; }
     .footer a:hover { text-decoration: underline; }
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(42,24,16,.5);
-      z-index: 1000;
-      place-items: center;
-    }
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(42,24,16,.5); z-index: 1000; place-items: center; }
     .modal-overlay.open { display: grid; }
-    .modal {
-      background: var(--paper);
-      border: 3px solid var(--ink);
-      box-shadow: 8px 8px 0 rgba(42,24,16,.2);
-      padding: 32px;
-      max-width: 400px;
-      width: 90%;
-      text-align: center;
-    }
+    .modal { background: var(--paper); border: 3px solid var(--ink); box-shadow: 8px 8px 0 rgba(42,24,16,.2); padding: 32px; max-width: 400px; width: 90%; text-align: center; position: relative; }
     .modal-icon { font-size: 2.5rem; margin-bottom: 12px; }
     .modal-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 8px; }
     .modal-desc { font-size: .9rem; color: #555; margin-bottom: 20px; }
     .modal-actions { display: flex; gap: 10px; justify-content: center; }
-    .modal-btn {
-      padding: 10px 24px;
-      border: 2px solid var(--ink);
-      font-size: .9rem;
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
-      transition: all .15s;
-    }
+    .modal-btn { padding: 10px 24px; border: 2px solid var(--ink); font-size: .9rem; font-weight: 600; cursor: pointer; text-decoration: none; transition: all .15s; }
     .modal-btn:hover { transform: translateY(-1px); }
     .modal-btn.primary { background: var(--ink); color: white; }
     .modal-btn.secondary { background: var(--cream); color: var(--ink); }
-    .modal-close {
-      position: absolute;
-      top: 12px;
-      right: 16px;
-      background: none;
-      border: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-      color: #888;
-    }
+    .modal-close { position: absolute; top: 12px; right: 16px; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #888; }
   </style>
 </head>
 <body>
@@ -381,10 +124,7 @@
     <a class="back" href="https://liberada.net">← liberada.net</a>
     
     <div class="header">
-      <div class="avatar">
-        👩
-        <span class="avatar-badge">✓</span>
-      </div>
+      <div class="avatar">👩<span class="avatar-badge">✓</span></div>
       <div class="name">María Demostración</div>
       <div class="key">@maria</div>
       <div class="bio">Profesora de yoga, amante de las risas spontáneas. Si no me río, no fue bueno.</div>
@@ -399,52 +139,57 @@
       <button class="action-btn share" id="share-btn">↗ Compartir</button>
     </div>
     
-    <div class="filter-row">
-      <div class="publish-row" id="publish-row-risa" style="display:none">
-        <button class="publish-btn publish-risa" data-app="risa">📝 Publicar en Risa</button>
-      </div>
-      <div class="publish-row" id="publish-row-lovy" style="display:none">
-        <button class="publish-btn publish-lovy" data-app="lovy">📝 Publicar en Lovy</button>
-      </div>
-      <div class="app-cards">
+    <div class="app-cards">
+      <div class="app-card-col">
+        <button class="publish-btn publish-risa" id="publish-risa" style="display:none">📝 Publicar en Risa</button>
         <button class="app-card-toggle" data-app="risa">
           <span class="emoji">😹</span>
           <span class="label">Risa</span>
           <span class="count" id="risa-count">(12)</span>
         </button>
+      </div>
+      <div class="app-card-col">
+        <button class="publish-btn publish-lovy" id="publish-lovy" style="display:none">📝 Publicar en Lovy</button>
         <button class="app-card-toggle" data-app="lovy">
           <span class="emoji">💗</span>
           <span class="label">Lovy</span>
           <span class="count" id="lovy-count">(8)</span>
         </button>
-        <div class="media-col">
-          <button class="media-pill active" data-media="all">Todo</button>
-          <button class="media-pill" data-media="audio">🎵</button>
-          <button class="media-pill" data-media="video">🎬</button>
-        </div>
       </div>
-      <button class="go-btn" id="go-btn">Aplicar</button>
+      <div class="media-col">
+        <button class="media-pill active" data-media="all">Todo</button>
+        <button class="media-pill" data-media="audio">🎵</button>
+        <button class="media-pill" data-media="video">🎬</button>
+      </div>
     </div>
     
     <div class="section">
       <div class="tabs">
-        <button class="tab active" data-tab="clips">Yo <span class="tab-count" id="tab-yo-count">12</span></button>
-        <button class="tab" data-tab="favs">Favoritos <span class="tab-count" id="tab-favs-count">8</span></button>
-        <button class="tab" data-tab="following">Siguiendo <span class="tab-count" id="tab-following-count">5</span></button>
+        <button class="tab active" data-tab="clips">Yo <span class="tab-count" id="tab-yo-count">0</span></button>
+        <button class="tab" data-tab="favs">Favoritos <span class="tab-count" id="tab-favs-count">0</span></button>
       </div>
-      
       <div class="tab-panel active" id="panel-clips">
         <ul class="clip-list" id="clip-list"></ul>
       </div>
-      
       <div class="tab-panel" id="panel-favs">
         <ul class="clip-list" id="fav-list"></ul>
       </div>
-      
-      <div class="tab-panel" id="panel-following">
+    </div>
+    
+    <div class="section">
+      <div class="tabs">
+        <button class="tab active" data-tab="following">Siguiendo <span class="tab-count" id="tab-following-count">5</span></button>
+        <button class="tab" data-tab="followers">Seguidores <span class="tab-count" id="tab-followers-count">3</span></button>
+      </div>
+      <div class="tab-panel active" id="panel-following">
         <div id="following-list"></div>
       </div>
+      <div class="tab-panel" id="panel-followers">
+        <div id="followers-list"></div>
+      </div>
     </div>
+    
+    <button class="aplicar-btn" id="aplicar-btn">Aplicar</button>
     
     <div class="profile-actions">
       <button class="profile-action-btn edit" id="edit-btn">✏️ Editar</button>
@@ -457,21 +202,8 @@
     </div>
   </div>
 
-  <div class="modal-overlay" id="claim-modal">
-    <div class="modal" style="position:relative">
-      <button class="modal-close" id="modal-close">×</button>
-      <div class="modal-icon">👩</div>
-      <div class="modal-title">¿Eres María?</div>
-      <div class="modal-desc">Reclama tu perfil para editar tu bio, gestionar tus clips y recibir notificaciones.</div>
-      <div class="modal-actions">
-        <a class="modal-btn primary" href="https://liberada.net/usa/maria/" id="modal-claim">🔗 Soy yo</a>
-        <button class="modal-btn secondary" id="modal-cancel">Cancelar</button>
-      </div>
-    </div>
-  </div>
-
   <div class="modal-overlay" id="action-modal">
-    <div class="modal" style="position:relative">
+    <div class="modal">
       <button class="modal-close" id="action-modal-close">×</button>
       <div class="modal-icon" id="action-modal-icon">⚙️</div>
       <div class="modal-title" id="action-modal-title">Acción</div>
@@ -485,270 +217,205 @@
 
   <script>
     const CLIPS = [
-      { id: 'q_demo_001', t: 'Yoga y risa', when: '2026-08-16', tags: 'yoga, relajación, espontánea', reactions: 12, favorites: 3, src: '#', app: 'risa', kind: 'audio' },
-      { id: 'q_demo_002', t: 'La que no para', when: '2026-08-14', tags: 'contagiosa, felicidad', reactions: 24, favorites: 5, src: '#', app: 'risa', kind: 'audio' },
-      { id: 'q_demo_003', t: 'Risa de gato', when: '2026-08-12', tags: 'gato, animal, tierna', reactions: 18, favorites: 4, src: '#', app: 'lovy', kind: 'video' },
-      { id: 'q_demo_004', t: 'Clase de mañana', when: '2026-08-10', tags: 'yoga, mañana, energía', reactions: 8, favorites: 2, src: '#', app: 'risa', kind: 'audio' },
-      { id: 'q_demo_005', t: 'Con las alumnas', when: '2026-08-08', tags: 'amigas, comunidad, risa', reactions: 15, favorites: 3, src: '#', app: 'risa', kind: 'video' },
-      { id: 'q_demo_006', t: 'Besito de buenos días', when: '2026-08-06', tags: 'amor, buenos días', reactions: 22, favorites: 6, src: '#', app: 'lovy', kind: 'audio' },
-      { id: 'q_demo_007', t: 'Foto del parcito', when: '2026-08-04', tags: 'parque, naturaleza', reactions: 11, favorites: 2, src: '#', app: 'lovy', kind: 'video' },
-      { id: 'q_demo_008', t: 'Risa compartida', when: '2026-08-02', tags: 'comunidad, risa', reactions: 19, favorites: 4, src: '#', app: 'lovy', kind: 'audio' }
+      { id: 'q_001', t: 'Yoga y risa', when: '2026-08-16', tags: 'yoga, relajación', reactions: 12, src: '#', app: 'risa', kind: 'audio' },
+      { id: 'q_002', t: 'La que no para', when: '2026-08-14', tags: 'contagiosa, felicidad', reactions: 24, src: '#', app: 'risa', kind: 'audio' },
+      { id: 'q_003', t: 'Risa de gato', when: '2026-08-12', tags: 'gato, animal', reactions: 18, src: '#', app: 'lovy', kind: 'video' },
+      { id: 'q_004', t: 'Clase de mañana', when: '2026-08-10', tags: 'yoga, energía', reactions: 8, src: '#', app: 'risa', kind: 'audio' },
+      { id: 'q_005', t: 'Con las alumnas', when: '2026-08-08', tags: 'amigas, comunidad', reactions: 15, src: '#', app: 'risa', kind: 'video' },
+      { id: 'q_006', t: 'Besito de buenos días', when: '2026-08-06', tags: 'amor, buenos días', reactions: 22, src: '#', app: 'lovy', kind: 'audio' },
+      { id: 'q_007', t: 'Foto del parcito', when: '2026-08-04', tags: 'parque, naturaleza', reactions: 11, src: '#', app: 'lovy', kind: 'video' },
+      { id: 'q_008', t: 'Risa compartida', when: '2026-08-02', tags: 'comunidad, risa', reactions: 19, src: '#', app: 'lovy', kind: 'audio' }
     ];
 
     const FAVORITES = [
-      { id: 'f_001', t: 'Risa épica del micrófono', author: 'Loko Puro', when: '2026-08-15', tags: 'épica, micrófono', reactions: 31, src: '#', app: 'risa', kind: 'audio' },
-      { id: 'f_002', t: 'De la boda', author: 'Marc', when: '2026-08-13', tags: 'boda, celebración', reactions: 12, src: '#', app: 'risa', kind: 'video' },
-      { id: 'f_003', t: 'Código y risas', author: 'Marc', when: '2026-08-11', tags: 'código, programación', reactions: 8, src: '#', app: 'risa', kind: 'audio' },
-      { id: 'f_004', t: 'La sorpresa', author: '@marcflove', when: '2026-08-09', tags: 'sorpresa, risa', reactions: 14, src: '#', app: 'lovy', kind: 'video' },
-      { id: 'f_005', t: 'Después del café', author: 'Loko Puro', when: '2026-08-07', tags: 'café, energía', reactions: 9, src: '#', app: 'risa', kind: 'audio' },
-      { id: 'f_006', t: 'Amor de domingo', author: 'Ana', when: '2026-08-05', tags: 'domingo, amor', reactions: 16, src: '#', app: 'lovy', kind: 'audio' },
-      { id: 'f_007', t: 'Risa en la lluvia', author: 'Carlos', when: '2026-08-03', tags: 'lluvia, aventura', reactions: 13, src: '#', app: 'lovy', kind: 'video' },
-      { id: 'f_008', t: 'Noche de risas', author: 'Laura', when: '2026-08-01', tags: 'noche, amigos', reactions: 21, src: '#', app: 'lovy', kind: 'audio' }
+      { id: 'f_001', t: 'Risa épica', author: 'Loko Puro', when: '2026-08-15', tags: 'épica', reactions: 31, src: '#', app: 'risa', kind: 'audio' },
+      { id: 'f_002', t: 'De la boda', author: 'Marc', when: '2026-08-13', tags: 'boda', reactions: 12, src: '#', app: 'risa', kind: 'video' },
+      { id: 'f_003', t: 'Código y risas', author: 'Marc', when: '2026-08-11', tags: 'código', reactions: 8, src: '#', app: 'risa', kind: 'audio' },
+      { id: 'f_004', t: 'La sorpresa', author: '@marcflove', when: '2026-08-09', tags: 'sorpresa', reactions: 14, src: '#', app: 'lovy', kind: 'video' },
+      { id: 'f_005', t: 'Después del café', author: 'Loko Puro', when: '2026-08-07', tags: 'café', reactions: 9, src: '#', app: 'risa', kind: 'audio' },
+      { id: 'f_006', t: 'Amor de domingo', author: 'Ana', when: '2026-08-05', tags: 'domingo', reactions: 16, src: '#', app: 'lovy', kind: 'audio' },
+      { id: 'f_007', t: 'Risa en la lluvia', author: 'Carlos', when: '2026-08-03', tags: 'lluvia', reactions: 13, src: '#', app: 'lovy', kind: 'video' },
+      { id: 'f_008', t: 'Noche de risas', author: 'Laura', when: '2026-08-01', tags: 'noche', reactions: 21, src: '#', app: 'lovy', kind: 'audio' }
     ];
 
     const FOLLOWING = [
       { key: 'marcflove', name: 'Marc', emoji: '🧔', risas: 3, bio: 'Creador de Risa' },
       { key: 'loko-puro', name: 'Loko Puro', emoji: '🤪', risas: 4, bio: 'Risas sin filtro' },
       { key: 'ana-yoga', name: 'Ana Pérez', emoji: '🧘', risas: 6, bio: 'Yoga y risa' },
-      { key: 'carlos-musica', name: 'Carlos Ruiz', emoji: '🎵', risas: 2, bio: 'Músico y risueño' },
+      { key: 'carlos-musica', name: 'Carlos Ruiz', emoji: '🎵', risas: 2, bio: 'Músico' },
       { key: 'laura-arte', name: 'Laura Díaz', emoji: '🎨', risas: 4, bio: 'Arte y color' }
     ];
 
-    let activeApps = new Set(['risa', 'lovy']);
-    let activeMedia = 'all';
-    let pendingApps = new Set(['risa', 'lovy']);
-    let pendingMedia = 'all';
-    let needsGo = false;
-    const TOTAL_ITEMS = CLIPS.length + FAVORITES.length;
-    const GO_THRESHOLD = 12;
+    const FOLLOWERS = [
+      { key: 'pedro-run', name: 'Pedro López', emoji: '🏃', bio: 'Runner y risueño' },
+      { key: 'sofia-dance', name: 'Sofía Torres', emoji: '💃', bio: 'Baila y ríe' },
+      { key: 'diego-foto', name: 'Diego Ruiz', emoji: '📸', bio: 'Fotógrafo' }
+    ];
 
-    function timeAgo(dateStr) {
-      const now = new Date();
-      const date = new Date(dateStr);
-      const days = Math.floor((now - date) / 86400000);
+    let activeApps = new Set();
+    let activeMedia = 'all';
+
+    function timeAgo(d) {
+      const days = Math.floor((Date.now() - new Date(d)) / 86400000);
       if (days === 0) return 'hoy';
       if (days === 1) return 'ayer';
-      if (days < 7) return 'hace ' + days + ' días';
-      if (days < 30) return 'hace ' + Math.floor(days / 7) + ' sem';
-      return 'hace ' + Math.floor(days / 30) + ' mes';
+      if (days < 7) return 'hace ' + days + 'd';
+      if (days < 30) return 'hace ' + Math.floor(days / 7) + 'sem';
+      return 'hace ' + Math.floor(days / 30) + 'm';
     }
 
-    function getFilteredClips() {
-      return CLIPS.filter(c => activeApps.has(c.app) && (activeMedia === 'all' || c.kind === activeMedia));
+    function filterClips(arr) {
+      return arr.filter(c => (activeApps.size === 0 || activeApps.has(c.app)) && (activeMedia === 'all' || c.kind === activeMedia));
     }
 
-    function getFilteredFavorites() {
-      return FAVORITES.filter(c => activeApps.has(c.app) && (activeMedia === 'all' || c.kind === activeMedia));
-    }
-
-    function renderClip(c, opts = {}) {
+    function renderClip(c, showAuthor) {
       const li = document.createElement('li');
       li.className = 'clip-item';
-      const authorHtml = opts.showAuthor ? '<div class="clip-meta" style="color:var(--magenta)">' + c.author + '</div>' : '';
-      const playClass = c.app === 'lovy' ? 'clip-play lovy' : 'clip-play';
-      const typeClass = c.kind === 'video' ? 'clip-type video' : 'clip-type audio';
-      const typeLabel = c.kind === 'video' ? 'Vídeo' : 'Audio';
-      li.innerHTML = `
-        <button class="${playClass}" title="Reproducir" aria-label="Reproducir ${c.t}">▶</button>
-        <div class="clip-body">
-          <div class="clip-title">${c.t}<span class="${typeClass}">${typeLabel}</span></div>
-          ${authorHtml}
-          <div class="clip-meta">${timeAgo(c.when)} · ❤ ${c.reactions}</div>
-          <div class="clip-tags">
-            ${c.tags.split(',').map(t => '<span class="clip-tag">' + t.trim() + '</span>').join('')}
-          </div>
-        </div>
-        <div class="clip-actions">
-          <button class="clip-action" title="Me gusta">❤</button>
-          <button class="clip-action" title="Compartir">↗</button>
-        </div>
-      `;
+      const cls = c.app === 'lovy' ? 'clip-play lovy' : 'clip-play';
+      const tc = c.kind === 'video' ? 'clip-type video' : 'clip-type audio';
+      const tl = c.kind === 'video' ? 'Vídeo' : 'Audio';
+      li.innerHTML = '<button class="' + cls + '">▶</button>' +
+        '<div class="clip-body"><div class="clip-title">' + c.t + '<span class="' + tc + '">' + tl + '</span></div>' +
+        (showAuthor ? '<div class="clip-meta" style="color:var(--magenta)">' + c.author + '</div>' : '') +
+        '<div class="clip-meta">' + timeAgo(c.when) + ' · ❤ ' + c.reactions + '</div>' +
+        '<div class="clip-tags">' + c.tags.split(',').map(function(t){ return '<span class="clip-tag">' + t.trim() + '</span>'; }).join('') + '</div></div>' +
+        '<div class="clip-actions"><button class="clip-action">❤</button><button class="clip-action">↗</button></div>';
       return li;
     }
 
-    function renderFav(c) {
-      const li = document.createElement('li');
-      li.className = 'clip-item';
-      const playClass = c.app === 'lovy' ? 'clip-play lovy' : 'clip-play';
-      const typeClass = c.kind === 'video' ? 'clip-type video' : 'clip-type audio';
-      const typeLabel = c.kind === 'video' ? 'Vídeo' : 'Audio';
-      li.innerHTML = `
-        <button class="${playClass}" title="Reproducir" aria-label="Reproducir ${c.t}">▶</button>
-        <div class="clip-body">
-          <div class="clip-title">${c.t}<span class="${typeClass}">${typeLabel}</span></div>
-          <div class="clip-meta" style="color:var(--magenta)">${c.author}</div>
-          <div class="clip-meta">${timeAgo(c.when)} · ❤ ${c.reactions}</div>
-          <div class="clip-tags">
-            ${c.tags.split(',').map(t => '<span class="clip-tag">' + t.trim() + '</span>').join('')}
-          </div>
-        </div>
-        <button class="fav-star on" title="Quitar de favoritos">★</button>
-      `;
-      return li;
-    }
-
-    function renderFollowing() {
-      const container = document.getElementById('following-list');
-      container.innerHTML = '';
-      FOLLOWING.forEach(p => {
-        const card = document.createElement('a');
-        card.className = 'profile-card';
-        card.href = p.key ? ('https://liberada.net/usa/' + p.key + '/') : 'https://liberada.net/usa/maria/';
-        card.innerHTML = `
-          <div class="profile-avatar" style="background:linear-gradient(135deg, var(--sky), var(--sage))">${p.emoji}</div>
-          <div class="profile-info">
-            <div class="profile-name">${p.name}</div>
-            <div class="profile-detail">${p.bio} · ${p.risas} risas</div>
-          </div>
-          <span style="color:#ccc">→</span>
-        `;
-        container.appendChild(card);
-      });
+    function renderProfileCard(p) {
+      var card = document.createElement('a');
+      card.className = 'profile-card';
+      card.href = p.key ? 'https://liberada.net/usa/' + p.key + '/' : '#';
+      card.innerHTML = '<div class="profile-avatar" style="background:linear-gradient(135deg,var(--sky),var(--sage))">' + p.emoji + '</div>' +
+        '<div class="profile-info"><div class="profile-name">' + p.name + '</div><div class="profile-detail">' + p.bio + (p.risas ? ' · ' + p.risas + ' risas' : '') + '</div></div>' +
+        '<span style="color:#ccc">→</span>';
+      return card;
     }
 
     function updateCounts() {
-      const risaAll = CLIPS.filter(c => c.app === 'risa').length + FAVORITES.filter(c => c.app === 'risa').length;
-      const lovyAll = CLIPS.filter(c => c.app === 'lovy').length + FAVORITES.filter(c => c.app === 'lovy').length;
-      document.getElementById('risa-count').textContent = '(' + risaAll + ')';
-      document.getElementById('lovy-count').textContent = '(' + lovyAll + ')';
-      document.getElementById('tab-yo-count').textContent = getFilteredClips().length;
-      document.getElementById('tab-favs-count').textContent = getFilteredFavorites().length;
-      document.getElementById('tab-following-count').textContent = FOLLOWING.length;
-    }
-
-    function renderAll() {
-      const clipList = document.getElementById('clip-list');
-      clipList.innerHTML = '';
-      getFilteredClips().forEach(c => clipList.appendChild(renderClip(c)));
-      const favList = document.getElementById('fav-list');
-      favList.innerHTML = '';
-      getFilteredFavorites().forEach(c => favList.appendChild(renderFav(c)));
-      renderFollowing();
-      updateCounts();
-    }
-
-    function checkGoButton() {
-      needsGo = TOTAL_ITEMS > GO_THRESHOLD;
-      document.getElementById('go-btn').classList.toggle('visible', needsGo);
+      document.getElementById('risa-count').textContent = '(' + CLIPS.filter(function(c){return c.app==='risa'}).length + ')';
+      document.getElementById('lovy-count').textContent = '(' + CLIPS.filter(function(c){return c.app==='lovy'}).length + ')';
+      document.getElementById('tab-yo-count').textContent = filterClips(CLIPS).length;
+      document.getElementById('tab-favs-count').textContent = filterClips(FAVORITES).length;
     }
 
     function updatePublishButtons() {
-      document.getElementById('publish-row-risa').style.display = activeApps.has('risa') ? 'flex' : 'none';
-      document.getElementById('publish-row-lovy').style.display = activeApps.has('lovy') ? 'flex' : 'none';
+      document.getElementById('publish-risa').style.display = activeApps.has('risa') ? 'block' : 'none';
+      document.getElementById('publish-lovy').style.display = activeApps.has('lovy') ? 'block' : 'none';
+      var totalClips = CLIPS.length + FAVORITES.length;
+      document.getElementById('aplicar-btn').classList.toggle('visible', totalClips > 1000);
     }
 
-    document.querySelectorAll('.app-card-toggle').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const app = btn.dataset.app;
+    function renderLists() {
+      var cl = document.getElementById('clip-list');
+      cl.innerHTML = '';
+      filterClips(CLIPS).forEach(function(c){ cl.appendChild(renderClip(c, false)); });
+      var fl = document.getElementById('fav-list');
+      fl.innerHTML = '';
+      filterClips(FAVORITES).forEach(function(c){ fl.appendChild(renderClip(c, true)); });
+      var fgl = document.getElementById('following-list');
+      fgl.innerHTML = '';
+      FOLLOWING.forEach(function(p){ fgl.appendChild(renderProfileCard(p)); });
+      var fwl = document.getElementById('followers-list');
+      fwl.innerHTML = '';
+      FOLLOWERS.forEach(function(p){ fwl.appendChild(renderProfileCard(p)); });
+      updateCounts();
+      updatePublishButtons();
+    }
+
+    document.querySelectorAll('.app-card-toggle').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var app = btn.dataset.app;
         if (activeApps.has(app)) {
-          if (activeApps.size > 1) activeApps.delete(app);
+          activeApps.delete(app);
         } else {
-          activeApps = new Set([app]);
+          activeApps.add(app);
         }
-        document.querySelectorAll('.app-card-toggle').forEach(b => {
-          b.classList.toggle('active', activeApps.has(b.dataset.app));
-        });
-        updatePublishButtons();
-        if (needsGo) return;
-        pendingApps = new Set(activeApps);
-        renderAll();
+        btn.classList.toggle('active', activeApps.has(app));
+        renderLists();
       });
     });
 
-    document.querySelectorAll('.media-pill').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.media-pill').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.media-pill').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.media-pill').forEach(function(b){ b.classList.remove('active'); });
         btn.classList.add('active');
-        pendingMedia = btn.dataset.media;
-        if (needsGo) return;
-        activeMedia = pendingMedia;
-        renderAll();
+        activeMedia = btn.dataset.media;
+        renderLists();
       });
     });
 
-    document.getElementById('go-btn').addEventListener('click', () => {
-      activeApps = new Set(pendingApps);
-      activeMedia = pendingMedia;
-      renderAll();
-    });
-
-    document.querySelectorAll('.publish-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const app = btn.dataset.app;
-        const appName = app === 'risa' ? 'Risa' : 'Lovy';
-        const emoji = app === 'risa' ? '😹' : '💗';
-        openActionModal(emoji, 'Publicar en ' + appName, 'Comparte una ' + appName.toLowerCase() + ' con la comunidad. Graba o sube tu clip.', 'Grabar');
+    document.querySelectorAll('#publish-risa, #publish-lovy').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var app = btn.id === 'publish-risa' ? 'Risa' : 'Lovy';
+        var emoji = btn.id === 'publish-risa' ? '😹' : '💗';
+        openModal(emoji, 'Publicar en ' + app, 'Graba o sube tu clip a la comunidad.', 'Grabar');
       });
     });
 
-    document.querySelectorAll('.tab').forEach(tab => {
-      tab.addEventListener('click', () => {
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tabs .tab').forEach(function(tab) {
+      tab.addEventListener('click', function() {
+        var section = tab.closest('.section');
+        section.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
+        section.querySelectorAll('.tab-panel').forEach(function(p){ p.classList.remove('active'); });
         tab.classList.add('active');
-        document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+        section.querySelector('#panel-' + tab.dataset.tab).classList.add('active');
       });
     });
 
-    let following = false;
     document.getElementById('follow-btn').addEventListener('click', function() {
-      following = !following;
-      this.textContent = following ? '✓ Siguiendo' : '+ Seguir';
-      this.style.background = following ? 'var(--sage)' : 'var(--magenta)';
-      this.style.borderColor = following ? 'var(--sage)' : 'var(--magenta)';
-      this.style.color = following ? 'var(--ink)' : 'white';
+      var on = this.textContent.indexOf('Siguiendo') > -1;
+      this.textContent = on ? '+ Seguir' : '✓ Siguiendo';
+      this.style.background = on ? 'var(--magenta)' : 'var(--sage)';
+      this.style.borderColor = on ? 'var(--magenta)' : 'var(--sage)';
+      this.style.color = on ? 'white' : 'var(--ink)';
     });
 
     document.getElementById('share-btn').addEventListener('click', function() {
       if (navigator.share) {
-        navigator.share({ title: 'María Demostración — liberada.net', url: location.href });
+        navigator.share({ title: 'María Demostración', url: location.href });
       } else {
         navigator.clipboard.writeText(location.href);
         this.textContent = '✓ Copiado';
-        setTimeout(() => this.textContent = '↗ Compartir', 1500);
+        var self = this;
+        setTimeout(function(){ self.textContent = '↗ Compartir'; }, 1500);
       }
     });
 
-    document.getElementById('modal-close').addEventListener('click', () => {
-      document.getElementById('claim-modal').classList.remove('open');
-    });
-    document.getElementById('modal-cancel').addEventListener('click', () => {
-      document.getElementById('claim-modal').classList.remove('open');
-    });
-    document.getElementById('claim-modal').addEventListener('click', (e) => {
-      if (e.target === e.currentTarget) e.currentTarget.classList.remove('open');
-    });
-
-    function openActionModal(icon, title, desc, confirmText) {
+    function openModal(icon, title, desc, btn) {
       document.getElementById('action-modal-icon').textContent = icon;
       document.getElementById('action-modal-title').textContent = title;
       document.getElementById('action-modal-desc').textContent = desc;
-      document.getElementById('action-modal-confirm').textContent = confirmText;
+      document.getElementById('action-modal-confirm').textContent = btn;
       document.getElementById('action-modal').classList.add('open');
     }
 
-    document.getElementById('edit-btn').addEventListener('click', () => {
-      openActionModal('✏️', 'Editar perfil', 'Cambia tu nombre, bio, enlaces y foto de perfil.', 'Abrir editor');
+    document.getElementById('edit-btn').addEventListener('click', function() {
+      openModal('✏️', 'Editar perfil', 'Cambia tu nombre, bio, enlaces y foto.', 'Abrir editor');
     });
-    document.getElementById('protect-btn').addEventListener('click', () => {
-      openActionModal('🔒', 'Proteger cuenta', 'Configura recuperación de cuenta, contraseña y verificación en dos pasos.', 'Configurar');
+    document.getElementById('protect-btn').addEventListener('click', function() {
+      openModal('🔒', 'Proteger cuenta', 'Configura recuperación y verificación en dos pasos.', 'Configurar');
     });
-    document.getElementById('extend-btn').addEventListener('click', () => {
-      openActionModal('➕', 'Extender perfil', 'Añade más información, redes sociales, logros y funcionalidades extra.', 'Empezar');
+    document.getElementById('extend-btn').addEventListener('click', function() {
+      openModal('➕', 'Extender perfil', 'Añade redes sociales, logros y más.', 'Empezar');
     });
 
-    document.getElementById('action-modal-close').addEventListener('click', () => {
+    document.getElementById('aplicar-btn').addEventListener('click', function() {
+      openModal('✅', 'Aplicar cambios', 'Se aplicarán los cambios seleccionados a tus clips.', 'Aplicar');
+    });
+
+    document.getElementById('action-modal-close').addEventListener('click', function() {
       document.getElementById('action-modal').classList.remove('open');
     });
-    document.getElementById('action-modal-cancel').addEventListener('click', () => {
+    document.getElementById('action-modal-cancel').addEventListener('click', function() {
       document.getElementById('action-modal').classList.remove('open');
     });
-    document.getElementById('action-modal').addEventListener('click', (e) => {
+    document.getElementById('action-modal').addEventListener('click', function(e) {
       if (e.target === e.currentTarget) e.currentTarget.classList.remove('open');
     });
 
-    checkGoButton();
-    renderAll();
+    renderLists();
   </script>
 </body>
 </html>
