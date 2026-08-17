@@ -97,29 +97,59 @@
     .action-btn.share:hover { opacity: .9; }
     .filter-row {
       display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .publish-row {
+      display: none;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+    .publish-row.visible { display: flex; }
+    .publish-btn {
+      padding: 10px 28px;
+      border: 2px solid var(--ink);
+      background: var(--magenta);
+      color: white;
+      font-size: .9rem;
+      font-weight: 700;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all .15s;
+    }
+    .publish-btn:hover { transform: translateY(-1px); box-shadow: 2px 2px 0 rgba(42,24,16,.15); }
+    .app-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .app-card-toggle {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 16px 12px;
+      border: 2.5px solid var(--ink);
+      border-radius: 12px;
+      background: var(--cream);
+      cursor: pointer;
+      transition: all .15s;
+      min-height: 80px;
+    }
+    .app-card-toggle:hover { transform: translateY(-2px); box-shadow: 3px 3px 0 rgba(42,24,16,.15); }
+    .app-card-toggle.active { background: var(--ink); color: white; }
+    .app-card-toggle .emoji { font-size: 1.8rem; }
+    .app-card-toggle .label { font-size: .95rem; font-weight: 700; }
+    .app-card-toggle .count { font-size: .7rem; opacity: .7; }
+    .filter-extras {
+      display: flex;
       gap: 8px;
       justify-content: center;
       align-items: center;
       flex-wrap: wrap;
-      margin-bottom: 16px;
     }
-    .app-filter {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 14px;
-      border: 2px solid var(--ink);
-      border-radius: 999px;
-      background: var(--cream);
-      cursor: pointer;
-      font-size: .85rem;
-      font-weight: 600;
-      transition: all .15s;
-    }
-    .app-filter:hover { transform: translateY(-1px); }
-    .app-filter.active { background: var(--ink); color: white; }
-    .app-filter .emoji { font-size: 1rem; }
-    .app-filter .count { font-size: .7rem; opacity: .7; }
     .media-filter {
       display: flex;
       align-items: center;
@@ -375,18 +405,29 @@
     </div>
     
     <div class="filter-row">
-      <button class="app-filter active" data-app="risa">
-        <span class="emoji">😹</span> Risa <span class="count" id="risa-count">(12)</span>
-      </button>
-      <button class="app-filter active" data-app="lovy">
-        <span class="emoji">💗</span> Lovy <span class="count" id="lovy-count">(8)</span>
-      </button>
-      <div class="media-filter">
-        <button class="media-btn active" data-media="all">Todo</button>
-        <button class="media-btn" data-media="audio">🎵</button>
-        <button class="media-btn" data-media="video">🎬</button>
+      <div class="publish-row" id="publish-row">
+        <button class="publish-btn" id="publish-btn">📝 Publicar</button>
       </div>
-      <button class="go-btn" id="go-btn">Aplicar</button>
+      <div class="app-cards">
+        <button class="app-card-toggle active" data-app="risa">
+          <span class="emoji">😹</span>
+          <span class="label">Risa</span>
+          <span class="count" id="risa-count">(12)</span>
+        </button>
+        <button class="app-card-toggle active" data-app="lovy">
+          <span class="emoji">💗</span>
+          <span class="label">Lovy</span>
+          <span class="count" id="lovy-count">(8)</span>
+        </button>
+      </div>
+      <div class="filter-extras">
+        <div class="media-filter">
+          <button class="media-btn active" data-media="all">Todo</button>
+          <button class="media-btn" data-media="audio">🎵</button>
+          <button class="media-btn" data-media="video">🎬</button>
+        </div>
+        <button class="go-btn" id="go-btn">Aplicar</button>
+      </div>
     </div>
     
     <div class="section">
@@ -595,7 +636,7 @@
       document.getElementById('go-btn').classList.toggle('visible', needsGo);
     }
 
-    document.querySelectorAll('.app-filter').forEach(btn => {
+    document.querySelectorAll('.app-card-toggle').forEach(btn => {
       btn.addEventListener('click', () => {
         const app = btn.dataset.app;
         if (pendingApps.has(app)) {
@@ -604,6 +645,7 @@
           pendingApps.add(app);
         }
         btn.classList.toggle('active', pendingApps.has(app));
+        document.getElementById('publish-row').classList.add('visible');
         if (needsGo) return;
         activeApps = new Set(pendingApps);
         renderAll();
@@ -625,6 +667,10 @@
       activeApps = new Set(pendingApps);
       activeMedia = pendingMedia;
       renderAll();
+    });
+
+    document.getElementById('publish-btn').addEventListener('click', () => {
+      openActionModal('📝', 'Publicar en Risa', 'Comparte una risa con la comunidad. Selecciona una app y graba o sube tu clip.', 'Grabar');
     });
 
     document.querySelectorAll('.tab').forEach(tab => {
