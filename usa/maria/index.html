@@ -31,9 +31,14 @@
     .name { font-size: 1.75rem; font-weight: 700; margin-bottom: 2px; }
     .key { font-size: .8rem; color: #888; margin-bottom: 8px; }
     .bio { font-size: .9rem; color: #555; margin-bottom: 12px; max-width: 40ch; margin-left: auto; margin-right: auto; }
-    .links { display: flex; gap: 16px; justify-content: center; margin-bottom: 20px; }
-    .link { font-size: .8rem; color: var(--magenta); text-decoration: none; }
-    .link:hover { text-decoration: underline; }
+    .links { display: flex; gap: 10px; justify-content: center; align-items: center; margin-bottom: 20px; }
+    .link-icon { width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--ink); background: var(--cream); display: grid; place-items: center; font-size: 1rem; text-decoration: none; cursor: pointer; transition: all .15s; }
+    .link-icon:hover { background: var(--ink); color: white; transform: translateY(-1px); box-shadow: 2px 2px 0 rgba(42,24,16,.15); }
+    .link-icon.more { background: var(--ink); color: white; font-weight: 700; font-size: .9rem; position: relative; }
+    .link-icon.more:hover { opacity: .9; }
+    .link-more-menu { display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); background: var(--cream); border: 2px solid var(--ink); box-shadow: 4px 4px 0 rgba(42,24,16,.15); border-radius: 12px; padding: 8px; z-index: 10; min-width: 48px; }
+    .link-more-menu.open { display: flex; gap: 6px; }
+    .link-more-menu .link-icon { width: 34px; height: 34px; font-size: .95rem; }
     .actions { display: flex; gap: 10px; justify-content: center; margin-bottom: 24px; }
     .action-btn { padding: 8px 18px; border: 2px solid var(--ink); background: var(--cream); font-size: .85rem; font-weight: 600; cursor: pointer; transition: all .15s; }
     .action-btn:hover { transform: translateY(-1px); box-shadow: 2px 2px 0 rgba(42,24,16,.15); }
@@ -45,7 +50,7 @@
     .publish-btn:hover { transform: translateY(-1px); box-shadow: 2px 2px 0 rgba(42,24,16,.15); }
     .publish-risa { background: var(--marigold); border-color: var(--marigold); color: var(--ink); }
     .publish-lovy { background: var(--pink); border-color: var(--pink); }
-    .app-cards { display: grid; grid-template-columns: 1fr 1fr auto; gap: 10px; align-items: stretch; margin-bottom: 20px; }
+    .app-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; align-items: stretch; margin-bottom: 20px; }
     .app-card-col { display: flex; flex-direction: column; align-items: center; }
     .app-card-toggle { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 16px 12px; border: 2.5px solid var(--ink); border-radius: 12px; background: var(--cream); cursor: pointer; transition: all .15s; min-height: 80px; width: 100%; }
     .app-card-toggle:hover { transform: translateY(-2px); box-shadow: 3px 3px 0 rgba(42,24,16,.15); }
@@ -53,10 +58,9 @@
     .app-card-toggle .emoji { font-size: 1.8rem; }
     .app-card-toggle .label { font-size: .95rem; font-weight: 700; }
     .app-card-toggle .count { font-size: .7rem; opacity: .7; }
-    .media-col { display: flex; flex-direction: column; gap: 4px; padding: 6px; border: 1.5px solid #ddd; border-radius: 10px; background: var(--cream); align-self: stretch; }
-    .media-pill { padding: 4px 8px; border: none; border-radius: 6px; background: transparent; cursor: pointer; font-size: .7rem; font-weight: 600; color: #888; transition: all .15s; white-space: nowrap; }
-    .media-pill.active { background: var(--ink); color: white; }
-    .media-pill:hover:not(.active) { color: var(--ink); }
+    .media-tabs { margin-top: 8px; }
+    .media-tabs .tab { font-size: .78rem; padding: 6px 12px; color: #999; border-bottom-color: transparent; }
+    .media-tabs .tab.active { color: var(--magenta); border-bottom-color: var(--magenta); }
     .go-btn { display: none; padding: 6px 16px; border: 2px solid var(--magenta); border-radius: 999px; background: var(--magenta); color: white; font-size: .8rem; font-weight: 700; cursor: pointer; }
     .go-btn.visible { display: inline-block; }
     .go-btn:hover { background: #c0303d; }
@@ -129,8 +133,16 @@
       <div class="key">@maria</div>
       <div class="bio">Profesora de yoga, amante de las risas spontáneas. Si no me río, no fue bueno.</div>
       <div class="links">
-        <a class="link" href="https://t.me/mariagarcia" target="_blank">Telegram ↗</a>
-        <a class="link" href="#">mariagarcia.com ↗</a>
+        <a class="link-icon" href="https://t.me/mariagarcia" target="_blank" title="Telegram">✈</a>
+        <a class="link-icon" href="https://mariagarcia.com" target="_blank" title="Web">🌐</a>
+        <span class="link-icon more" id="more-links" title="Más redes">+
+          <span class="link-more-menu" id="more-menu">
+            <a class="link-icon" href="#" title="Instagram">📷</a>
+            <a class="link-icon" href="#" title="Mastodon">🐘</a>
+            <a class="link-icon" href="#" title="GitHub">💻</a>
+            <a class="link-icon" href="#" title="Facebook">👍</a>
+          </span>
+        </span>
       </div>
     </div>
     
@@ -156,17 +168,17 @@
           <span class="count" id="lovy-count">(8)</span>
         </button>
       </div>
-      <div class="media-col">
-        <button class="media-pill active" data-media="all">Todo</button>
-        <button class="media-pill" data-media="audio">🎵</button>
-        <button class="media-pill" data-media="video">🎬</button>
-      </div>
     </div>
     
     <div class="section">
       <div class="tabs">
         <button class="tab active" data-tab="clips">Yo <span class="tab-count" id="tab-yo-count">0</span></button>
         <button class="tab" data-tab="favs">Favoritos <span class="tab-count" id="tab-favs-count">0</span></button>
+      </div>
+      <div class="tabs media-tabs" id="media-tabs">
+        <button class="tab active" data-media="all">Todo</button>
+        <button class="tab" data-media="audio">🎵 Audio</button>
+        <button class="tab" data-media="video">🎬 Vídeo</button>
       </div>
       <div class="tab-panel active" id="panel-clips">
         <ul class="clip-list" id="clip-list"></ul>
@@ -283,13 +295,17 @@
       return li;
     }
 
-    function renderProfileCard(p) {
-      var card = document.createElement('a');
+    function renderProfileCard(p, showClaim) {
+      var card = document.createElement('div');
       card.className = 'profile-card';
-      card.href = p.key ? 'https://liberada.net/usa/' + p.key + '/' : '#';
-      card.innerHTML = '<div class="profile-avatar" style="background:linear-gradient(135deg,var(--sky),var(--sage))">' + p.emoji + '</div>' +
-        '<div class="profile-info"><div class="profile-name">' + p.name + '</div><div class="profile-detail">' + p.bio + (p.risas ? ' · ' + p.risas + ' risas' : '') + '</div></div>' +
-        '<span style="color:#ccc">→</span>';
+      var inner = '<div class="profile-avatar" style="background:linear-gradient(135deg,var(--sky),var(--sage))">' + p.emoji + '</div>' +
+        '<div class="profile-info"><div class="profile-name">' + p.name + '</div><div class="profile-detail">' + p.bio + (p.risas ? ' · ' + p.risas + ' risas' : '') + '</div></div>';
+      if (showClaim) {
+        inner += '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px"><a href="#" data-claim class="link-icon" style="width:auto;height:auto;padding:6px 12px;font-size:.75rem;background:var(--magenta);color:white;border-color:var(--magenta);text-decoration:none;border-radius:999px">Mejorar perfil →</a></div>';
+      } else {
+        inner += '<a href="https://liberada.net/usa/' + p.key + '/" style="color:#ccc;text-decoration:none">→</a>';
+      }
+      card.innerHTML = inner;
       return card;
     }
 
@@ -316,7 +332,7 @@
       filterClips(FAVORITES).forEach(function(c){ fl.appendChild(renderClip(c, true)); });
       var fgl = document.getElementById('following-list');
       fgl.innerHTML = '';
-      FOLLOWING.forEach(function(p){ fgl.appendChild(renderProfileCard(p)); });
+      FOLLOWING.forEach(function(p){ fgl.appendChild(renderProfileCard(p, p.key === 'loko-puro')); });
       var fwl = document.getElementById('followers-list');
       fwl.innerHTML = '';
       FOLLOWERS.forEach(function(p){ fwl.appendChild(renderProfileCard(p)); });
@@ -337,9 +353,9 @@
       });
     });
 
-    document.querySelectorAll('.media-pill').forEach(function(btn) {
+    document.querySelectorAll('#media-tabs .tab').forEach(function(btn) {
       btn.addEventListener('click', function() {
-        document.querySelectorAll('.media-pill').forEach(function(b){ b.classList.remove('active'); });
+        document.querySelectorAll('#media-tabs .tab').forEach(function(b){ b.classList.remove('active'); });
         btn.classList.add('active');
         activeMedia = btn.dataset.media;
         renderLists();
@@ -413,6 +429,22 @@
     });
     document.getElementById('action-modal').addEventListener('click', function(e) {
       if (e.target === e.currentTarget) e.currentTarget.classList.remove('open');
+    });
+
+    document.getElementById('following-list').addEventListener('click', function(e) {
+      var btn = e.target.closest('[data-claim]');
+      if (btn) {
+        e.preventDefault();
+        openModal('🔍', 'Reclamar perfil', 'Ahora irás a un perfil demo, que sería directamente el tuyo si navegaras desde Telegram o te invitaría a que te re-verificaras.', 'Reclamar');
+      }
+    });
+
+    document.getElementById('more-links').addEventListener('click', function(e) {
+      e.stopPropagation();
+      document.getElementById('more-menu').classList.toggle('open');
+    });
+    document.addEventListener('click', function() {
+      document.getElementById('more-menu').classList.remove('open');
     });
 
     renderLists();
