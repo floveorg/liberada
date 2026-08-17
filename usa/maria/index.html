@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>María García — liberada.net</title>
-  <meta name="description" content="Perfil de María García en las apps liberadas">
-  <meta property="og:title" content="María García — liberada.net">
+  <title>María Demostración — liberada.net</title>
+  <meta name="description" content="Perfil de María Demostración en las apps liberadas">
+  <meta property="og:title" content="María Demostración — liberada.net">
   <meta property="og:description" content="Risas, arte y comunidad">
   <meta property="og:type" content="profile">
   <style>
@@ -128,52 +128,32 @@
     .action-btn.follow:hover { background: #c0303d; }
     .action-btn.share { background: var(--ink); color: white; border-color: var(--ink); }
     .action-btn.share:hover { opacity: .9; }
-    .stats {
+    .app-filters {
       display: flex;
-      gap: 24px;
+      gap: 12px;
       justify-content: center;
-      margin-bottom: 28px;
-      padding: 16px;
+      margin-bottom: 20px;
+    }
+    .app-filter {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border: 2px solid var(--ink);
+      border-radius: 999px;
       background: var(--cream);
-      border: 1.5px solid var(--ink);
+      cursor: pointer;
+      font-size: .85rem;
+      font-weight: 600;
+      transition: all .15s;
     }
-    .stat {
-      text-align: center;
-    }
-    .stat-num {
-      font-size: 1.5rem;
-      font-weight: 700;
-      font-family: var(--mono);
-    }
-    .stat-label {
-      font-size: .7rem;
-      text-transform: uppercase;
-      letter-spacing: .5px;
-      color: #666;
-    }
+    .app-filter:hover { transform: translateY(-1px); }
+    .app-filter.active { background: var(--ink); color: white; }
+    .app-filter .emoji { font-size: 1rem; }
+    .app-filter .count { font-size: .7rem; opacity: .7; }
     .section {
       margin-bottom: 28px;
     }
-    .section-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 12px;
-    }
-    .section-title {
-      font-size: .75rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: #888;
-    }
-    .section-badge {
-      font-size: .65rem;
-      padding: 2px 8px;
-      border-radius: 999px;
-      font-weight: 600;
-    }
-    .badge-risa { background: var(--marigold); color: var(--ink); }
-    .badge-lovy { background: var(--pink); color: white; }
     .tabs {
       display: flex;
       gap: 0;
@@ -203,50 +183,6 @@
     }
     .tab-panel { display: none; }
     .tab-panel.active { display: block; }
-    .app-card {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      padding: 14px;
-      background: #fff;
-      border: 2px solid var(--ink);
-      box-shadow: 4px 4px 0 rgba(42,24,16,.15);
-      text-decoration: none;
-      color: var(--ink);
-      margin-bottom: 10px;
-      transition: transform .15s;
-    }
-    .app-card:hover { transform: translateY(-2px); }
-    .app-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 10px;
-      display: grid;
-      place-items: center;
-      font-size: 1.4rem;
-      flex-shrink: 0;
-    }
-    .app-icon-risa { background: var(--marigold); }
-    .app-icon-lovy { background: var(--pink); }
-    .app-body { flex: 1; }
-    .app-name {
-      font-weight: 700;
-      font-size: .95rem;
-      margin-bottom: 1px;
-    }
-    .app-desc {
-      font-size: .8rem;
-      color: #666;
-    }
-    .app-meta {
-      font-size: .7rem;
-      color: #888;
-      margin-top: 2px;
-    }
-    .app-arrow {
-      font-size: 1.2rem;
-      color: #ccc;
-    }
     .clip-list {
       list-style: none;
     }
@@ -272,6 +208,7 @@
       transition: transform .1s;
     }
     .clip-play:hover { transform: scale(1.1); }
+    .clip-play.lovy { background: var(--pink); }
     .clip-body { flex: 1; min-width: 0; }
     .clip-title {
       font-weight: 600;
@@ -312,7 +249,6 @@
       padding: 4px;
     }
     .clip-action:hover { color: var(--magenta); }
-    .clip-action.liked { color: var(--magenta); }
     .fav-star {
       background: none;
       border: none;
@@ -399,7 +335,7 @@
         👩
         <span class="avatar-badge">✓</span>
       </div>
-      <div class="name">María García</div>
+      <div class="name">María Demostración</div>
       <div class="key">@maria</div>
       <div class="bio">Profesora de yoga, amante de las risas spontáneas. Si no me río, no fue bueno.</div>
       <div class="links">
@@ -413,56 +349,20 @@
       <button class="action-btn share" id="share-btn">↗ Compartir</button>
     </div>
     
-    <div class="stats">
-      <div class="stat">
-        <div class="stat-num">12</div>
-        <div class="stat-label">Risas</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">8</div>
-        <div class="stat-label">Favoritas</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">3</div>
-        <div class="stat-label">Seguidores</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">5</div>
-        <div class="stat-label">Siguiendo</div>
-      </div>
-    </div>
-    
-    <div class="section">
-      <div class="section-header">
-        <span class="section-title">Apps</span>
-      </div>
-      
-      <a class="app-card" href="https://risa.liberada.net/lol/maria/">
-        <div class="app-icon app-icon-risa">😹</div>
-        <div class="app-body">
-          <div class="app-name">Risa</div>
-          <div class="app-desc">Risas de la comunidad</div>
-          <div class="app-meta">12 publicaciones · 45 reacciones recibidas</div>
-        </div>
-        <span class="app-arrow">→</span>
-      </a>
-      
-      <a class="app-card" href="https://lovy.liberada.net/lol/maria/" style="opacity:.6; pointer-events:none;">
-        <div class="app-icon app-icon-lovy">💗</div>
-        <div class="app-body">
-          <div class="app-name">Lovy</div>
-          <div class="app-desc">Próximamente</div>
-          <div class="app-meta">En desarrollo</div>
-        </div>
-        <span class="app-arrow">→</span>
-      </a>
+    <div class="app-filters">
+      <button class="app-filter active" data-app="risa">
+        <span class="emoji">😹</span> Risa <span class="count" id="risa-count">(12)</span>
+      </button>
+      <button class="app-filter" data-app="lovy">
+        <span class="emoji">💗</span> Lovy <span class="count" id="lovy-count">(8)</span>
+      </button>
     </div>
     
     <div class="section">
       <div class="tabs">
-        <button class="tab active" data-tab="clips">Mis risas <span class="tab-count">12</span></button>
-        <button class="tab" data-tab="favs">Favoritas <span class="tab-count">8</span></button>
-        <button class="tab" data-tab="following">Siguiendo <span class="tab-count">5</span></button>
+        <button class="tab active" data-tab="clips">Yo <span class="tab-count" id="tab-yo-count">12</span></button>
+        <button class="tab" data-tab="favs">Favoritos <span class="tab-count" id="tab-favs-count">8</span></button>
+        <button class="tab" data-tab="following">Siguiendo <span class="tab-count" id="tab-following-count">5</span></button>
       </div>
       
       <div class="tab-panel active" id="panel-clips">
@@ -491,19 +391,25 @@
 
   <script>
     const CLIPS = [
-      { id: 'q_demo_001', t: 'Yoga y risa', when: '2026-08-16', tags: 'yoga, relajación, espontánea', reactions: 12, favorites: 3, src: '#' },
-      { id: 'q_demo_002', t: 'La que no para', when: '2026-08-14', tags: 'contagiosa, felicidad', reactions: 24, favorites: 5, src: '#' },
-      { id: 'q_demo_003', t: 'Risa de gato', when: '2026-08-12', tags: 'gato, animal, tierna', reactions: 18, favorites: 4, src: '#' },
-      { id: 'q_demo_004', t: 'Clase de mañana', when: '2026-08-10', tags: 'yoga, mañana, energía', reactions: 8, favorites: 2, src: '#' },
-      { id: 'q_demo_005', t: 'Con las alumnas', when: '2026-08-08', tags: 'amigas, comunidad, risa', reactions: 15, favorites: 3, src: '#' }
+      { id: 'q_demo_001', t: 'Yoga y risa', when: '2026-08-16', tags: 'yoga, relajación, espontánea', reactions: 12, favorites: 3, src: '#', app: 'risa' },
+      { id: 'q_demo_002', t: 'La que no para', when: '2026-08-14', tags: 'contagiosa, felicidad', reactions: 24, favorites: 5, src: '#', app: 'risa' },
+      { id: 'q_demo_003', t: 'Risa de gato', when: '2026-08-12', tags: 'gato, animal, tierna', reactions: 18, favorites: 4, src: '#', app: 'lovy' },
+      { id: 'q_demo_004', t: 'Clase de mañana', when: '2026-08-10', tags: 'yoga, mañana, energía', reactions: 8, favorites: 2, src: '#', app: 'risa' },
+      { id: 'q_demo_005', t: 'Con las alumnas', when: '2026-08-08', tags: 'amigas, comunidad, risa', reactions: 15, favorites: 3, src: '#', app: 'risa' },
+      { id: 'q_demo_006', t: 'Besito de buenos días', when: '2026-08-06', tags: 'amor, buenos días', reactions: 22, favorites: 6, src: '#', app: 'lovy' },
+      { id: 'q_demo_007', t: 'Foto del parcito', when: '2026-08-04', tags: 'parque, naturaleza', reactions: 11, favorites: 2, src: '#', app: 'lovy' },
+      { id: 'q_demo_008', t: 'Risa compartida', when: '2026-08-02', tags: 'comunidad, risa', reactions: 19, favorites: 4, src: '#', app: 'lovy' }
     ];
 
     const FAVORITES = [
-      { id: 'f_001', t: 'Risa épica del micrófono', author: 'Loko Puro', when: '2026-08-15', tags: 'épica, micrófono', reactions: 31, src: '#' },
-      { id: 'f_002', t: 'De la boda', author: 'Marc', when: '2026-08-13', tags: 'boda, celebración', reactions: 12, src: '#' },
-      { id: 'f_003', t: 'Código y risas', author: 'Marc', when: '2026-08-11', tags: 'código, programación', reactions: 8, src: '#' },
-      { id: 'f_004', t: 'La sorpresa', author: '@marcflove', when: '2026-08-09', tags: 'sorpresa, risa', reactions: 14, src: '#' },
-      { id: 'f_005', t: 'Después del café', author: 'Loko Puro', when: '2026-08-07', tags: 'café, energía', reactions: 9, src: '#' }
+      { id: 'f_001', t: 'Risa épica del micrófono', author: 'Loko Puro', when: '2026-08-15', tags: 'épica, micrófono', reactions: 31, src: '#', app: 'risa' },
+      { id: 'f_002', t: 'De la boda', author: 'Marc', when: '2026-08-13', tags: 'boda, celebración', reactions: 12, src: '#', app: 'risa' },
+      { id: 'f_003', t: 'Código y risas', author: 'Marc', when: '2026-08-11', tags: 'código, programación', reactions: 8, src: '#', app: 'risa' },
+      { id: 'f_004', t: 'La sorpresa', author: '@marcflove', when: '2026-08-09', tags: 'sorpresa, risa', reactions: 14, src: '#', app: 'lovy' },
+      { id: 'f_005', t: 'Después del café', author: 'Loko Puro', when: '2026-08-07', tags: 'café, energía', reactions: 9, src: '#', app: 'risa' },
+      { id: 'f_006', t: 'Amor de domingo', author: 'Ana', when: '2026-08-05', tags: 'domingo, amor', reactions: 16, src: '#', app: 'lovy' },
+      { id: 'f_007', t: 'Risa en la lluvia', author: 'Carlos', when: '2026-08-03', tags: 'lluvia, aventura', reactions: 13, src: '#', app: 'lovy' },
+      { id: 'f_008', t: 'Noche de risas', author: 'Laura', when: '2026-08-01', tags: 'noche, amigos', reactions: 21, src: '#', app: 'lovy' }
     ];
 
     const FOLLOWING = [
@@ -513,6 +419,9 @@
       { key: 'carlos-musica', name: 'Carlos Ruiz', emoji: '🎵', risas: 2, bio: 'Músico y risueño' },
       { key: 'laura-arte', name: 'Laura Díaz', emoji: '🎨', risas: 4, bio: 'Arte y color' }
     ];
+
+    let activeApps = new Set(['risa', 'lovy']);
+    let activeTab = 'clips';
 
     function timeAgo(dateStr) {
       const now = new Date();
@@ -525,12 +434,21 @@
       return 'hace ' + Math.floor(days / 30) + ' mes';
     }
 
+    function getFilteredClips() {
+      return CLIPS.filter(c => activeApps.has(c.app));
+    }
+
+    function getFilteredFavorites() {
+      return FAVORITES.filter(c => activeApps.has(c.app));
+    }
+
     function renderClip(c, opts = {}) {
       const li = document.createElement('li');
       li.className = 'clip-item';
       const authorHtml = opts.showAuthor ? '<div class="clip-meta" style="color:var(--magenta)">' + c.author + '</div>' : '';
+      const playClass = c.app === 'lovy' ? 'clip-play lovy' : 'clip-play';
       li.innerHTML = `
-        <button class="clip-play" title="Reproducir" aria-label="Reproducir ${c.t}">▶</button>
+        <button class="${playClass}" title="Reproducir" aria-label="Reproducir ${c.t}">▶</button>
         <div class="clip-body">
           <div class="clip-title">${c.t}</div>
           ${authorHtml}
@@ -550,8 +468,9 @@
     function renderFav(c) {
       const li = document.createElement('li');
       li.className = 'clip-item';
+      const playClass = c.app === 'lovy' ? 'clip-play lovy' : 'clip-play';
       li.innerHTML = `
-        <button class="clip-play" title="Reproducir" aria-label="Reproducir ${c.t}" style="background:var(--pink)">▶</button>
+        <button class="${playClass}" title="Reproducir" aria-label="Reproducir ${c.t}">▶</button>
         <div class="clip-body">
           <div class="clip-title">${c.t}</div>
           <div class="clip-meta" style="color:var(--magenta)">${c.author}</div>
@@ -560,17 +479,18 @@
             ${c.tags.split(',').map(t => '<span class="clip-tag">' + t.trim() + '</span>').join('')}
           </div>
         </div>
-        <button class="fav-star on" title="Quitar de favoritas">★</button>
+        <button class="fav-star on" title="Quitar de favoritos">★</button>
       `;
       return li;
     }
 
     function renderFollowing() {
       const container = document.getElementById('following-list');
+      container.innerHTML = '';
       FOLLOWING.forEach(p => {
         const card = document.createElement('a');
         card.className = 'profile-card';
-        card.href = 'https://liberada.net/usa/' + p.key + '/';
+        card.href = p.key ? ('https://liberada.net/usa/' + p.key + '/') : 'https://liberada.net/usa/maria/';
         card.innerHTML = `
           <div class="profile-avatar" style="background:linear-gradient(135deg, var(--sky), var(--sage))">${p.emoji}</div>
           <div class="profile-info">
@@ -583,20 +503,58 @@
       });
     }
 
-    const clipList = document.getElementById('clip-list');
-    CLIPS.forEach(c => clipList.appendChild(renderClip(c)));
+    function updateCounts() {
+      const risaClips = CLIPS.filter(c => c.app === 'risa').length;
+      const lovyClips = CLIPS.filter(c => c.app === 'lovy').length;
+      const risaFavs = FAVORITES.filter(c => c.app === 'risa').length;
+      const lovyFavs = FAVORITES.filter(c => c.app === 'lovy').length;
 
-    const favList = document.getElementById('fav-list');
-    FAVORITES.forEach(c => favList.appendChild(renderFav(c)));
+      document.getElementById('risa-count').textContent = '(' + (risaClips + risaFavs) + ')';
+      document.getElementById('lovy-count').textContent = '(' + (lovyClips + lovyFavs) + ')';
 
-    renderFollowing();
+      const filteredClips = getFilteredClips().length;
+      const filteredFavs = getFilteredFavorites().length;
+      document.getElementById('tab-yo-count').textContent = filteredClips;
+      document.getElementById('tab-favs-count').textContent = filteredFavs;
+      document.getElementById('tab-following-count').textContent = FOLLOWING.length;
+    }
+
+    function renderAll() {
+      const clipList = document.getElementById('clip-list');
+      clipList.innerHTML = '';
+      getFilteredClips().forEach(c => clipList.appendChild(renderClip(c)));
+
+      const favList = document.getElementById('fav-list');
+      favList.innerHTML = '';
+      getFilteredFavorites().forEach(c => favList.appendChild(renderFav(c)));
+
+      renderFollowing();
+      updateCounts();
+    }
+
+    document.querySelectorAll('.app-filter').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const app = btn.dataset.app;
+        if (activeApps.has(app)) {
+          if (activeApps.size > 1) {
+            activeApps.delete(app);
+            btn.classList.remove('active');
+          }
+        } else {
+          activeApps.add(app);
+          btn.classList.add('active');
+        }
+        renderAll();
+      });
+    });
 
     document.querySelectorAll('.tab').forEach(tab => {
       tab.addEventListener('click', () => {
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
         tab.classList.add('active');
-        document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+        activeTab = tab.dataset.tab;
+        document.getElementById('panel-' + activeTab).classList.add('active');
       });
     });
 
@@ -611,13 +569,15 @@
 
     document.getElementById('share-btn').addEventListener('click', function() {
       if (navigator.share) {
-        navigator.share({ title: 'María García — liberada.net', url: location.href });
+        navigator.share({ title: 'María Demostración — liberada.net', url: location.href });
       } else {
         navigator.clipboard.writeText(location.href);
         this.textContent = '✓ Copiado';
         setTimeout(() => this.textContent = '↗ Compartir', 1500);
       }
     });
+
+    renderAll();
   </script>
 </body>
 </html>
