@@ -38,11 +38,6 @@
     .action-btn.follow:hover { background: #c0303d; }
     .action-btn.share { background: var(--ink); color: white; border-color: var(--ink); }
     .v1-badge { display: inline-block; padding: 3px 12px; border-radius: 999px; background: var(--marigold); color: var(--ink); font-size: .7rem; font-weight: 700; margin-bottom: 16px; }
-    .extender-banner { background: linear-gradient(135deg, var(--purple), var(--pink)); color: white; border-radius: 12px; padding: 20px; text-align: center; margin-bottom: 24px; }
-    .extender-banner h3 { font-size: 1.1rem; margin-bottom: 6px; }
-    .extender-banner p { font-size: .85rem; opacity: .9; margin-bottom: 12px; }
-    .extender-btn { padding: 10px 24px; border: 2px solid white; background: white; color: var(--purple); font-size: .9rem; font-weight: 700; border-radius: 999px; cursor: pointer; transition: all .15s; }
-    .extender-btn:hover { transform: translateY(-1px); box-shadow: 3px 3px 0 rgba(0,0,0,.15); }
     .section { margin-bottom: 28px; }
     .tabs { display: flex; gap: 0; margin-bottom: 16px; border-bottom: 2px solid #eee; }
     .tab { padding: 8px 16px; font-size: .85rem; font-weight: 600; background: none; border: none; border-bottom: 2px solid transparent; margin-bottom: -2px; cursor: pointer; color: #888; }
@@ -75,22 +70,52 @@
     .profile-action-btn:hover { transform: translateY(-1px); box-shadow: 2px 2px 0 rgba(42,24,16,.15); }
     .profile-action-btn.edit { background: var(--sky); border-color: var(--sky); color: var(--ink); }
     .profile-action-btn.protect { background: var(--sage); border-color: var(--sage); }
-    .profile-action-btn.extend { background: var(--purple); border-color: var(--purple); color: white; }
+    .profile-action-btn.mejorar { background: var(--purple); border-color: var(--purple); color: white; }
     .footer { text-align: center; padding: 24px; font-size: .75rem; color: #aaa; }
     .footer a { color: var(--magenta); text-decoration: none; }
     .footer a:hover { text-decoration: underline; }
+
+    /* MODAL */
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(42,24,16,.5); z-index: 1000; place-items: center; }
     .modal-overlay.open { display: grid; }
-    .modal { background: var(--paper); border: 3px solid var(--ink); box-shadow: 8px 8px 0 rgba(42,24,16,.2); padding: 32px; max-width: 400px; width: 90%; text-align: center; position: relative; }
-    .modal-icon { font-size: 2.5rem; margin-bottom: 12px; }
-    .modal-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 8px; }
+    .modal { background: var(--paper); border: 3px solid var(--ink); box-shadow: 8px 8px 0 rgba(42,24,16,.2); padding: 32px; max-width: 480px; width: 90%; text-align: left; position: relative; max-height: 85vh; overflow-y: auto; }
+    .modal-icon { font-size: 2.5rem; margin-bottom: 12px; text-align: center; }
+    .modal-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 8px; text-align: center; }
     .modal-desc { font-size: .9rem; color: #555; margin-bottom: 20px; }
-    .modal-actions { display: flex; gap: 10px; justify-content: center; }
+    .modal-actions { display: flex; gap: 10px; justify-content: center; margin-top: 16px; }
     .modal-btn { padding: 10px 24px; border: 2px solid var(--ink); font-size: .9rem; font-weight: 600; cursor: pointer; text-decoration: none; transition: all .15s; }
     .modal-btn:hover { transform: translateY(-1px); }
     .modal-btn.primary { background: var(--ink); color: white; }
     .modal-btn.secondary { background: var(--cream); color: var(--ink); }
     .modal-close { position: absolute; top: 12px; right: 16px; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #888; }
+
+    /* MEJORAR STEPS */
+    .mejorar-steps { counter-reset: step; margin: 0; padding: 0; list-style: none; }
+    .mejorar-step { display: flex; gap: 14px; margin-bottom: 18px; align-items: flex-start; }
+    .mejorar-step-num {
+      counter-increment: step;
+      flex: 0 0 auto; width: 36px; height: 36px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--purple), var(--pink));
+      color: white; font-weight: 700; font-size: .9rem;
+      display: grid; place-items: center;
+    }
+    .mejorar-step-num::before { content: counter(step); }
+    .mejorar-step-body { flex: 1; }
+    .mejorar-step-body h4 { font-size: .95rem; font-weight: 700; margin-bottom: 2px; }
+    .mejorar-step-body p { font-size: .85rem; color: #555; margin: 0; }
+    .mejorar-step-body a { color: var(--magenta); font-weight: 600; }
+    .mejorar-example {
+      margin-top: 14px; padding: 14px; background: #fff; border: 1.5px solid #eee;
+      border-radius: 12px; font-size: .85rem; color: #555;
+    }
+    .mejorar-example strong { color: var(--ink); }
+    .mejorar-example .example-apps { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+    .mejorar-example .example-app {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 4px 10px; border: 1px solid #ddd; border-radius: 999px;
+      font-size: .78rem; font-weight: 600; background: var(--cream); text-decoration: none; color: var(--ink);
+    }
+    .mejorar-example .example-app:hover { border-color: var(--magenta); color: var(--magenta); text-decoration: none; }
   </style>
 </head>
 <body>
@@ -109,13 +134,7 @@
     </div>
 
     <div style="text-align:center">
-      <span class="v1-badge">Perfil v1 · solo Risa</span>
-    </div>
-
-    <div class="extender-banner">
-      <h3>💗 Extender a Ama</h3>
-      <p>Añade amor a tu perfil — comparte voz y cariño en Ama liberada.</p>
-      <button class="extender-btn" id="extend-btn">Ir a Ama →</button>
+      <span class="v1-badge">Perfil v1</span>
     </div>
     
     <div class="actions">
@@ -125,16 +144,21 @@
     
     <div class="section">
       <div class="tabs">
-        <button class="tab active" data-tab="clips">Risas <span class="tab-count" id="tab-count">0</span></button>
+        <button class="tab active" data-tab="clips">Risas <span class="tab-count" id="tab-count-risa">0</span></button>
+        <button class="tab" data-tab="ama">Amores <span class="tab-count" id="tab-count-ama">0</span></button>
       </div>
       <div class="tab-panel active" id="panel-clips">
         <ul class="clip-list" id="clip-list"></ul>
+      </div>
+      <div class="tab-panel" id="panel-ama">
+        <ul class="clip-list" id="ama-list"></ul>
       </div>
     </div>
     
     <div class="profile-actions">
       <button class="profile-action-btn edit" id="edit-btn">✏️ Editar</button>
       <button class="profile-action-btn protect" id="protect-btn">🔒 Proteger</button>
+      <button class="profile-action-btn mejorar" id="mejorar-btn">🌟 Mejorar</button>
     </div>
     
     <div class="footer">
@@ -142,6 +166,7 @@
     </div>
   </div>
 
+  <!-- MODAL: GENERIC ACTION -->
   <div class="modal-overlay" id="action-modal">
     <div class="modal">
       <button class="modal-close" id="action-modal-close">×</button>
@@ -155,17 +180,76 @@
     </div>
   </div>
 
+  <!-- MODAL: MEJORAR -->
+  <div class="modal-overlay" id="mejorar-modal">
+    <div class="modal">
+      <button class="modal-close" id="mejorar-close">×</button>
+      <div class="modal-icon">🌟</div>
+      <div class="modal-title">Mejorar tu perfil</div>
+      <div class="modal-desc">Convierte tu perfil v1 en un perfil completo con feeds de <strong>Ama</strong> y <strong>Risa</strong>.</div>
+      
+      <ol class="mejorar-steps">
+        <li class="mejorar-step">
+          <div class="mejorar-step-num"></div>
+          <div class="mejorar-step-body">
+            <h4>Activa tu usuario</h4>
+            <p>Visita <a href="https://liberada.net/usa/marcflove/" target="_blank">liberada.net/usa/marcflove/</a> para ver tu perfil de usuario. Allí se muestra tu información pública.</p>
+          </div>
+        </li>
+        <li class="mejorar-step">
+          <div class="mejorar-step-num"></div>
+          <div class="mejorar-step-body">
+            <h4>Sube contenido a Ama</h4>
+            <p>Usa el bot de Telegram <a href="https://t.me/AmaLiberadaBot" target="_blank">@AmaLiberadaBot</a> para grabar audios o subir vídeos de amor. Tu contenido será anónimo hasta que lo reclames.</p>
+          </div>
+        </li>
+        <li class="mejorar-step">
+          <div class="mejorar-step-num"></div>
+          <div class="mejorar-step-body">
+            <h4>Reclama tu contenido</h4>
+            <p>Cuando tu perfil tenga feeds activos, se mostrarán automáticamente en <a href="https://ama.liberada.net/#/u/marcflove" target="_blank">ama.liberada.net</a> y aquí en tu perfil.</p>
+          </div>
+        </li>
+        <li class="mejorar-step">
+          <div class="mejorar-step-num"></div>
+          <div class="mejorar-step-body">
+            <h4>Comparte tu perfil</h4>
+            <p>Comparte <a href="https://liberada.net/usa/marcflove/" target="_blank">liberada.net/usa/marcflove/</a> con quien quieras. Tu perfil muestra todo lo que compartes en las apps liberadas.</p>
+          </div>
+        </li>
+      </ol>
+
+      <div class="mejorar-example">
+        <strong>Ejemplo:</strong> Este es el perfil de <strong>Marc</strong> (@marcflove) — tiene contenido en Risa 😹 y Ama 💗. Cuando agreguemos el bot de Telegram para Ama, los feeds aparecerán directamente.
+        <div class="example-apps">
+          <a class="example-app" href="https://risa.liberada.net/#/u/marcflove" target="_blank">😹 Risa</a>
+          <a class="example-app" href="https://ama.liberada.net/#/u/marcflove" target="_blank">💗 Ama</a>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <a class="modal-btn primary" href="https://liberada.net/usa/marcflove/" target="_blank">Ir a mi perfil →</a>
+        <button class="modal-btn secondary" id="mejorar-cancel">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
   <script>
-    var CLIPS = [
-      { id: 'q_001', t: 'De la boda', when: '2026-08-15', tags: 'boda, divertida', reactions: 12, src: '#' },
-      { id: 'q_002', t: 'Risa de oficina', when: '2026-08-16', tags: 'oficina, risa libre', reactions: 5, src: '#' },
-      { id: 'q_003', t: 'La que no para', when: '2026-08-16', tags: 'contagiosa, felicidad', reactions: 24, src: '#' },
-      { id: 'q_004', t: 'Risa épica del micrófono', when: '2026-08-14', tags: 'épica, risa libre', reactions: 31, src: '#' },
-      { id: 'q_005', t: 'Código y risas', when: '2026-08-17', tags: 'vídeo, código', reactions: 8, src: '#' },
-      { id: 'q_006', t: 'Risa suave de domingo', when: '2026-08-13', tags: 'tranquila, domingo', reactions: 7, src: '#' }
-    ];
+    /* =====================================================================
+       AGGREGATOR PROFILE — liberada.net/usa/<username>
+       Fetches clips from risa.json + ama.json, filters by key from
+       usernames.json. Generic: works for any username in the path.
+       ===================================================================== */
+    var RISA_URL  = 'https://risa.liberada.net/risa.json';
+    var AMA_URL   = 'https://ama.liberada.net/ama.json';
+    var USERS_URL = 'https://risa.liberada.net/usernames.json';
+    var R2_BASE   = 'https://pub-e3cbc6c5f1c945358670af27745479f1.r2.dev';
+
+    /* Extract username from path: /usa/marcflove/ → "marcflove" */
+    var username = (location.pathname.match(/\/usa\/([^/]+)\/?/) || [])[1] || '';
 
     var liked = new Set();
+    var allClips = [];   // merged risa + ama clips for this user
 
     function timeAgo(d) {
       var days = Math.floor((Date.now() - new Date(d)) / 86400000);
@@ -176,28 +260,79 @@
       return 'hace ' + Math.floor(days / 30) + 'm';
     }
 
-    function renderLists() {
-      var cl = document.getElementById('clip-list');
-      cl.innerHTML = '';
-      document.getElementById('tab-count').textContent = CLIPS.length;
-      CLIPS.forEach(function(c) {
-        var li = document.createElement('li');
-        li.className = 'clip-item';
-        li.dataset.id = c.id;
-        var heartOn = liked.has(c.id);
-        var heartCount = c.reactions + (heartOn ? 1 : 0);
-        li.innerHTML = '<button class="clip-play">▶</button>' +
-          '<div class="clip-body"><div class="clip-title">' + c.t + '</div>' +
-          '<div class="clip-meta">' + timeAgo(c.when) + '</div>' +
-          '<div class="clip-tags">' + c.tags.split(',').map(function(t){ return '<span class="clip-tag">' + t.trim() + '</span>'; }).join('') + '</div></div>' +
-          '<div class="clip-actions">' +
-            '<div class="clip-heart-wrap"><button class="clip-heart' + (heartOn ? ' on' : '') + '" data-heart="' + c.id + '">❤️</button><span class="clip-heart-count">' + heartCount + '</span></div>' +
-            '<button class="clip-action" style="background:none;border:none;font-size:.85rem;cursor:pointer;color:#888">↗</button></div>';
-        cl.appendChild(li);
-      });
+    function renderClipItem(c) {
+      var heartOn = liked.has(c.id);
+      var heartCount = (c.reactions || 0) + (heartOn ? 1 : 0);
+      var appBadge = c._app === 'ama'
+        ? '<span class="clip-tag" style="background:var(--magenta);color:white;border-color:var(--magenta)">💗 ama</span>'
+        : '<span class="clip-tag" style="background:var(--marigold);color:var(--ink);border-color:var(--marigold)">😹 risa</span>';
+      var tags = (c.tags || '').split(',').map(function(t){
+        return '<span class="clip-tag">' + t.trim() + '</span>';
+      }).join('');
+      return '<li class="clip-item" data-id="' + c.id + '" data-app="' + c._app + '">' +
+        '<button class="clip-play"' + (c.src && c.src !== '#' ? ' data-src="' + c.src + '"' : '') + '>▶</button>' +
+        '<div class="clip-body"><div class="clip-title">' + (c.t || 'Sin título') + '</div>' +
+        '<div class="clip-meta">' + appBadge + ' · ' + timeAgo(c.when) + '</div>' +
+        '<div class="clip-tags">' + tags + '</div></div>' +
+        '<div class="clip-actions">' +
+          '<div class="clip-heart-wrap"><button class="clip-heart' + (heartOn ? ' on' : '') + '" data-heart="' + c.id + '">❤️</button><span class="clip-heart-count">' + heartCount + '</span></div>' +
+          '<button class="clip-action" style="background:none;border:none;font-size:.85rem;cursor:pointer;color:#888">↗</button></div></li>';
     }
 
-    document.getElementById('clip-list').addEventListener('click', function(e) {
+    function renderLists(risaClips, amaClips) {
+      var cl = document.getElementById('clip-list');
+      cl.innerHTML = risaClips.map(renderClipItem).join('');
+      document.getElementById('tab-count-risa').textContent = risaClips.length;
+
+      var al = document.getElementById('ama-list');
+      al.innerHTML = amaClips.map(renderClipItem).join('');
+      document.getElementById('tab-count-ama').textContent = amaClips.length;
+    }
+
+    function filterByUser(clips, key, appName) {
+      return clips
+        .filter(function(c) { return c.key === key; })
+        .map(function(c) { c._app = appName; return c; });
+    }
+
+    /* Fetch all data sources and render */
+    async function loadProfile() {
+      if (!username) return;
+      document.querySelector('.key').textContent = '@' + username;
+
+      try {
+        /* 1. Resolve username → key */
+        var users = {};
+        try { users = await fetch(USERS_URL).then(function(r){ return r.ok ? r.json() : {}; }); } catch {}
+        var entry = users[username];
+        if (!entry || !entry.key) {
+          document.querySelector('.bio').textContent = 'Perfil no encontrado';
+          return;
+        }
+        var key = entry.key;
+        if (entry.name) document.querySelector('.name').textContent = entry.name;
+
+        /* 2. Fetch risa + ama in parallel */
+        var results = await Promise.all([
+          fetch(RISA_URL, {cache:'no-store'}).then(function(r){ return r.ok ? r.json() : []; }).catch(function(){ return []; }),
+          fetch(AMA_URL,  {cache:'no-store'}).then(function(r){ return r.ok ? r.json() : {clips:[]}; }).catch(function(){ return {clips:[]}; })
+        ]);
+        var risaData = Array.isArray(results[0]) ? results[0] : (results[0].clips || []);
+        var amaData  = results[1].clips || [];
+
+        /* 3. Filter by key */
+        var risaClips = filterByUser(risaData, key, 'risa');
+        var amaClips  = filterByUser(amaData, key, 'ama');
+
+        /* 4. Render */
+        renderLists(risaClips, amaClips);
+      } catch (e) {
+        console.error('Failed to load profile:', e);
+      }
+    }
+
+    /* Hearts (local only) */
+    document.addEventListener('click', function(e) {
       var h = e.target.closest('[data-heart]');
       if (h) {
         var id = h.dataset.heart;
@@ -205,8 +340,8 @@
         var on = liked.has(id);
         h.classList.toggle('on', on);
         var wrap = h.parentElement;
-        var clip = CLIPS.find(function(c){ return c.id === id; });
-        wrap.querySelector('.clip-heart-count').textContent = (clip ? clip.reactions : 0) + (on ? 1 : 0);
+        var clip = allClips.find(function(c){ return c.id === id; });
+        wrap.querySelector('.clip-heart-count').textContent = ((clip && clip.reactions) || 0) + (on ? 1 : 0);
         if (on) {
           var floater = document.createElement('span');
           floater.className = 'heart-float';
@@ -218,6 +353,7 @@
       }
     });
 
+    /* Tabs */
     document.querySelectorAll('.tabs .tab').forEach(function(tab) {
       tab.addEventListener('click', function() {
         document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
@@ -227,6 +363,7 @@
       });
     });
 
+    /* Follow */
     document.getElementById('follow-btn').addEventListener('click', function() {
       var on = this.textContent.indexOf('Siguiendo') > -1;
       this.textContent = on ? '+ Seguir' : '✓ Siguiendo';
@@ -235,9 +372,10 @@
       this.style.color = on ? 'white' : 'var(--ink)';
     });
 
+    /* Share */
     document.getElementById('share-btn').addEventListener('click', function() {
       if (navigator.share) {
-        navigator.share({ title: 'Marc — Risa liberada', url: location.href });
+        navigator.share({ title: document.querySelector('.name').textContent + ' — liberada.net', url: location.href });
       } else {
         navigator.clipboard.writeText(location.href);
         this.textContent = '✓ Copiado';
@@ -246,39 +384,60 @@
       }
     });
 
-    function openModal(icon, title, desc, btn) {
-      document.getElementById('action-modal-icon').textContent = icon;
-      document.getElementById('action-modal-title').textContent = title;
-      document.getElementById('action-modal-desc').textContent = desc;
-      document.getElementById('action-modal-confirm').textContent = btn;
-      document.getElementById('action-modal').classList.add('open');
-    }
-
+    /* Modals */
+    function openModal(id) { document.getElementById(id).classList.add('open'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('open'); }
     document.getElementById('edit-btn').addEventListener('click', function() {
-      openModal('✏️', 'Editar perfil', 'Cambia tu nombre, bio, enlaces y foto.', 'Abrir editor');
+      openModal('action-modal');
+      document.getElementById('action-modal-icon').textContent = '✏️';
+      document.getElementById('action-modal-title').textContent = 'Editar perfil';
+      document.getElementById('action-modal-desc').textContent = 'Cambia tu nombre, bio, enlaces y foto.';
     });
     document.getElementById('protect-btn').addEventListener('click', function() {
-      openModal('🔒', 'Proteger cuenta', 'Configura recuperación y verificación en dos pasos.', 'Configurar');
+      openModal('action-modal');
+      document.getElementById('action-modal-icon').textContent = '🔒';
+      document.getElementById('action-modal-title').textContent = 'Proteger cuenta';
+      document.getElementById('action-modal-desc').textContent = 'Configura recuperación y verificación en dos pasos.';
     });
-
-    document.getElementById('extend-btn').addEventListener('click', function() {
-      openModal('💗', 'Extender a Ama', 'Navega al perfil de Marc en Ama liberada — el ejercicio de amar.', 'Ir a Ama →');
-      document.getElementById('action-modal-confirm').onclick = function() {
-        window.location.href = 'https://ama.liberada.net/#/u/marcflove';
-      };
+    document.getElementById('mejorar-btn').addEventListener('click', function() {
+      openModal('mejorar-modal');
     });
-
+    document.getElementById('mejorar-close').addEventListener('click', function() {
+      closeModal('mejorar-modal');
+    });
+    document.getElementById('mejorar-cancel').addEventListener('click', function() {
+      closeModal('mejorar-modal');
+    });
     document.getElementById('action-modal-close').addEventListener('click', function() {
-      document.getElementById('action-modal').classList.remove('open');
+      closeModal('action-modal');
     });
     document.getElementById('action-modal-cancel').addEventListener('click', function() {
-      document.getElementById('action-modal').classList.remove('open');
+      closeModal('action-modal');
     });
-    document.getElementById('action-modal').addEventListener('click', function(e) {
-      if (e.target === e.currentTarget) e.currentTarget.classList.remove('open');
+    document.getElementById('action-modal-confirm').addEventListener('click', function() {
+      closeModal('action-modal');
+    });
+    document.querySelectorAll('.modal-overlay').forEach(function(m) {
+      m.addEventListener('click', function(e) {
+        if (e.target === e.currentTarget) e.currentTarget.classList.remove('open');
+      });
     });
 
-    renderLists();
+    /* Play audio */
+    var currentAudio = null;
+    document.addEventListener('click', function(e) {
+      var btn = e.target.closest('.clip-play');
+      if (!btn) return;
+      var src = btn.dataset.src;
+      if (!src || src === '#') return;
+      if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+      currentAudio = new Audio(src);
+      currentAudio.play();
+      btn.textContent = '⏸';
+      currentAudio.addEventListener('ended', function() { btn.textContent = '▶'; });
+    });
+
+    loadProfile();
   </script>
 </body>
 </html>

@@ -121,6 +121,44 @@
       font-size: 2.5rem;
       margin-bottom: 8px;
     }
+    .mejorar-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 24px;
+      border: 2px solid var(--purple);
+      border-radius: 999px;
+      background: var(--purple);
+      color: white;
+      font-size: .9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all .15s;
+      margin-bottom: 24px;
+    }
+    .mejorar-btn:hover { transform: translateY(-1px); box-shadow: 3px 3px 0 rgba(42,24,16,.15); }
+
+    /* MODAL */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(42,24,16,.5); z-index: 1000; place-items: center; }
+    .modal-overlay.open { display: grid; }
+    .modal { background: var(--paper); border: 3px solid var(--ink); box-shadow: 8px 8px 0 rgba(42,24,16,.2); padding: 32px; max-width: 480px; width: 90%; text-align: left; position: relative; max-height: 85vh; overflow-y: auto; }
+    .modal-icon { font-size: 2.5rem; margin-bottom: 12px; text-align: center; }
+    .modal-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 8px; text-align: center; }
+    .modal-desc { font-size: .9rem; color: #555; margin-bottom: 20px; }
+    .modal-actions { display: flex; gap: 10px; justify-content: center; margin-top: 16px; }
+    .modal-btn { padding: 10px 24px; border: 2px solid var(--ink); font-size: .9rem; font-weight: 600; cursor: pointer; text-decoration: none; transition: all .15s; }
+    .modal-btn:hover { transform: translateY(-1px); }
+    .modal-btn.primary { background: var(--ink); color: white; }
+    .modal-btn.secondary { background: #fff8ef; color: var(--ink); }
+    .modal-close { position: absolute; top: 12px; right: 16px; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #888; }
+    .mejorar-steps { counter-reset: step; margin: 0; padding: 0; list-style: none; }
+    .mejorar-step { display: flex; gap: 14px; margin-bottom: 18px; align-items: flex-start; }
+    .mejorar-step-num { counter-increment: step; flex: 0 0 auto; width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--purple), var(--pink)); color: white; font-weight: 700; font-size: .9rem; display: grid; place-items: center; }
+    .mejorar-step-num::before { content: counter(step); }
+    .mejorar-step-body { flex: 1; }
+    .mejorar-step-body h4 { font-size: .95rem; font-weight: 700; margin-bottom: 2px; }
+    .mejorar-step-body p { font-size: .85rem; color: #555; margin: 0; }
+    .mejorar-step-body a { color: var(--magenta); font-weight: 600; }
   </style>
 </head>
 <body>
@@ -133,10 +171,63 @@
     <div class="bio" id="bio"></div>
     
     <div class="links" id="links"></div>
+
+    <button class="mejorar-btn" id="mejorar-btn" style="display:none">🌟 Mejorar perfil</button>
     
     <div class="section-title">Apps</div>
     <div class="apps-grid" id="apps-grid">
       <!-- Loaded from data -->
+    </div>
+
+    <div class="empty" id="empty-state" hidden>
+      <div class="empty-icon">🌱</div>
+      <p>Perfil no encontrado</p>
+    </div>
+  </div>
+
+  <!-- MODAL: MEJORAR -->
+  <div class="modal-overlay" id="mejorar-modal">
+    <div class="modal">
+      <button class="modal-close" id="mejorar-close">×</button>
+      <div class="modal-icon">🌟</div>
+      <div class="modal-title">Mejorar tu perfil</div>
+      <div class="modal-desc">Convierte tu perfil v1 en un perfil completo con feeds de <strong>Ama</strong> y <strong>Risa</strong>.</div>
+      
+      <ol class="mejorar-steps">
+        <li class="mejorar-step">
+          <div class="mejorar-step-num"></div>
+          <div class="mejorar-step-body">
+            <h4>Activa tu usuario</h4>
+            <p>Visita tu perfil en liberada.net para ver tu información pública. Allí se muestran tus apps y feeds.</p>
+          </div>
+        </li>
+        <li class="mejorar-step">
+          <div class="mejorar-step-num"></div>
+          <div class="mejorar-step-body">
+            <h4>Sube contenido a Ama</h4>
+            <p>Usa el bot de Telegram <a href="https://t.me/AmaLiberadaBot" target="_blank">@AmaLiberadaBot</a> para grabar audios o subir vídeos de amor.</p>
+          </div>
+        </li>
+        <li class="mejorar-step">
+          <div class="mejorar-step-num"></div>
+          <div class="mejorar-step-body">
+            <h4>Sube contenido a Risa</h4>
+            <p>Usa el bot de Telegram <a href="https://t.me/RisaLiberadaBot" target="_blank">@RisaLiberadaBot</a> para compartir risas con la comunidad.</p>
+          </div>
+        </li>
+        <li class="mejorar-step">
+          <div class="mejorar-step-num"></div>
+          <div class="mejorar-step-body">
+            <h4>Comparte tu perfil</h4>
+            <p>Comparte tu URL de perfil con quien quieras. Tu perfil muestra todo lo que compartes en las apps liberadas.</p>
+          </div>
+        </li>
+      </ol>
+
+      <div class="modal-actions">
+        <a class="modal-btn primary" id="mejorar-goto" href="#">Ir a mi perfil →</a>
+        <button class="modal-btn secondary" id="mejorar-cancel">Cerrar</button>
+      </div>
     </div>
   </div>
 
@@ -148,21 +239,46 @@
     
     if (!KEY) {
       document.getElementById('name').textContent = 'Perfil no encontrado';
+      document.getElementById('empty-state').hidden = false;
     } else {
       document.getElementById('key').textContent = '@' + KEY;
       document.getElementById('name').textContent = KEY;
-      
-      // In real v2: fetch from /api/profiles/<key> or profile.json
-      // For now: show placeholder
       document.getElementById('bio').textContent = 'Perfil de ' + KEY;
+      document.getElementById('mejorar-btn').style.display = 'inline-flex';
+
+      // App cards: always show Risa + Ama
       document.getElementById('apps-grid').innerHTML = `
-        <a class="app-card" href="https://risa.liberada.net/lol/${KEY}/">
+        <a class="app-card" href="https://risa.liberada.net/#/u/${KEY}/">
           <div class="app-emoji">😹</div>
           <div class="app-name">Risa</div>
           <div class="app-count">Ver perfil</div>
         </a>
+        <a class="app-card" href="https://ama.liberada.net/#/u/${KEY}/">
+          <div class="app-emoji">💗</div>
+          <div class="app-name">Ama</div>
+          <div class="app-count">Ver perfil</div>
+        </a>
       `;
+
+      // Mejorar button
+      document.getElementById('mejorar-btn').addEventListener('click', function() {
+        document.getElementById('mejorar-modal').classList.add('open');
+        document.getElementById('mejorar-goto').href = 'https://liberada.net/usa/' + KEY + '/';
+      });
     }
+
+    // Modal close handlers
+    document.getElementById('mejorar-close').addEventListener('click', function() {
+      document.getElementById('mejorar-modal').classList.remove('open');
+    });
+    document.getElementById('mejorar-cancel').addEventListener('click', function() {
+      document.getElementById('mejorar-modal').classList.remove('open');
+    });
+    document.querySelectorAll('.modal-overlay').forEach(function(m) {
+      m.addEventListener('click', function(e) {
+        if (e.target === e.currentTarget) e.currentTarget.classList.remove('open');
+      });
+    });
   </script>
 </body>
 </html>
