@@ -45,7 +45,7 @@
     .back:hover { text-decoration: underline; }
     .header {
       text-align: center;
-      margin-bottom: 32px;
+      margin-bottom: 24px;
     }
     .avatar {
       width: 96px;
@@ -58,6 +58,12 @@
       margin: 0 auto 16px;
       box-shadow: 0 4px 20px rgba(0,0,0,.15);
       position: relative;
+      overflow: hidden;
+    }
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
     .avatar-badge {
       position: absolute;
@@ -94,7 +100,7 @@
       display: flex;
       gap: 16px;
       justify-content: center;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
     .link {
       font-size: .8rem;
@@ -102,11 +108,31 @@
       text-decoration: none;
     }
     .link:hover { text-decoration: underline; }
+    .actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+    .action-btn {
+      padding: 8px 18px;
+      border: 2px solid var(--ink);
+      background: var(--cream);
+      font-size: .85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .15s;
+    }
+    .action-btn:hover { transform: translateY(-1px); box-shadow: 2px 2px 0 rgba(42,24,16,.15); }
+    .action-btn.follow { background: var(--magenta); color: white; border-color: var(--magenta); }
+    .action-btn.follow:hover { background: #c0303d; }
+    .action-btn.share { background: var(--ink); color: white; border-color: var(--ink); }
+    .action-btn.share:hover { opacity: .9; }
     .stats {
       display: flex;
       gap: 24px;
       justify-content: center;
-      margin-bottom: 32px;
+      margin-bottom: 28px;
       padding: 16px;
       background: var(--cream);
       border: 1.5px solid var(--ink);
@@ -126,13 +152,13 @@
       color: #666;
     }
     .section {
-      margin-bottom: 32px;
+      margin-bottom: 28px;
     }
     .section-header {
       display: flex;
       align-items: center;
       gap: 8px;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
     }
     .section-title {
       font-size: .75rem;
@@ -148,38 +174,65 @@
     }
     .badge-risa { background: var(--marigold); color: var(--ink); }
     .badge-lovy { background: var(--pink); color: white; }
-    .badge-future { background: #ddd; color: #666; }
+    .tabs {
+      display: flex;
+      gap: 0;
+      margin-bottom: 16px;
+      border-bottom: 2px solid #eee;
+    }
+    .tab {
+      padding: 8px 16px;
+      font-size: .85rem;
+      font-weight: 600;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      cursor: pointer;
+      color: #888;
+    }
+    .tab.active {
+      color: var(--ink);
+      border-bottom-color: var(--ink);
+    }
+    .tab:hover { color: var(--ink); }
+    .tab-count {
+      font-size: .7rem;
+      color: #aaa;
+      margin-left: 4px;
+    }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
     .app-card {
       display: flex;
       align-items: center;
       gap: 16px;
-      padding: 16px;
+      padding: 14px;
       background: #fff;
       border: 2px solid var(--ink);
       box-shadow: 4px 4px 0 rgba(42,24,16,.15);
       text-decoration: none;
       color: var(--ink);
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       transition: transform .15s;
     }
     .app-card:hover { transform: translateY(-2px); }
     .app-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
       display: grid;
       place-items: center;
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       flex-shrink: 0;
     }
     .app-icon-risa { background: var(--marigold); }
     .app-icon-lovy { background: var(--pink); }
-    .app-icon-music { background: var(--purple); }
     .app-body { flex: 1; }
     .app-name {
       font-weight: 700;
-      font-size: 1rem;
-      margin-bottom: 2px;
+      font-size: .95rem;
+      margin-bottom: 1px;
     }
     .app-desc {
       font-size: .8rem;
@@ -188,7 +241,7 @@
     .app-meta {
       font-size: .7rem;
       color: #888;
-      margin-top: 4px;
+      margin-top: 2px;
     }
     .app-arrow {
       font-size: 1.2rem;
@@ -245,23 +298,61 @@
       border-radius: 999px;
       color: #666;
     }
-    .empty-state {
-      text-align: center;
-      padding: 32px;
+    .clip-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .clip-action {
+      background: none;
+      border: none;
+      font-size: .85rem;
+      cursor: pointer;
+      color: #888;
+      padding: 4px;
+    }
+    .clip-action:hover { color: var(--magenta); }
+    .clip-action.liked { color: var(--magenta); }
+    .fav-star {
+      background: none;
+      border: none;
+      font-size: 1rem;
+      cursor: pointer;
+      color: #ccc;
+      padding: 4px;
+    }
+    .fav-star.on { color: var(--marigold); }
+    .profile-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      background: #fff;
+      border: 1.5px solid #eee;
+      text-decoration: none;
+      color: var(--ink);
+      margin-bottom: 8px;
+      transition: border-color .15s;
+    }
+    .profile-card:hover { border-color: var(--ink); }
+    .profile-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .profile-info { flex: 1; }
+    .profile-name {
+      font-weight: 600;
+      font-size: .9rem;
+    }
+    .profile-detail {
+      font-size: .75rem;
       color: #888;
     }
-    .empty-icon {
-      font-size: 2rem;
-      margin-bottom: 8px;
-    }
-    .footer {
-      text-align: center;
-      padding: 24px;
-      font-size: .75rem;
-      color: #aaa;
-    }
-    .footer a { color: var(--magenta); text-decoration: none; }
-    .footer a:hover { text-decoration: underline; }
     .claim-banner {
       padding: 16px;
       background: linear-gradient(135deg, var(--sage), var(--sky));
@@ -289,6 +380,14 @@
       cursor: pointer;
     }
     .claim-btn:hover { opacity: .9; }
+    .footer {
+      text-align: center;
+      padding: 24px;
+      font-size: .75rem;
+      color: #aaa;
+    }
+    .footer a { color: var(--magenta); text-decoration: none; }
+    .footer a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
@@ -309,6 +408,11 @@
       </div>
     </div>
     
+    <div class="actions">
+      <button class="action-btn follow" id="follow-btn">+ Seguir</button>
+      <button class="action-btn share" id="share-btn">↗ Compartir</button>
+    </div>
+    
     <div class="stats">
       <div class="stat">
         <div class="stat-num">12</div>
@@ -321,6 +425,10 @@
       <div class="stat">
         <div class="stat-num">3</div>
         <div class="stat-label">Seguidores</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">5</div>
+        <div class="stat-label">Siguiendo</div>
       </div>
     </div>
     
@@ -351,14 +459,23 @@
     </div>
     
     <div class="section">
-      <div class="section-header">
-        <span class="section-title">Últimas risas</span>
-        <span class="section-badge badge-risa">Risa</span>
+      <div class="tabs">
+        <button class="tab active" data-tab="clips">Mis risas <span class="tab-count">12</span></button>
+        <button class="tab" data-tab="favs">Favoritas <span class="tab-count">8</span></button>
+        <button class="tab" data-tab="following">Siguiendo <span class="tab-count">5</span></button>
       </div>
       
-      <ul class="clip-list" id="clip-list">
-        <!-- Populated by JS -->
-      </ul>
+      <div class="tab-panel active" id="panel-clips">
+        <ul class="clip-list" id="clip-list"></ul>
+      </div>
+      
+      <div class="tab-panel" id="panel-favs">
+        <ul class="clip-list" id="fav-list"></ul>
+      </div>
+      
+      <div class="tab-panel" id="panel-following">
+        <div id="following-list"></div>
+      </div>
     </div>
     
     <div class="claim-banner">
@@ -374,46 +491,27 @@
 
   <script>
     const CLIPS = [
-      {
-        id: 'q_demo_001',
-        t: 'Yoga y risa',
-        when: '2026-08-16',
-        tags: 'yoga, relajación, espontánea',
-        reactions: 12,
-        favorites: 3
-      },
-      {
-        id: 'q_demo_002',
-        t: 'La que no para',
-        when: '2026-08-14',
-        tags: 'contagiosa, felicidad',
-        reactions: 24,
-        favorites: 5
-      },
-      {
-        id: 'q_demo_003',
-        t: 'Risa de gato',
-        when: '2026-08-12',
-        tags: 'gato, animal, tierna',
-        reactions: 18,
-        favorites: 4
-      },
-      {
-        id: 'q_demo_004',
-        t: 'Clase de mañana',
-        when: '2026-08-10',
-        tags: 'yoga, mañana, energía',
-        reactions: 8,
-        favorites: 2
-      },
-      {
-        id: 'q_demo_005',
-        t: 'Con las alumnas',
-        when: '2026-08-08',
-        tags: 'amigas, comunidad, risa',
-        reactions: 15,
-        favorites: 3
-      }
+      { id: 'q_demo_001', t: 'Yoga y risa', when: '2026-08-16', tags: 'yoga, relajación, espontánea', reactions: 12, favorites: 3, src: '#' },
+      { id: 'q_demo_002', t: 'La que no para', when: '2026-08-14', tags: 'contagiosa, felicidad', reactions: 24, favorites: 5, src: '#' },
+      { id: 'q_demo_003', t: 'Risa de gato', when: '2026-08-12', tags: 'gato, animal, tierna', reactions: 18, favorites: 4, src: '#' },
+      { id: 'q_demo_004', t: 'Clase de mañana', when: '2026-08-10', tags: 'yoga, mañana, energía', reactions: 8, favorites: 2, src: '#' },
+      { id: 'q_demo_005', t: 'Con las alumnas', when: '2026-08-08', tags: 'amigas, comunidad, risa', reactions: 15, favorites: 3, src: '#' }
+    ];
+
+    const FAVORITES = [
+      { id: 'f_001', t: 'Risa épica del micrófono', author: 'Loko Puro', when: '2026-08-15', tags: 'épica, micrófono', reactions: 31, src: '#' },
+      { id: 'f_002', t: 'De la boda', author: 'Marc', when: '2026-08-13', tags: 'boda, celebración', reactions: 12, src: '#' },
+      { id: 'f_003', t: 'Código y risas', author: 'Marc', when: '2026-08-11', tags: 'código, programación', reactions: 8, src: '#' },
+      { id: 'f_004', t: 'La sorpresa', author: '@marcflove', when: '2026-08-09', tags: 'sorpresa, risa', reactions: 14, src: '#' },
+      { id: 'f_005', t: 'Después del café', author: 'Loko Puro', when: '2026-08-07', tags: 'café, energía', reactions: 9, src: '#' }
+    ];
+
+    const FOLLOWING = [
+      { key: 'marcflove', name: 'Marc', emoji: '🧔', risas: 3, bio: 'Creador de Risa' },
+      { key: 'loko-puro', name: 'Loko Puro', emoji: '🤪', risas: 4, bio: 'Risas sin filtro' },
+      { key: 'ana-yoga', name: 'Ana Pérez', emoji: '🧘', risas: 6, bio: 'Yoga y risa' },
+      { key: 'carlos-musica', name: 'Carlos Ruiz', emoji: '🎵', risas: 2, bio: 'Músico y risueño' },
+      { key: 'laura-arte', name: 'Laura Díaz', emoji: '🎨', risas: 4, bio: 'Arte y color' }
     ];
 
     function timeAgo(dateStr) {
@@ -427,21 +525,98 @@
       return 'hace ' + Math.floor(days / 30) + ' mes';
     }
 
-    const list = document.getElementById('clip-list');
-    CLIPS.forEach(c => {
+    function renderClip(c, opts = {}) {
       const li = document.createElement('li');
       li.className = 'clip-item';
+      const authorHtml = opts.showAuthor ? '<div class="clip-meta" style="color:var(--magenta)">' + c.author + '</div>' : '';
       li.innerHTML = `
         <button class="clip-play" title="Reproducir" aria-label="Reproducir ${c.t}">▶</button>
         <div class="clip-body">
           <div class="clip-title">${c.t}</div>
-          <div class="clip-meta">${timeAgo(c.when)} · ❤ ${c.reactions} · ⭐ ${c.favorites}</div>
+          ${authorHtml}
+          <div class="clip-meta">${timeAgo(c.when)} · ❤ ${c.reactions}</div>
           <div class="clip-tags">
             ${c.tags.split(',').map(t => '<span class="clip-tag">' + t.trim() + '</span>').join('')}
           </div>
         </div>
+        <div class="clip-actions">
+          <button class="clip-action" title="Me gusta">❤</button>
+          <button class="clip-action" title="Compartir">↗</button>
+        </div>
       `;
-      list.appendChild(li);
+      return li;
+    }
+
+    function renderFav(c) {
+      const li = document.createElement('li');
+      li.className = 'clip-item';
+      li.innerHTML = `
+        <button class="clip-play" title="Reproducir" aria-label="Reproducir ${c.t}" style="background:var(--pink)">▶</button>
+        <div class="clip-body">
+          <div class="clip-title">${c.t}</div>
+          <div class="clip-meta" style="color:var(--magenta)">${c.author}</div>
+          <div class="clip-meta">${timeAgo(c.when)} · ❤ ${c.reactions}</div>
+          <div class="clip-tags">
+            ${c.tags.split(',').map(t => '<span class="clip-tag">' + t.trim() + '</span>').join('')}
+          </div>
+        </div>
+        <button class="fav-star on" title="Quitar de favoritas">★</button>
+      `;
+      return li;
+    }
+
+    function renderFollowing() {
+      const container = document.getElementById('following-list');
+      FOLLOWING.forEach(p => {
+        const card = document.createElement('a');
+        card.className = 'profile-card';
+        card.href = 'https://liberada.net/usa/' + p.key + '/';
+        card.innerHTML = `
+          <div class="profile-avatar" style="background:linear-gradient(135deg, var(--sky), var(--sage))">${p.emoji}</div>
+          <div class="profile-info">
+            <div class="profile-name">${p.name}</div>
+            <div class="profile-detail">${p.bio} · ${p.risas} risas</div>
+          </div>
+          <span style="color:#ccc">→</span>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    const clipList = document.getElementById('clip-list');
+    CLIPS.forEach(c => clipList.appendChild(renderClip(c)));
+
+    const favList = document.getElementById('fav-list');
+    FAVORITES.forEach(c => favList.appendChild(renderFav(c)));
+
+    renderFollowing();
+
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+      });
+    });
+
+    let following = false;
+    document.getElementById('follow-btn').addEventListener('click', function() {
+      following = !following;
+      this.textContent = following ? '✓ Siguiendo' : '+ Seguir';
+      this.style.background = following ? 'var(--sage)' : 'var(--magenta)';
+      this.style.borderColor = following ? 'var(--sage)' : 'var(--magenta)';
+      this.style.color = following ? 'var(--ink)' : 'white';
+    });
+
+    document.getElementById('share-btn').addEventListener('click', function() {
+      if (navigator.share) {
+        navigator.share({ title: 'María García — liberada.net', url: location.href });
+      } else {
+        navigator.clipboard.writeText(location.href);
+        this.textContent = '✓ Copiado';
+        setTimeout(() => this.textContent = '↗ Compartir', 1500);
+      }
     });
   </script>
 </body>
