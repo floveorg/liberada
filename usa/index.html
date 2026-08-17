@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Perfil — liberada.net</title>
+  <style>
+    :root {
+      --ink: #2a1810;
+      --paper: #faf6f1;
+      --marigold: #ffb020;
+      --magenta: #e63946;
+      --sage: #a8d5ba;
+      --sky: #89c4e1;
+      --purple: #9b5de5;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+    .profile {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      text-align: center;
+    }
+    .back {
+      display: inline-block;
+      margin-bottom: 24px;
+      color: var(--magenta);
+      text-decoration: none;
+    }
+    .back:hover { text-decoration: underline; }
+    .avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: var(--marigold);
+      display: grid;
+      place-items: center;
+      font-size: 2.5rem;
+      margin: 0 auto 16px;
+      box-shadow: 0 4px 16px rgba(0,0,0,.2);
+    }
+    .name {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .key {
+      font-size: .875rem;
+      color: #666;
+      margin-bottom: 16px;
+    }
+    .bio {
+      font-size: .9rem;
+      color: #444;
+      margin-bottom: 16px;
+      font-style: italic;
+    }
+    .links {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+    .link {
+      font-size: .8rem;
+      color: var(--magenta);
+      text-decoration: none;
+    }
+    .link:hover { text-decoration: underline; }
+    .section-title {
+      font-size: .75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #888;
+      margin-bottom: 12px;
+    }
+    .apps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+    .app-card {
+      background: #fff;
+      border: 2px solid var(--ink);
+      padding: 16px;
+      text-decoration: none;
+      color: var(--ink);
+      box-shadow: 4px 4px 0 rgba(42,24,16,.15);
+      transition: transform .15s;
+    }
+    .app-card:hover {
+      transform: translateY(-2px);
+    }
+    .app-emoji {
+      font-size: 1.5rem;
+      margin-bottom: 8px;
+    }
+    .app-name {
+      font-weight: 600;
+      font-size: .9rem;
+      margin-bottom: 4px;
+    }
+    .app-count {
+      font-size: .75rem;
+      color: #666;
+    }
+    .empty {
+      text-align: center;
+      padding: 32px 20px;
+      color: #888;
+    }
+    .empty-icon {
+      font-size: 2.5rem;
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="profile">
+    <a class="back" href="https://liberada.net">← Volver</a>
+    
+    <div class="avatar" id="avatar">🎤</div>
+    <div class="name" id="name">-</div>
+    <div class="key" id="key">-</div>
+    <div class="bio" id="bio"></div>
+    
+    <div class="links" id="links"></div>
+    
+    <div class="section-title">Apps</div>
+    <div class="apps-grid" id="apps-grid">
+      <!-- Loaded from data -->
+    </div>
+  </div>
+
+  <script>
+    // Get key from URL: /usa/<key>/
+    const pathParts = location.pathname.split('/');
+    const keyIdx = pathParts.indexOf('usa') + 1;
+    const KEY = pathParts[keyIdx] || '';
+    
+    if (!KEY) {
+      document.getElementById('name').textContent = 'Perfil no encontrado';
+    } else {
+      document.getElementById('key').textContent = '@' + KEY;
+      document.getElementById('name').textContent = KEY;
+      
+      // In real v2: fetch from /api/profiles/<key> or profile.json
+      // For now: show placeholder
+      document.getElementById('bio').textContent = 'Perfil de ' + KEY;
+      document.getElementById('apps-grid').innerHTML = `
+        <a class="app-card" href="https://risa.liberada.net/lol/${KEY}/">
+          <div class="app-emoji">😹</div>
+          <div class="app-name">Risa</div>
+          <div class="app-count">Ver perfil</div>
+        </a>
+      `;
+    }
+  </script>
+</body>
+</html>
