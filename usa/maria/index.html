@@ -58,9 +58,6 @@
     .app-card-toggle .emoji { font-size: 1.8rem; }
     .app-card-toggle .label { font-size: .95rem; font-weight: 700; }
     .app-card-toggle .count { font-size: .7rem; opacity: .7; }
-    .media-tabs { margin-top: 8px; }
-    .media-tabs .tab { font-size: .78rem; padding: 6px 12px; color: #999; border-bottom-color: transparent; }
-    .media-tabs .tab.active { color: var(--magenta); border-bottom-color: var(--magenta); }
     .go-btn { display: none; padding: 6px 16px; border: 2px solid var(--magenta); border-radius: 999px; background: var(--magenta); color: white; font-size: .8rem; font-weight: 700; cursor: pointer; }
     .go-btn.visible { display: inline-block; }
     .go-btn:hover { background: #c0303d; }
@@ -68,10 +65,15 @@
     .aplicar-btn.visible { display: block; }
     .aplicar-btn:hover { background: #8fc0a0; }
     .section { margin-bottom: 28px; }
-    .tabs { display: flex; gap: 0; margin-bottom: 16px; border-bottom: 2px solid #eee; }
+    .tabs { display: flex; gap: 0; margin-bottom: 16px; border-bottom: 2px solid #eee; align-items: center; }
+    .tabs-left { display: flex; gap: 0; }
+    .tabs-right { display: flex; gap: 0; margin-left: auto; }
     .tab { padding: 8px 16px; font-size: .85rem; font-weight: 600; background: none; border: none; border-bottom: 2px solid transparent; margin-bottom: -2px; cursor: pointer; color: #888; }
     .tab.active { color: var(--ink); border-bottom-color: var(--ink); }
     .tab:hover { color: var(--ink); }
+    .tab.media-check { font-size: .78rem; padding: 5px 10px; border-radius: 6px; border: 1.5px solid #ddd; margin-bottom: 0; margin-left: 4px; }
+    .tab.media-check.active { background: var(--ink); color: white; border-color: var(--ink); }
+    .tab.media-check:not(.active) { color: #aaa; }
     .tab-count { font-size: .7rem; color: #aaa; margin-left: 4px; }
     .tab-panel { display: none; }
     .tab-panel.active { display: block; }
@@ -92,6 +94,25 @@
     .clip-actions { display: flex; gap: 8px; align-items: center; }
     .clip-action { background: none; border: none; font-size: .85rem; cursor: pointer; color: #888; padding: 4px; }
     .clip-action:hover { color: var(--magenta); }
+    .clip-heart-wrap { display: flex; align-items: center; gap: 3px; }
+    .clip-heart { background: none; border: none; font-size: .95rem; cursor: pointer; color: #ccc; padding: 2px; transition: transform .15s; position: relative; }
+    .clip-heart:hover { transform: scale(1.2); }
+    .clip-heart.on { color: var(--magenta); animation: heartPop .35s ease; }
+    .clip-heart-count { font-size: .7rem; color: #999; font-weight: 600; min-width: 12px; }
+    .clip-star { background: none; border: none; font-size: .9rem; cursor: pointer; padding: 2px; filter: grayscale(1); opacity: .4; transition: all .15s; }
+    .clip-star.on { filter: none; opacity: 1; }
+    .clip-star:hover { transform: scale(1.2); }
+    @keyframes heartPop {
+      0% { transform: scale(1); }
+      30% { transform: scale(1.35); }
+      60% { transform: scale(.95); }
+      100% { transform: scale(1); }
+    }
+    .heart-float { position: absolute; top: -8px; left: 50%; transform: translateX(-50%); font-size: .7rem; animation: heartFloat .7s ease-out forwards; pointer-events: none; }
+    @keyframes heartFloat {
+      0% { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateX(-50%) translateY(-24px) scale(1.3); }
+    }
     .fav-star { background: none; border: none; font-size: 1rem; cursor: pointer; color: #ccc; padding: 4px; }
     .fav-star.on { color: var(--marigold); }
     .profile-card { display: flex; align-items: center; gap: 12px; padding: 12px; background: #fff; border: 1.5px solid #eee; text-decoration: none; color: var(--ink); margin-bottom: 8px; transition: border-color .15s; }
@@ -133,7 +154,7 @@
       <div class="key">@maria</div>
       <div class="bio">Profesora de yoga, amante de las risas spontáneas. Si no me río, no fue bueno.</div>
       <div class="links">
-        <a class="link-icon" href="https://t.me/mariagarcia" target="_blank" title="Telegram">✈</a>
+        <a class="link-icon" href="https://t.me/mariagarcia" target="_blank" title="Telegram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg></a>
         <a class="link-icon" href="https://mariagarcia.com" target="_blank" title="Web">🌐</a>
         <span class="link-icon more" id="more-links" title="Más redes">+
           <span class="link-more-menu" id="more-menu">
@@ -172,13 +193,14 @@
     
     <div class="section">
       <div class="tabs">
-        <button class="tab active" data-tab="clips">Yo <span class="tab-count" id="tab-yo-count">0</span></button>
-        <button class="tab" data-tab="favs">Favoritos <span class="tab-count" id="tab-favs-count">0</span></button>
-      </div>
-      <div class="tabs media-tabs" id="media-tabs">
-        <button class="tab active" data-media="all">Todo</button>
-        <button class="tab" data-media="audio">🎵 Audio</button>
-        <button class="tab" data-media="video">🎬 Vídeo</button>
+        <div class="tabs-left">
+          <button class="tab active" data-tab="clips">Yo <span class="tab-count" id="tab-yo-count">0</span></button>
+          <button class="tab" data-tab="favs">Favoritos <span class="tab-count" id="tab-favs-count">0</span></button>
+        </div>
+        <div class="tabs-right" id="media-tabs">
+          <button class="tab media-check" data-media="audio">🎵 Audio</button>
+          <button class="tab media-check" data-media="video">🎬 Vídeo</button>
+        </div>
       </div>
       <div class="tab-panel active" id="panel-clips">
         <ul class="clip-list" id="clip-list"></ul>
@@ -265,7 +287,7 @@
     ];
 
     let activeApps = new Set();
-    let activeMedia = 'all';
+    let activeMedia = new Set();
 
     function timeAgo(d) {
       const days = Math.floor((Date.now() - new Date(d)) / 86400000);
@@ -277,21 +299,31 @@
     }
 
     function filterClips(arr) {
-      return arr.filter(c => (activeApps.size === 0 || activeApps.has(c.app)) && (activeMedia === 'all' || c.kind === activeMedia));
+      return arr.filter(c => (activeApps.size === 0 || activeApps.has(c.app)) && (activeMedia.size === 0 || activeMedia.has(c.kind)));
     }
 
-    function renderClip(c, showAuthor) {
+    const liked = new Set();
+    const starred = new Set(['f_001','f_003','f_006']);
+
+    function renderClip(c, showAuthor, isFav) {
       const li = document.createElement('li');
       li.className = 'clip-item';
+      li.dataset.id = c.id;
       const cls = c.app === 'lovy' ? 'clip-play lovy' : 'clip-play';
       const tc = c.kind === 'video' ? 'clip-type video' : 'clip-type audio';
       const tl = c.kind === 'video' ? 'Vídeo' : 'Audio';
+      const heartOn = liked.has(c.id);
+      const heartCount = c.reactions + (heartOn ? 1 : 0);
+      const starOn = starred.has(c.id);
       li.innerHTML = '<button class="' + cls + '">▶</button>' +
         '<div class="clip-body"><div class="clip-title">' + c.t + '<span class="' + tc + '">' + tl + '</span></div>' +
         (showAuthor ? '<div class="clip-meta" style="color:var(--magenta)">' + c.author + '</div>' : '') +
-        '<div class="clip-meta">' + timeAgo(c.when) + ' · ❤ ' + c.reactions + '</div>' +
+        '<div class="clip-meta">' + timeAgo(c.when) + '</div>' +
         '<div class="clip-tags">' + c.tags.split(',').map(function(t){ return '<span class="clip-tag">' + t.trim() + '</span>'; }).join('') + '</div></div>' +
-        '<div class="clip-actions"><button class="clip-action">❤</button><button class="clip-action">↗</button></div>';
+        '<div class="clip-actions">' +
+          (isFav ? '<button class="clip-star' + (starOn ? ' on' : '') + '" data-star="' + c.id + '">⭐</button>' : '') +
+          '<div class="clip-heart-wrap"><button class="clip-heart' + (heartOn ? ' on' : '') + '" data-heart="' + c.id + '">❤️</button><span class="clip-heart-count">' + heartCount + '</span></div>' +
+          '<button class="clip-action">↗</button></div>';
       return li;
     }
 
@@ -326,10 +358,10 @@
     function renderLists() {
       var cl = document.getElementById('clip-list');
       cl.innerHTML = '';
-      filterClips(CLIPS).forEach(function(c){ cl.appendChild(renderClip(c, false)); });
+      filterClips(CLIPS).forEach(function(c){ cl.appendChild(renderClip(c, false, false)); });
       var fl = document.getElementById('fav-list');
       fl.innerHTML = '';
-      filterClips(FAVORITES).forEach(function(c){ fl.appendChild(renderClip(c, true)); });
+      filterClips(FAVORITES).forEach(function(c){ fl.appendChild(renderClip(c, true, true)); });
       var fgl = document.getElementById('following-list');
       fgl.innerHTML = '';
       FOLLOWING.forEach(function(p){ fgl.appendChild(renderProfileCard(p, p.key === 'loko-puro')); });
@@ -355,9 +387,13 @@
 
     document.querySelectorAll('#media-tabs .tab').forEach(function(btn) {
       btn.addEventListener('click', function() {
-        document.querySelectorAll('#media-tabs .tab').forEach(function(b){ b.classList.remove('active'); });
-        btn.classList.add('active');
-        activeMedia = btn.dataset.media;
+        var m = btn.dataset.media;
+        if (activeMedia.has(m)) {
+          activeMedia.delete(m);
+        } else {
+          activeMedia.add(m);
+        }
+        btn.classList.toggle('active', activeMedia.has(m));
         renderLists();
       });
     });
@@ -445,6 +481,56 @@
     });
     document.addEventListener('click', function() {
       document.getElementById('more-menu').classList.remove('open');
+    });
+
+    document.getElementById('clip-list').addEventListener('click', function(e) {
+      var h = e.target.closest('[data-heart]');
+      if (h) {
+        var id = h.dataset.heart;
+        if (liked.has(id)) liked.delete(id); else liked.add(id);
+        var on = liked.has(id);
+        h.classList.toggle('on', on);
+        var wrap = h.parentElement;
+        var clip = CLIPS.find(function(c){ return c.id === id; });
+        wrap.querySelector('.clip-heart-count').textContent = (clip ? clip.reactions : 0) + (on ? 1 : 0);
+        if (on) {
+          var floater = document.createElement('span');
+          floater.className = 'heart-float';
+          floater.textContent = '❤️';
+          h.appendChild(floater);
+          setTimeout(function(){ floater.remove(); }, 700);
+        }
+        e.stopPropagation();
+      }
+    });
+
+    document.getElementById('fav-list').addEventListener('click', function(e) {
+      var h = e.target.closest('[data-heart]');
+      if (h) {
+        var id = h.dataset.heart;
+        if (liked.has(id)) liked.delete(id); else liked.add(id);
+        var on = liked.has(id);
+        h.classList.toggle('on', on);
+        var wrap = h.parentElement;
+        var clip = FAVORITES.find(function(c){ return c.id === id; });
+        wrap.querySelector('.clip-heart-count').textContent = (clip ? clip.reactions : 0) + (on ? 1 : 0);
+        if (on) {
+          var floater = document.createElement('span');
+          floater.className = 'heart-float';
+          floater.textContent = '❤️';
+          h.appendChild(floater);
+          setTimeout(function(){ floater.remove(); }, 700);
+        }
+        e.stopPropagation();
+        return;
+      }
+      var s = e.target.closest('[data-star]');
+      if (s) {
+        var sid = s.dataset.star;
+        if (starred.has(sid)) starred.delete(sid); else starred.add(sid);
+        s.classList.toggle('on', starred.has(sid));
+        e.stopPropagation();
+      }
     });
 
     renderLists();
