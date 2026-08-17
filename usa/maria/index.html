@@ -60,11 +60,7 @@
       position: relative;
       overflow: hidden;
     }
-    .avatar img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; }
     .avatar-badge {
       position: absolute;
       bottom: 0;
@@ -78,42 +74,13 @@
       place-items: center;
       font-size: .9rem;
     }
-    .name {
-      font-size: 1.75rem;
-      font-weight: 700;
-      margin-bottom: 2px;
-    }
-    .key {
-      font-size: .8rem;
-      color: #888;
-      margin-bottom: 8px;
-    }
-    .bio {
-      font-size: .9rem;
-      color: #555;
-      margin-bottom: 12px;
-      max-width: 40ch;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    .links {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-    .link {
-      font-size: .8rem;
-      color: var(--magenta);
-      text-decoration: none;
-    }
+    .name { font-size: 1.75rem; font-weight: 700; margin-bottom: 2px; }
+    .key { font-size: .8rem; color: #888; margin-bottom: 8px; }
+    .bio { font-size: .9rem; color: #555; margin-bottom: 12px; max-width: 40ch; margin-left: auto; margin-right: auto; }
+    .links { display: flex; gap: 16px; justify-content: center; margin-bottom: 20px; }
+    .link { font-size: .8rem; color: var(--magenta); text-decoration: none; }
     .link:hover { text-decoration: underline; }
-    .actions {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      margin-bottom: 24px;
-    }
+    .actions { display: flex; gap: 10px; justify-content: center; margin-bottom: 24px; }
     .action-btn {
       padding: 8px 18px;
       border: 2px solid var(--ink);
@@ -128,11 +95,13 @@
     .action-btn.follow:hover { background: #c0303d; }
     .action-btn.share { background: var(--ink); color: white; border-color: var(--ink); }
     .action-btn.share:hover { opacity: .9; }
-    .app-filters {
+    .filter-row {
       display: flex;
-      gap: 12px;
+      gap: 8px;
       justify-content: center;
-      margin-bottom: 20px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
     }
     .app-filter {
       display: flex;
@@ -151,9 +120,43 @@
     .app-filter.active { background: var(--ink); color: white; }
     .app-filter .emoji { font-size: 1rem; }
     .app-filter .count { font-size: .7rem; opacity: .7; }
-    .section {
-      margin-bottom: 28px;
+    .media-filter {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px;
+      border: 1.5px solid #ddd;
+      border-radius: 999px;
+      background: var(--cream);
     }
+    .media-btn {
+      padding: 4px 10px;
+      border: none;
+      border-radius: 999px;
+      background: transparent;
+      cursor: pointer;
+      font-size: .8rem;
+      font-weight: 600;
+      color: #888;
+      transition: all .15s;
+    }
+    .media-btn.active { background: var(--ink); color: white; }
+    .media-btn:hover:not(.active) { color: var(--ink); }
+    .go-btn {
+      padding: 6px 16px;
+      border: 2px solid var(--magenta);
+      border-radius: 999px;
+      background: var(--magenta);
+      color: white;
+      font-size: .8rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: none;
+      transition: all .15s;
+    }
+    .go-btn.visible { display: inline-block; }
+    .go-btn:hover { background: #c0303d; }
+    .section { margin-bottom: 28px; }
     .tabs {
       display: flex;
       gap: 0;
@@ -171,21 +174,12 @@
       cursor: pointer;
       color: #888;
     }
-    .tab.active {
-      color: var(--ink);
-      border-bottom-color: var(--ink);
-    }
+    .tab.active { color: var(--ink); border-bottom-color: var(--ink); }
     .tab:hover { color: var(--ink); }
-    .tab-count {
-      font-size: .7rem;
-      color: #aaa;
-      margin-left: 4px;
-    }
+    .tab-count { font-size: .7rem; color: #aaa; margin-left: 4px; }
     .tab-panel { display: none; }
     .tab-panel.active { display: block; }
-    .clip-list {
-      list-style: none;
-    }
+    .clip-list { list-style: none; }
     .clip-item {
       display: flex;
       align-items: center;
@@ -217,16 +211,8 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    .clip-meta {
-      font-size: .75rem;
-      color: #888;
-    }
-    .clip-tags {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-      margin-top: 4px;
-    }
+    .clip-meta { font-size: .75rem; color: #888; }
+    .clip-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
     .clip-tag {
       font-size: .65rem;
       padding: 2px 8px;
@@ -235,11 +221,17 @@
       border-radius: 999px;
       color: #666;
     }
-    .clip-actions {
-      display: flex;
-      gap: 8px;
-      align-items: center;
+    .clip-type {
+      font-size: .6rem;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-left: 6px;
     }
+    .clip-type.audio { background: var(--sky); color: var(--ink); }
+    .clip-type.video { background: var(--purple); color: white; }
+    .clip-actions { display: flex; gap: 8px; align-items: center; }
     .clip-action {
       background: none;
       border: none;
@@ -281,41 +273,29 @@
       flex-shrink: 0;
     }
     .profile-info { flex: 1; }
-    .profile-name {
-      font-weight: 600;
-      font-size: .9rem;
+    .profile-name { font-weight: 600; font-size: .9rem; }
+    .profile-detail { font-size: .75rem; color: #888; }
+    .profile-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
     }
-    .profile-detail {
-      font-size: .75rem;
-      color: #888;
-    }
-    .claim-banner {
-      padding: 16px;
-      background: linear-gradient(135deg, var(--sage), var(--sky));
+    .profile-action-btn {
+      padding: 8px 16px;
       border: 2px solid var(--ink);
-      margin-bottom: 24px;
-      text-align: center;
-    }
-    .claim-title {
-      font-weight: 700;
-      margin-bottom: 4px;
-    }
-    .claim-desc {
-      font-size: .85rem;
-      margin-bottom: 12px;
-    }
-    .claim-btn {
-      display: inline-block;
-      padding: 8px 20px;
-      background: var(--ink);
-      color: white;
-      text-decoration: none;
+      background: var(--cream);
+      font-size: .8rem;
       font-weight: 600;
-      font-size: .85rem;
-      border: none;
       cursor: pointer;
+      transition: all .15s;
     }
-    .claim-btn:hover { opacity: .9; }
+    .profile-action-btn:hover { transform: translateY(-1px); box-shadow: 2px 2px 0 rgba(42,24,16,.15); }
+    .profile-action-btn.edit { background: var(--sky); border-color: var(--sky); color: var(--ink); }
+    .profile-action-btn.protect { background: var(--sage); border-color: var(--sage); }
+    .profile-action-btn.extend { background: var(--purple); border-color: var(--purple); color: white; }
     .footer {
       text-align: center;
       padding: 24px;
@@ -324,6 +304,50 @@
     }
     .footer a { color: var(--magenta); text-decoration: none; }
     .footer a:hover { text-decoration: underline; }
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(42,24,16,.5);
+      z-index: 1000;
+      place-items: center;
+    }
+    .modal-overlay.open { display: grid; }
+    .modal {
+      background: var(--paper);
+      border: 3px solid var(--ink);
+      box-shadow: 8px 8px 0 rgba(42,24,16,.2);
+      padding: 32px;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+    }
+    .modal-icon { font-size: 2.5rem; margin-bottom: 12px; }
+    .modal-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 8px; }
+    .modal-desc { font-size: .9rem; color: #555; margin-bottom: 20px; }
+    .modal-actions { display: flex; gap: 10px; justify-content: center; }
+    .modal-btn {
+      padding: 10px 24px;
+      border: 2px solid var(--ink);
+      font-size: .9rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all .15s;
+    }
+    .modal-btn:hover { transform: translateY(-1px); }
+    .modal-btn.primary { background: var(--ink); color: white; }
+    .modal-btn.secondary { background: var(--cream); color: var(--ink); }
+    .modal-close {
+      position: absolute;
+      top: 12px;
+      right: 16px;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #888;
+    }
   </style>
 </head>
 <body>
@@ -347,15 +371,22 @@
     <div class="actions">
       <button class="action-btn follow" id="follow-btn">+ Seguir</button>
       <button class="action-btn share" id="share-btn">↗ Compartir</button>
+      <button class="action-btn" id="claim-btn" style="background:var(--sage);border-color:var(--sage)">Soy yo</button>
     </div>
     
-    <div class="app-filters">
+    <div class="filter-row">
       <button class="app-filter active" data-app="risa">
         <span class="emoji">😹</span> Risa <span class="count" id="risa-count">(12)</span>
       </button>
-      <button class="app-filter" data-app="lovy">
+      <button class="app-filter active" data-app="lovy">
         <span class="emoji">💗</span> Lovy <span class="count" id="lovy-count">(8)</span>
       </button>
+      <div class="media-filter">
+        <button class="media-btn active" data-media="all">Todo</button>
+        <button class="media-btn" data-media="audio">🎵</button>
+        <button class="media-btn" data-media="video">🎬</button>
+      </div>
+      <button class="go-btn" id="go-btn">Aplicar</button>
     </div>
     
     <div class="section">
@@ -378,10 +409,10 @@
       </div>
     </div>
     
-    <div class="claim-banner">
-      <div class="claim-title">¿Eres María?</div>
-      <div class="claim-desc">Reclama tu perfil para editar tu bio, gestionar tus clips y recibir notificaciones.</div>
-      <a class="claim-btn" href="https://t.me/RisaLiberadaBot?start=claim_maria">🔗 Soy yo</a>
+    <div class="profile-actions">
+      <button class="profile-action-btn edit" id="edit-btn">✏️ Editar</button>
+      <button class="profile-action-btn protect" id="protect-btn">🔒 Proteger</button>
+      <button class="profile-action-btn extend" id="extend-btn">➕ Extender</button>
     </div>
     
     <div class="footer">
@@ -389,27 +420,53 @@
     </div>
   </div>
 
+  <div class="modal-overlay" id="claim-modal">
+    <div class="modal" style="position:relative">
+      <button class="modal-close" id="modal-close">×</button>
+      <div class="modal-icon">👩</div>
+      <div class="modal-title">¿Eres María?</div>
+      <div class="modal-desc">Reclama tu perfil para editar tu bio, gestionar tus clips y recibir notificaciones.</div>
+      <div class="modal-actions">
+        <a class="modal-btn primary" href="https://liberada.net/usa/maria/" id="modal-claim">🔗 Soy yo</a>
+        <button class="modal-btn secondary" id="modal-cancel">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="action-modal">
+    <div class="modal" style="position:relative">
+      <button class="modal-close" id="action-modal-close">×</button>
+      <div class="modal-icon" id="action-modal-icon">⚙️</div>
+      <div class="modal-title" id="action-modal-title">Acción</div>
+      <div class="modal-desc" id="action-modal-desc">Descripción</div>
+      <div class="modal-actions">
+        <button class="modal-btn primary" id="action-modal-confirm">Continuar</button>
+        <button class="modal-btn secondary" id="action-modal-cancel">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     const CLIPS = [
-      { id: 'q_demo_001', t: 'Yoga y risa', when: '2026-08-16', tags: 'yoga, relajación, espontánea', reactions: 12, favorites: 3, src: '#', app: 'risa' },
-      { id: 'q_demo_002', t: 'La que no para', when: '2026-08-14', tags: 'contagiosa, felicidad', reactions: 24, favorites: 5, src: '#', app: 'risa' },
-      { id: 'q_demo_003', t: 'Risa de gato', when: '2026-08-12', tags: 'gato, animal, tierna', reactions: 18, favorites: 4, src: '#', app: 'lovy' },
-      { id: 'q_demo_004', t: 'Clase de mañana', when: '2026-08-10', tags: 'yoga, mañana, energía', reactions: 8, favorites: 2, src: '#', app: 'risa' },
-      { id: 'q_demo_005', t: 'Con las alumnas', when: '2026-08-08', tags: 'amigas, comunidad, risa', reactions: 15, favorites: 3, src: '#', app: 'risa' },
-      { id: 'q_demo_006', t: 'Besito de buenos días', when: '2026-08-06', tags: 'amor, buenos días', reactions: 22, favorites: 6, src: '#', app: 'lovy' },
-      { id: 'q_demo_007', t: 'Foto del parcito', when: '2026-08-04', tags: 'parque, naturaleza', reactions: 11, favorites: 2, src: '#', app: 'lovy' },
-      { id: 'q_demo_008', t: 'Risa compartida', when: '2026-08-02', tags: 'comunidad, risa', reactions: 19, favorites: 4, src: '#', app: 'lovy' }
+      { id: 'q_demo_001', t: 'Yoga y risa', when: '2026-08-16', tags: 'yoga, relajación, espontánea', reactions: 12, favorites: 3, src: '#', app: 'risa', kind: 'audio' },
+      { id: 'q_demo_002', t: 'La que no para', when: '2026-08-14', tags: 'contagiosa, felicidad', reactions: 24, favorites: 5, src: '#', app: 'risa', kind: 'audio' },
+      { id: 'q_demo_003', t: 'Risa de gato', when: '2026-08-12', tags: 'gato, animal, tierna', reactions: 18, favorites: 4, src: '#', app: 'lovy', kind: 'video' },
+      { id: 'q_demo_004', t: 'Clase de mañana', when: '2026-08-10', tags: 'yoga, mañana, energía', reactions: 8, favorites: 2, src: '#', app: 'risa', kind: 'audio' },
+      { id: 'q_demo_005', t: 'Con las alumnas', when: '2026-08-08', tags: 'amigas, comunidad, risa', reactions: 15, favorites: 3, src: '#', app: 'risa', kind: 'video' },
+      { id: 'q_demo_006', t: 'Besito de buenos días', when: '2026-08-06', tags: 'amor, buenos días', reactions: 22, favorites: 6, src: '#', app: 'lovy', kind: 'audio' },
+      { id: 'q_demo_007', t: 'Foto del parcito', when: '2026-08-04', tags: 'parque, naturaleza', reactions: 11, favorites: 2, src: '#', app: 'lovy', kind: 'video' },
+      { id: 'q_demo_008', t: 'Risa compartida', when: '2026-08-02', tags: 'comunidad, risa', reactions: 19, favorites: 4, src: '#', app: 'lovy', kind: 'audio' }
     ];
 
     const FAVORITES = [
-      { id: 'f_001', t: 'Risa épica del micrófono', author: 'Loko Puro', when: '2026-08-15', tags: 'épica, micrófono', reactions: 31, src: '#', app: 'risa' },
-      { id: 'f_002', t: 'De la boda', author: 'Marc', when: '2026-08-13', tags: 'boda, celebración', reactions: 12, src: '#', app: 'risa' },
-      { id: 'f_003', t: 'Código y risas', author: 'Marc', when: '2026-08-11', tags: 'código, programación', reactions: 8, src: '#', app: 'risa' },
-      { id: 'f_004', t: 'La sorpresa', author: '@marcflove', when: '2026-08-09', tags: 'sorpresa, risa', reactions: 14, src: '#', app: 'lovy' },
-      { id: 'f_005', t: 'Después del café', author: 'Loko Puro', when: '2026-08-07', tags: 'café, energía', reactions: 9, src: '#', app: 'risa' },
-      { id: 'f_006', t: 'Amor de domingo', author: 'Ana', when: '2026-08-05', tags: 'domingo, amor', reactions: 16, src: '#', app: 'lovy' },
-      { id: 'f_007', t: 'Risa en la lluvia', author: 'Carlos', when: '2026-08-03', tags: 'lluvia, aventura', reactions: 13, src: '#', app: 'lovy' },
-      { id: 'f_008', t: 'Noche de risas', author: 'Laura', when: '2026-08-01', tags: 'noche, amigos', reactions: 21, src: '#', app: 'lovy' }
+      { id: 'f_001', t: 'Risa épica del micrófono', author: 'Loko Puro', when: '2026-08-15', tags: 'épica, micrófono', reactions: 31, src: '#', app: 'risa', kind: 'audio' },
+      { id: 'f_002', t: 'De la boda', author: 'Marc', when: '2026-08-13', tags: 'boda, celebración', reactions: 12, src: '#', app: 'risa', kind: 'video' },
+      { id: 'f_003', t: 'Código y risas', author: 'Marc', when: '2026-08-11', tags: 'código, programación', reactions: 8, src: '#', app: 'risa', kind: 'audio' },
+      { id: 'f_004', t: 'La sorpresa', author: '@marcflove', when: '2026-08-09', tags: 'sorpresa, risa', reactions: 14, src: '#', app: 'lovy', kind: 'video' },
+      { id: 'f_005', t: 'Después del café', author: 'Loko Puro', when: '2026-08-07', tags: 'café, energía', reactions: 9, src: '#', app: 'risa', kind: 'audio' },
+      { id: 'f_006', t: 'Amor de domingo', author: 'Ana', when: '2026-08-05', tags: 'domingo, amor', reactions: 16, src: '#', app: 'lovy', kind: 'audio' },
+      { id: 'f_007', t: 'Risa en la lluvia', author: 'Carlos', when: '2026-08-03', tags: 'lluvia, aventura', reactions: 13, src: '#', app: 'lovy', kind: 'video' },
+      { id: 'f_008', t: 'Noche de risas', author: 'Laura', when: '2026-08-01', tags: 'noche, amigos', reactions: 21, src: '#', app: 'lovy', kind: 'audio' }
     ];
 
     const FOLLOWING = [
@@ -421,7 +478,12 @@
     ];
 
     let activeApps = new Set(['risa', 'lovy']);
-    let activeTab = 'clips';
+    let activeMedia = 'all';
+    let pendingApps = new Set(['risa', 'lovy']);
+    let pendingMedia = 'all';
+    let needsGo = false;
+    const TOTAL_ITEMS = CLIPS.length + FAVORITES.length;
+    const GO_THRESHOLD = 12;
 
     function timeAgo(dateStr) {
       const now = new Date();
@@ -435,11 +497,11 @@
     }
 
     function getFilteredClips() {
-      return CLIPS.filter(c => activeApps.has(c.app));
+      return CLIPS.filter(c => activeApps.has(c.app) && (activeMedia === 'all' || c.kind === activeMedia));
     }
 
     function getFilteredFavorites() {
-      return FAVORITES.filter(c => activeApps.has(c.app));
+      return FAVORITES.filter(c => activeApps.has(c.app) && (activeMedia === 'all' || c.kind === activeMedia));
     }
 
     function renderClip(c, opts = {}) {
@@ -447,10 +509,12 @@
       li.className = 'clip-item';
       const authorHtml = opts.showAuthor ? '<div class="clip-meta" style="color:var(--magenta)">' + c.author + '</div>' : '';
       const playClass = c.app === 'lovy' ? 'clip-play lovy' : 'clip-play';
+      const typeClass = c.kind === 'video' ? 'clip-type video' : 'clip-type audio';
+      const typeLabel = c.kind === 'video' ? 'Vídeo' : 'Audio';
       li.innerHTML = `
         <button class="${playClass}" title="Reproducir" aria-label="Reproducir ${c.t}">▶</button>
         <div class="clip-body">
-          <div class="clip-title">${c.t}</div>
+          <div class="clip-title">${c.t}<span class="${typeClass}">${typeLabel}</span></div>
           ${authorHtml}
           <div class="clip-meta">${timeAgo(c.when)} · ❤ ${c.reactions}</div>
           <div class="clip-tags">
@@ -469,10 +533,12 @@
       const li = document.createElement('li');
       li.className = 'clip-item';
       const playClass = c.app === 'lovy' ? 'clip-play lovy' : 'clip-play';
+      const typeClass = c.kind === 'video' ? 'clip-type video' : 'clip-type audio';
+      const typeLabel = c.kind === 'video' ? 'Vídeo' : 'Audio';
       li.innerHTML = `
         <button class="${playClass}" title="Reproducir" aria-label="Reproducir ${c.t}">▶</button>
         <div class="clip-body">
-          <div class="clip-title">${c.t}</div>
+          <div class="clip-title">${c.t}<span class="${typeClass}">${typeLabel}</span></div>
           <div class="clip-meta" style="color:var(--magenta)">${c.author}</div>
           <div class="clip-meta">${timeAgo(c.when)} · ❤ ${c.reactions}</div>
           <div class="clip-tags">
@@ -504,18 +570,12 @@
     }
 
     function updateCounts() {
-      const risaClips = CLIPS.filter(c => c.app === 'risa').length;
-      const lovyClips = CLIPS.filter(c => c.app === 'lovy').length;
-      const risaFavs = FAVORITES.filter(c => c.app === 'risa').length;
-      const lovyFavs = FAVORITES.filter(c => c.app === 'lovy').length;
-
-      document.getElementById('risa-count').textContent = '(' + (risaClips + risaFavs) + ')';
-      document.getElementById('lovy-count').textContent = '(' + (lovyClips + lovyFavs) + ')';
-
-      const filteredClips = getFilteredClips().length;
-      const filteredFavs = getFilteredFavorites().length;
-      document.getElementById('tab-yo-count').textContent = filteredClips;
-      document.getElementById('tab-favs-count').textContent = filteredFavs;
+      const risaAll = CLIPS.filter(c => c.app === 'risa').length + FAVORITES.filter(c => c.app === 'risa').length;
+      const lovyAll = CLIPS.filter(c => c.app === 'lovy').length + FAVORITES.filter(c => c.app === 'lovy').length;
+      document.getElementById('risa-count').textContent = '(' + risaAll + ')';
+      document.getElementById('lovy-count').textContent = '(' + lovyAll + ')';
+      document.getElementById('tab-yo-count').textContent = getFilteredClips().length;
+      document.getElementById('tab-favs-count').textContent = getFilteredFavorites().length;
       document.getElementById('tab-following-count').textContent = FOLLOWING.length;
     }
 
@@ -523,29 +583,48 @@
       const clipList = document.getElementById('clip-list');
       clipList.innerHTML = '';
       getFilteredClips().forEach(c => clipList.appendChild(renderClip(c)));
-
       const favList = document.getElementById('fav-list');
       favList.innerHTML = '';
       getFilteredFavorites().forEach(c => favList.appendChild(renderFav(c)));
-
       renderFollowing();
       updateCounts();
+    }
+
+    function checkGoButton() {
+      needsGo = TOTAL_ITEMS > GO_THRESHOLD;
+      document.getElementById('go-btn').classList.toggle('visible', needsGo);
     }
 
     document.querySelectorAll('.app-filter').forEach(btn => {
       btn.addEventListener('click', () => {
         const app = btn.dataset.app;
-        if (activeApps.has(app)) {
-          if (activeApps.size > 1) {
-            activeApps.delete(app);
-            btn.classList.remove('active');
-          }
+        if (pendingApps.has(app)) {
+          if (pendingApps.size > 1) pendingApps.delete(app);
         } else {
-          activeApps.add(app);
-          btn.classList.add('active');
+          pendingApps.add(app);
         }
+        btn.classList.toggle('active', pendingApps.has(app));
+        if (needsGo) return;
+        activeApps = new Set(pendingApps);
         renderAll();
       });
+    });
+
+    document.querySelectorAll('.media-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.media-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        pendingMedia = btn.dataset.media;
+        if (needsGo) return;
+        activeMedia = pendingMedia;
+        renderAll();
+      });
+    });
+
+    document.getElementById('go-btn').addEventListener('click', () => {
+      activeApps = new Set(pendingApps);
+      activeMedia = pendingMedia;
+      renderAll();
     });
 
     document.querySelectorAll('.tab').forEach(tab => {
@@ -553,8 +632,7 @@
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
         tab.classList.add('active');
-        activeTab = tab.dataset.tab;
-        document.getElementById('panel-' + activeTab).classList.add('active');
+        document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
       });
     });
 
@@ -577,6 +655,48 @@
       }
     });
 
+    document.getElementById('claim-btn').addEventListener('click', () => {
+      document.getElementById('claim-modal').classList.add('open');
+    });
+    document.getElementById('modal-close').addEventListener('click', () => {
+      document.getElementById('claim-modal').classList.remove('open');
+    });
+    document.getElementById('modal-cancel').addEventListener('click', () => {
+      document.getElementById('claim-modal').classList.remove('open');
+    });
+    document.getElementById('claim-modal').addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) e.currentTarget.classList.remove('open');
+    });
+
+    function openActionModal(icon, title, desc, confirmText) {
+      document.getElementById('action-modal-icon').textContent = icon;
+      document.getElementById('action-modal-title').textContent = title;
+      document.getElementById('action-modal-desc').textContent = desc;
+      document.getElementById('action-modal-confirm').textContent = confirmText;
+      document.getElementById('action-modal').classList.add('open');
+    }
+
+    document.getElementById('edit-btn').addEventListener('click', () => {
+      openActionModal('✏️', 'Editar perfil', 'Cambia tu nombre, bio, enlaces y foto de perfil.', 'Abrir editor');
+    });
+    document.getElementById('protect-btn').addEventListener('click', () => {
+      openActionModal('🔒', 'Proteger cuenta', 'Configura recuperación de cuenta, contraseña y verificación en dos pasos.', 'Configurar');
+    });
+    document.getElementById('extend-btn').addEventListener('click', () => {
+      openActionModal('➕', 'Extender perfil', 'Añade más información, redes sociales, logros y funcionalidades extra.', 'Empezar');
+    });
+
+    document.getElementById('action-modal-close').addEventListener('click', () => {
+      document.getElementById('action-modal').classList.remove('open');
+    });
+    document.getElementById('action-modal-cancel').addEventListener('click', () => {
+      document.getElementById('action-modal').classList.remove('open');
+    });
+    document.getElementById('action-modal').addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) e.currentTarget.classList.remove('open');
+    });
+
+    checkGoButton();
     renderAll();
   </script>
 </body>
