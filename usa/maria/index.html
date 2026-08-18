@@ -38,9 +38,7 @@
       border: none; background: none; cursor: pointer; font-size: .85rem; font-weight: 600; color: var(--ink); border-radius: 8px; }
     .alias-opt:hover { background: var(--cream); }
     .alias-opt .cnt { font-size: .7rem; color: #999; font-weight: 700; }
-    .alias-reset { display: flex; width: 100%; align-items: center; gap: 8px; padding: 8px 10px; margin-top: 6px;
-      border: none; border-top: 1px solid #eee; background: none; cursor: pointer; font-size: .8rem; font-weight: 700; color: var(--magenta); }
-    .alias-reset:hover { background: var(--cream); }
+    .alias-note { display: block; margin-top: 6px; font-size: .68rem; color: #999; }
     .name { font-size: 1.75rem; font-weight: 700; margin-bottom: 2px; }
     .key { font-size: .8rem; color: #888; margin-bottom: 8px; }
     .bio { font-size: .9rem; color: #555; margin-bottom: 12px; max-width: 40ch; margin-left: auto; margin-right: auto; }
@@ -214,7 +212,7 @@
         <div class="alias-drop" id="alias-drop" hidden>
           <span class="alias-drop-label">Aliases — clips por alias</span>
           <div id="alias-drop-list"></div>
-          <button type="button" class="alias-reset" id="alias-reset">✕ María (todo)</button>
+          <span class="alias-note">🔒 Los privados se ven porque maria es una demo libre (cambios solo en tu sesión).</span>
         </div>
       </div>
       <div class="name">María Demostración</div>
@@ -1062,10 +1060,9 @@
       var box = document.getElementById('alias-drop-list');
       if (!box) return;
       box.innerHTML = '';
-      // Aliases reales (de CLIPS) + los privados solo para el dueño.
-      // El perfil real (todo) vuelve con el ✕ del tick (✓).
+      // Aliases reales (de CLIPS). maria es demo libre: los privados se ven
+      // como si tuvieras sus secretos (los cambios quedan en la sesión local).
       list.forEach(function(a){
-        if (a.private && sessionStorage.getItem('liberada_authed') !== 'maria') return;
         var opt = document.createElement('button');
         opt.type = 'button';
         opt.className = 'alias-opt';
@@ -1114,13 +1111,6 @@
       tick.setAttribute('aria-expanded', open ? 'true' : 'false');
     });
     document.addEventListener('click', function() { drop.hidden = true; tick.setAttribute('aria-expanded', 'false'); });
-    document.getElementById('alias-reset').addEventListener('click', function(e) {
-      e.stopPropagation();
-      activeAlias = null;
-      tick.textContent = '✓';
-      drop.hidden = true;
-      applyAliasFilter();
-    });
 
     loadAliases();
     renderChains();
