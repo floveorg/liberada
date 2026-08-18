@@ -809,6 +809,24 @@
     });
     renderUploadResults();
 
+    /* ── v2-d1 · perfil avanzado desde D1 (maria demo advanced).
+       Rellena bio extendida + redes reales; fail-silent si la API no está. ── */
+    fetch('https://risa.liberada.net/api/users/maria', { cache: 'no-store', signal: AbortSignal.timeout(2500) })
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .then(function(d){
+        if (!d || !d.ok) return;
+        if (d.bio) document.querySelector('.bio').textContent = d.bio;
+        if (d.socials && d.socials.length) {
+          var icons = { 'Telegram': '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg>', 'GitHub': '💻', 'Web': '🌐', 'Instagram': '📷', 'Mastodon': '🐘', 'Facebook': '👍', 'Email': '✉️' };
+          var linksRow = document.querySelector('.links');
+          d.socials.forEach(function(s){
+            if (linksRow && !linksRow.querySelector('[data-d1="' + s.net + '"]'))
+              linksRow.insertAdjacentHTML('beforeend', '<a class="link-icon" href="' + s.url + '" target="_blank" rel="noopener" data-d1="' + s.net + '" title="' + s.net + '">' + (icons[s.net] || '🔗') + '</a>');
+          });
+        }
+      })
+      .catch(function(){});
+
     renderLists();
   </script>
 </body>

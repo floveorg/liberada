@@ -421,6 +421,28 @@
         var key = entry.key;
         if (entry.name) document.querySelector('.name').textContent = entry.name;
 
+        /* 1b. v2-d1 · perfil D1 (marcflove.liberada.net demo simple).
+           Si la API responde, usa bio/socials/actividad reales; si no, sigue
+           con el feed genérico (fail-silent). */
+        var d1 = null;
+        try {
+          d1 = await fetch('https://risa.liberada.net/api/users/' + encodeURIComponent(username),
+            { cache: 'no-store', signal: AbortSignal.timeout(2500) })
+            .then(function(r){ return r.ok ? r.json() : null; });
+        } catch (_) {}
+        if (d1 && d1.ok) {
+          if (d1.name) document.querySelector('.name').textContent = d1.name;
+          if (d1.bio) document.querySelector('.bio').textContent = d1.bio;
+          if (d1.socials && d1.socials.length) {
+            var linksRow = document.querySelector('.links');
+            var icons = { 'Telegram': '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg>', 'GitHub': '💻', 'Web': '🌐', 'Instagram': '📷', 'Mastodon': '🐘', 'Facebook': '👍', 'Email': '✉️' };
+            d1.socials.forEach(function(s){
+              if (!linksRow.querySelector('[data-d1="' + s.net + '"]'))
+                linksRow.insertAdjacentHTML('beforeend', '<a class="link-icon" href="' + s.url + '" target="_blank" rel="noopener" data-d1="' + s.net + '" title="' + s.net + '">' + (icons[s.net] || '🔗') + '</a>');
+            });
+          }
+        }
+
         /* 2. Fetch risa + ama in parallel */
         var results = await Promise.all([
           fetch(RISA_URL, {cache:'no-store'}).then(function(r){ return r.ok ? r.json() : []; }).catch(function(){ return []; }),
@@ -432,6 +454,19 @@
         /* 3. Filter by key */
         var risaClips = filterByUser(risaData, key, 'risa');
         var amaClips  = filterByUser(amaData, key, 'ama');
+
+        /* 3b. v2-d1 · fusiona la actividad de D1 (demo del perfil simple). */
+        if (d1 && d1.ok && d1.activity && d1.activity.length) {
+          var known = {};
+          risaClips.concat(amaClips).forEach(function(c){ known[c.id] = true; });
+          d1.activity.forEach(function(a){
+            if (known[a.item_id]) return;
+            var c = { id: a.item_id, t: a.title, tags: a.tags, when: a.at,
+                      kind: a.kind, name: d1.name, _app: a.app, src: '#' };
+            if (a.app === 'ama') amaClips.push(c); else risaClips.push(c);
+            known[a.item_id] = true;
+          });
+        }
         allClips = risaClips.concat(amaClips);
 
         /* 4. Render */
