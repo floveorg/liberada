@@ -709,24 +709,33 @@
     });
     document.getElementById('auth-verify').addEventListener('click', function() {
       var code = (document.getElementById('auth-code').value || '').trim();
-      if (!/^\d{6}$/.test(code)) { document.getElementById('auth-msg').textContent = '⚠️ El código tiene 6 dígitos.'; return; }
-      document.getElementById('auth-msg').textContent = 'Comprobando…';
-      fetch('https://risa.liberada.net/codes.json', { cache: 'no-store' })
-        .then(function(r) { return r.ok ? r.json() : {}; })
-        .then(function(codes) {
-          var hit = codes[code];
-          var today = new Date().toISOString().slice(0, 10);
-          if (!hit || !hit.key || (hit.at && hit.at !== today)) {
-            document.getElementById('auth-msg').textContent = 'Ese código no es válido o ha caducado. Pide uno nuevo con /entrar al bot.';
-            return;
-          }
-          sessionStorage.setItem('liberada_authed', 'maria');
-          document.getElementById('auth-modal').classList.remove('open');
-          openEditor();
-        })
-        .catch(function() {
-          document.getElementById('auth-msg').textContent = 'No se pudo comprobar el código. Revisa tu conexión.';
-        });
+      var msg = document.getElementById('auth-msg');
+      if (!/^\d{6}$/.test(code)) { msg.textContent = '⚠️ El código tiene 6 dígitos.'; return; }
+      msg.textContent = 'Comprobando…';
+      Promise.all([
+        fetch('https://risa.liberada.net/codes.json', { cache: 'no-store' }).then(function(r){ return r.ok ? r.json() : {}; }),
+        fetch('https://risa.liberada.net/api/users/maria', { cache: 'no-store', signal: AbortSignal.timeout(2500) })
+          .then(function(r){ return r.ok ? r.json() : null; }).catch(function(){ return null; })
+      ]).then(function(res) {
+        var codes = res[0], profile = res[1];
+        var hit = codes[code];
+        var today = new Date().toISOString().slice(0, 10);
+        if (!hit || !hit.key || (hit.at && hit.at !== today)) {
+          msg.textContent = 'Ese código no es válido o ha caducado. Pide uno nuevo con /entrar al bot.';
+          return;
+        }
+        // Quick check: el código debe pertenecer a ESTE perfil (misma key).
+        var profileKey = profile && profile.ok ? profile.key : null;
+        if (profileKey && hit.key !== profileKey) {
+          msg.textContent = 'Este código no pertenece a este perfil. Pide el tuyo con /entrar al bot.';
+          return;
+        }
+        sessionStorage.setItem('liberada_authed', 'maria');
+        document.getElementById('auth-modal').classList.remove('open');
+        openEditor();
+      }).catch(function() {
+        msg.textContent = 'No se pudo comprobar el código. Revisa tu conexión.';
+      });
     });
     document.getElementById('auth-mail').addEventListener('click', function() {
       document.getElementById('auth-msg').textContent = '📧 Añade tu email desde el bot (/entrar) y podrás usar esta vía.';

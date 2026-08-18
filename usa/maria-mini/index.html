@@ -354,8 +354,10 @@
     var USERS_URL = 'https://risa.liberada.net/usernames.json';
     var R2_BASE   = 'https://pub-e3cbc6c5f1c945358670af27745479f1.r2.dev';
 
-    /* Extract username from path: /usa/marcflove/ → "marcflove" */
-    var username = (location.pathname.match(/\/usa\/([^/]+)\/?/) || [])[1] || '';
+    /* maria-mini: mini-perfil de maria en el layout simple (estilo marcflove).
+       Usa la identidad de maria (D1 /api/users/maria) con fallback silencioso. */
+    var username = (location.pathname.match(/\/usa\/([^/]+)\/?/) || [])[1] || 'maria';
+    if (username === 'maria-mini') username = 'maria';
 
     var liked = new Set();
     var allClips = [];   // merged risa + ama clips for this user
@@ -547,9 +549,6 @@
 
     /* ── Autenticación para editar ─────────────────────────────────────── */
     var authed = sessionStorage.getItem('liberada_authed') === username;
-    // Llegada desde la miniapp (#/entrar) con el quick-check de dev: marcflove
-    // llega autenticado y puede editar directamente (otros usuarios, no).
-    if (username === 'marcflove' && /#auth=devris/.test(location.hash)) authed = true;
     document.getElementById('edit-btn').addEventListener('click', function() {
       if (authed) { openEditor(); return; }
       openModal('auth-modal');
@@ -557,41 +556,27 @@
       document.getElementById('auth-code').value = '';
     });
     document.getElementById('auth-close').addEventListener('click', function() { closeModal('auth-modal'); });
-    function unlockEdit() {
-      sessionStorage.setItem('liberada_authed', username);
-      authed = true;
-      closeModal('auth-modal');
-      openEditor();
-    }
     document.getElementById('auth-verify').addEventListener('click', function() {
       var code = (document.getElementById('auth-code').value || '').trim();
-      var msg = document.getElementById('auth-msg');
-      if (!/^\d{6}$/.test(code)) { msg.textContent = '⚠️ El código tiene 6 dígitos.'; return; }
-      msg.textContent = 'Comprobando…';
-      // Dev user (marcflove): quick check con el código de desarrollo del miniapp.
-      if (code === 'devris' && username === 'marcflove') { unlockEdit(); return; }
-      Promise.all([
-        fetch('https://risa.liberada.net/codes.json', { cache: 'no-store' }).then(function(r){ return r.ok ? r.json() : {}; }),
-        fetch('https://risa.liberada.net/api/users/' + encodeURIComponent(username), { cache: 'no-store', signal: AbortSignal.timeout(2500) })
-          .then(function(r){ return r.ok ? r.json() : null; }).catch(function(){ return null; })
-      ]).then(function(res) {
-        var codes = res[0], profile = res[1];
-        var hit = codes[code];
-        var today = new Date().toISOString().slice(0, 10);
-        if (!hit || !hit.key || (hit.at && hit.at !== today)) {
-          msg.textContent = 'Ese código no es válido o ha caducado. Pide uno nuevo con /entrar al bot.';
-          return;
-        }
-        // Quick check: el código debe pertenecer a ESTE perfil (misma key).
-        var profileKey = profile && profile.ok ? profile.key : null;
-        if (profileKey && hit.key !== profileKey) {
-          msg.textContent = 'Este código no pertenece a este perfil. Pide el tuyo con /entrar al bot.';
-          return;
-        }
-        unlockEdit();
-      }).catch(function() {
-        msg.textContent = 'No se pudo comprobar el código. Revisa tu conexión.';
-      });
+      if (!/^\d{6}$/.test(code)) { document.getElementById('auth-msg').textContent = '⚠️ El código tiene 6 dígitos.'; return; }
+      document.getElementById('auth-msg').textContent = 'Comprobando…';
+      fetch('https://risa.liberada.net/codes.json', { cache: 'no-store' })
+        .then(function(r) { return r.ok ? r.json() : {}; })
+        .then(function(codes) {
+          var hit = codes[code];
+          var today = new Date().toISOString().slice(0, 10);
+          if (!hit || !hit.key || (hit.at && hit.at !== today)) {
+            document.getElementById('auth-msg').textContent = 'Ese código no es válido o ha caducado. Pide uno nuevo con /entrar al bot.';
+            return;
+          }
+          sessionStorage.setItem('liberada_authed', username);
+          authed = true;
+          closeModal('auth-modal');
+          openEditor();
+        })
+        .catch(function() {
+          document.getElementById('auth-msg').textContent = 'No se pudo comprobar el código. Revisa tu conexión.';
+        });
     });
     document.getElementById('auth-mail').addEventListener('click', function() {
       document.getElementById('auth-msg').textContent = '📧 Añade tu email desde el bot (/entrar) y podrás usar esta vía.';
