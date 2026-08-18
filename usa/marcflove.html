@@ -388,6 +388,9 @@
   </div>
 
   <script>
+    // Canónico: marcflove.liberada.net (el Worker sirve este mismo perfil ahí).
+    if (location.hostname !== 'marcflove.liberada.net') location.replace('https://marcflove.liberada.net');
+
     /* =====================================================================
        AGGREGATOR PROFILE — liberada.net/usa/<username>
        Fetches clips from risa.json + ama.json, filters by key from

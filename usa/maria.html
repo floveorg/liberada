@@ -469,6 +469,10 @@
   </div>
 
   <script>
+    // Canónico: maria.liberada.net (el Worker sirve este mismo perfil ahí).
+    // Si llegas por liberada.net/usa/maria.html, redirige al subdominio.
+    if (location.hostname !== 'maria.liberada.net') location.replace('https://maria.liberada.net');
+
     const SEED = 'https://pub-e3cbc6c5f1c945358670af27745479f1.r2.dev/risa/seed/audio/';
     const CLIPS = [
       { id: 'q_001', t: 'Yoga y risa', when: '2026-08-16', tags: 'yoga, relajación', reactions: 12, src: '#', app: 'risa', kind: 'audio', alias: 'La Risa Yoga' },
