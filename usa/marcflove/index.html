@@ -31,6 +31,11 @@
     .links { display: flex; gap: 10px; justify-content: center; align-items: center; margin-bottom: 20px; }
     .link-icon { width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--ink); background: var(--cream); display: grid; place-items: center; font-size: 1rem; text-decoration: none; cursor: pointer; transition: all .15s; color: var(--ink); }
     .link-icon:hover { background: var(--ink); color: white; transform: translateY(-1px); }
+    .link-icon.more { background: var(--ink); color: white; font-weight: 700; font-size: .9rem; position: relative; }
+    .link-icon.more:hover { opacity: .9; }
+    .link-more-menu { display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); background: var(--cream); border: 2px solid var(--ink); box-shadow: 4px 4px 0 rgba(42,24,16,.15); border-radius: 12px; padding: 8px; z-index: 10; min-width: 48px; }
+    .link-more-menu.open { display: flex; gap: 6px; }
+    .link-more-menu .link-icon { width: 34px; height: 34px; font-size: .95rem; }
     .actions { display: flex; gap: 10px; justify-content: center; margin-bottom: 24px; }
     .action-btn { padding: 8px 18px; border: 2px solid var(--ink); background: var(--cream); font-size: .85rem; font-weight: 600; cursor: pointer; transition: all .15s; }
     .action-btn:hover { transform: translateY(-1px); box-shadow: 2px 2px 0 rgba(42,24,16,.15); }
@@ -116,6 +121,31 @@
       font-size: .78rem; font-weight: 600; background: var(--cream); text-decoration: none; color: var(--ink);
     }
     .mejorar-example .example-app:hover { border-color: var(--magenta); color: var(--magenta); text-decoration: none; }
+
+    /* MORE APPS · flove solo */
+    .more-apps-btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 22px; border: 2px solid var(--ink); background: var(--cream); border-radius: 999px; font-size: .85rem; font-weight: 700; cursor: pointer; color: var(--ink); transition: all .15s; }
+    .more-apps-btn:hover { transform: translateY(-1px); box-shadow: 2px 2px 0 rgba(42,24,16,.15); }
+    .more-apps { margin: 18px auto 0; max-width: 640px; text-align: left; padding: 20px; background: #fff; border: 2px solid var(--ink); border-radius: 16px; }
+    .more-apps h3 { font-size: 1.1rem; margin-bottom: 6px; }
+    .more-apps p { font-size: .85rem; color: #555; line-height: 1.55; }
+    .know-more-btn { margin-top: 10px; padding: 7px 18px; border: 2px solid var(--purple); border-radius: 999px; background: var(--purple); color: white; font-size: .82rem; font-weight: 700; cursor: pointer; }
+    .know-more-btn:hover { opacity: .9; }
+    .tour { margin-top: 12px; padding: 14px; border-left: 3px solid var(--purple); background: var(--cream); font-size: .85rem; }
+    .tour ol { margin: 0; padding-left: 20px; color: #555; line-height: 1.6; }
+    .tour .manual-link { display: inline-block; margin-top: 12px; color: var(--magenta); font-weight: 700; text-decoration: none; }
+    .tour .manual-link:hover { text-decoration: underline; }
+    .mini-apps { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .mini-app { padding: 6px 14px; border: 1.5px solid #ddd; border-radius: 999px; font-size: .8rem; font-weight: 600; background: var(--cream); text-decoration: none; color: var(--ink); }
+    .mini-app:hover { border-color: var(--magenta); color: var(--magenta); }
+    .results-row { display: grid; grid-template-columns: 2fr 1fr; gap: 12px; margin-top: 18px; }
+    @media (max-width:560px){ .results-row { grid-template-columns: 1fr; } }
+    .result-card { padding: 14px; border: 1.5px solid #eee; border-radius: 12px; background: var(--cream); }
+    .result-card h4 { font-size: .85rem; margin-bottom: 8px; }
+    .result-card .result-item { font-size: .78rem; color: #666; padding: 4px 0; border-bottom: 1px dashed #eee; display: flex; justify-content: space-between; gap: 8px; }
+    .result-card .result-item:last-child { border-bottom: none; }
+    .result-card.export { text-align: center; align-self: start; }
+    .export-btn { margin-top: 8px; padding: 8px 18px; border: 2px solid var(--ink); background: var(--ink); color: white; border-radius: 999px; font-size: .8rem; font-weight: 700; cursor: pointer; }
+    .export-btn:hover { opacity: .9; }
   </style>
 </head>
 <body>
@@ -128,8 +158,17 @@
       <div class="key">@marcflove</div>
       <div class="bio">Risas y código. Buenos Aires.</div>
       <div class="links">
+        <a class="link-icon" href="https://t.me/marcflove" target="_blank" title="Telegram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg></a>
         <a class="link-icon" href="https://github.com/marcflove" target="_blank" title="GitHub">💻</a>
         <a class="link-icon" href="https://flove.org" target="_blank" title="Web">🌐</a>
+        <span class="link-icon more" id="more-links" title="Más redes">+
+          <span class="link-more-menu" id="more-menu">
+            <a class="link-icon" href="#" title="Instagram">📷</a>
+            <a class="link-icon" href="#" title="Mastodon">🐘</a>
+            <a class="link-icon" href="#" title="Facebook">👍</a>
+            <a class="link-icon" href="mailto:marc@liberada.net" title="Email">✉️</a>
+          </span>
+        </span>
       </div>
     </div>
 
@@ -144,8 +183,8 @@
     
     <div class="section">
       <div class="tabs">
-        <button class="tab active" data-tab="clips">Risas <span class="tab-count" id="tab-count-risa">0</span></button>
-        <button class="tab" data-tab="ama">Amores <span class="tab-count" id="tab-count-ama">0</span></button>
+        <button class="tab active" data-tab="clips">Risa <span class="tab-count" id="tab-count-risa">0</span></button>
+        <button class="tab" data-tab="ama">Ama <span class="tab-count" id="tab-count-ama">0</span></button>
       </div>
       <div class="tab-panel active" id="panel-clips">
         <ul class="clip-list" id="clip-list"></ul>
@@ -162,8 +201,44 @@
     </div>
     
     <div class="footer">
-      <p>liberada.net — <a href="https://liberada.net">apps de la comunidad</a></p>
+      <button class="more-apps-btn" id="more-apps-btn" aria-expanded="false" aria-controls="more-apps">Más apps ▾</button>
     </div>
+
+    <!-- MORE APPS · flove solo distro -->
+    <section class="more-apps" id="more-apps" hidden>
+      <h3>flove solo · apps libres y locales</h3>
+      <p>flove solo es la distro local-first de flove: se descarga y funciona sin internet. Risa 😹 y Ama 💗 son las apps de la comunidad; las demás son apps de juego y práctica para tu vida.</p>
+      <button class="know-more-btn" id="know-more-btn" aria-expanded="false" aria-controls="tour">Saber más</button>
+      <div class="tour" id="tour" hidden>
+        <ol>
+          <li><strong>Descarga</strong> flove solo desde flove.org y descomprímelo: sirve en localhost sin conexión.</li>
+          <li><strong>Juega</strong> las apps: cada una es un mini-juego o práctica para una dimensión de tu vida.</li>
+          <li><strong>Tu perfil</strong> guarda lo que juegas y lo que subes, en privado, en tu máquina.</li>
+          <li><strong>Comparte</strong> cuando quieras: tus risas y amores llegan aquí, a tu perfil liberada.</li>
+        </ol>
+        <a class="manual-link" href="https://flove.org/solo/start.html" target="_blank" rel="noopener">Manual completo →</a>
+      </div>
+      <div class="mini-apps">
+        <a class="mini-app" href="https://flove.org/apps/metas/goddy.html" target="_blank" rel="noopener">Goddy</a>
+        <a class="mini-app" href="https://flove.org/apps/metas/souls.html" target="_blank" rel="noopener">Souls</a>
+        <a class="mini-app" href="https://flove.org/apps/bio/pracsys.html" target="_blank" rel="noopener">Pracsys</a>
+        <a class="mini-app" href="https://flove.org/apps/trusty/myfamily.html" target="_blank" rel="noopener">Myfamily</a>
+        <a class="mini-app" href="https://flove.org/apps/economy/dealy/inventary.html" target="_blank" rel="noopener">Inventary</a>
+        <a class="mini-app" href="https://flove.org/apps/realy.html" target="_blank" rel="noopener">Realy</a>
+        <a class="mini-app" href="https://flove.org/apps/puzzy/keys/keys-advanced.html" target="_blank" rel="noopener">Keys</a>
+      </div>
+      <div class="results-row">
+        <div class="result-card">
+          <h4>Resultados de subida</h4>
+          <div id="upload-results"><p style="font-size:.78rem;color:#888">Cargando tus últimas risas…</p></div>
+        </div>
+        <div class="result-card export">
+          <h4>Exportar</h4>
+          <p style="font-size:.75rem;color:#888">Tu perfil y tus risas en un JSON.</p>
+          <button class="export-btn" id="export-btn">⤓ Exportar</button>
+        </div>
+      </div>
+    </section>
   </div>
 
   <!-- MODAL: GENERIC ACTION -->
@@ -186,51 +261,85 @@
       <button class="modal-close" id="mejorar-close">×</button>
       <div class="modal-icon">🌟</div>
       <div class="modal-title">Mejorar tu perfil</div>
-      <div class="modal-desc">Convierte tu perfil v1 en un perfil completo con feeds de <strong>Ama</strong> y <strong>Risa</strong>.</div>
-      
+      <div class="modal-desc">Activa tu perfil en <strong id="mejorar-sub-label">tunombre.liberada.net</strong></div>
+
       <ol class="mejorar-steps">
         <li class="mejorar-step">
           <div class="mejorar-step-num"></div>
           <div class="mejorar-step-body">
-            <h4>Activa tu usuario</h4>
-            <p>Visita <a href="https://liberada.net/usa/marcflove/" target="_blank">liberada.net/usa/marcflove/</a> para ver tu perfil de usuario. Allí se muestra tu información pública.</p>
+            <h4>Editar</h4>
+            <p>Cambia tu nombre público, tu subdominio y tus redes desde el bot o la miniapp.</p>
           </div>
         </li>
         <li class="mejorar-step">
           <div class="mejorar-step-num"></div>
           <div class="mejorar-step-body">
-            <h4>Sube contenido a Ama</h4>
-            <p>Usa el bot de Telegram <a href="https://t.me/AmaLiberadaBot" target="_blank">@AmaLiberadaBot</a> para grabar audios o subir vídeos de amor. Tu contenido será anónimo hasta que lo reclames.</p>
+            <h4>Bio extendida</h4>
+            <p>Cuenta quién eres; tu bio aparece en tu nuevo perfil.</p>
           </div>
         </li>
         <li class="mejorar-step">
           <div class="mejorar-step-num"></div>
           <div class="mejorar-step-body">
-            <h4>Reclama tu contenido</h4>
-            <p>Cuando tu perfil tenga feeds activos, se mostrarán automáticamente en <a href="https://ama.liberada.net/#/u/marcflove" target="_blank">ama.liberada.net</a> y aquí en tu perfil.</p>
-          </div>
-        </li>
-        <li class="mejorar-step">
-          <div class="mejorar-step-num"></div>
-          <div class="mejorar-step-body">
-            <h4>Comparte tu perfil</h4>
-            <p>Comparte <a href="https://liberada.net/usa/marcflove/" target="_blank">liberada.net/usa/marcflove/</a> con quien quieras. Tu perfil muestra todo lo que compartes en las apps liberadas.</p>
+            <h4>Juega y filtra</h4>
+            <p>Tu perfil muestra la actividad de tus otras aplicaciones: risas, amores y más.</p>
           </div>
         </li>
       </ol>
 
       <div class="mejorar-example">
-        <strong>Ejemplo:</strong> Este es el perfil de <strong>Marc</strong> (@marcflove) — tiene contenido en Risa 😹 y Ama 💗. Cuando agreguemos el bot de Telegram para Ama, los feeds aparecerán directamente.
-        <div class="example-apps">
-          <a class="example-app" href="https://risa.liberada.net/#/u/marcflove" target="_blank">😹 Risa</a>
-          <a class="example-app" href="https://ama.liberada.net/#/u/marcflove" target="_blank">💗 Ama</a>
-        </div>
+        <strong>Nota:</strong> Este enlace redirigirá a tus últimas risas en tu nuevo perfil.
       </div>
 
       <div class="modal-actions">
-        <a class="modal-btn primary" href="https://liberada.net/usa/marcflove/" target="_blank">Ir a mi perfil →</a>
+        <button class="modal-btn primary" id="mejorar-activar">(Activar)</button>
         <button class="modal-btn secondary" id="mejorar-cancel">Cerrar</button>
       </div>
+    </div>
+  </div>
+
+  <!-- MODAL: AUTENTICAR para editar -->
+  <div class="modal-overlay" id="auth-modal">
+    <div class="modal">
+      <button class="modal-close" id="auth-close">×</button>
+      <div class="modal-icon">🔑</div>
+      <div class="modal-title">Editar perfil</div>
+      <div class="modal-desc">Para editar tu perfil primero confirma que eres tú. Elige una vía:</div>
+      <p style="font-size:.85rem;color:#555;margin-bottom:10px">📨 <strong>Mensaje al bot</strong> — escribe <code>/entrar</code> a <a href="https://t.me/RisaLiberadaBot" target="_blank" rel="noopener">@RisaLiberadaBot</a>, pulsa «Código por el bot» y pega aquí el código.</p>
+      <input id="auth-code" type="text" inputmode="numeric" maxlength="6" placeholder="000000" style="width:100%;padding:10px 12px;border:2px solid var(--ink);border-radius:10px;font-size:1.1rem;letter-spacing:.3em;text-align:center;margin-bottom:10px;box-sizing:border-box">
+      <button class="modal-btn primary" id="auth-verify" style="width:100%;margin-bottom:8px">Verificar código</button>
+      <button class="modal-btn secondary" id="auth-mail" style="width:100%">📧 Por email (si lo añadiste)</button>
+      <p id="auth-msg" style="font-size:.8rem;color:#888;margin-top:8px"></p>
+    </div>
+  </div>
+
+  <!-- MODAL: EDITOR (tras autenticar) -->
+  <div class="modal-overlay" id="editor-modal">
+    <div class="modal">
+      <button class="modal-close" id="editor-close">×</button>
+      <div class="modal-icon">✏️</div>
+      <div class="modal-title">Editar perfil</div>
+      <div class="modal-desc">Cambia lo que quieras; se aplica desde el bot de Telegram.</div>
+      <label style="display:block;font-size:.8rem;color:#555;margin-bottom:4px">Nombre público</label>
+      <input id="edit-name" type="text" placeholder="Tu nombre" style="width:100%;padding:10px 12px;border:2px solid var(--ink);border-radius:10px;font-size:1rem;margin-bottom:12px;box-sizing:border-box">
+      <label style="display:block;font-size:.8rem;color:#555;margin-bottom:4px">Bio extendida</label>
+      <textarea id="edit-bio" rows="3" placeholder="Cuéntanos quién eres…" style="width:100%;padding:10px 12px;border:2px solid var(--ink);border-radius:10px;font-size:.9rem;margin-bottom:12px;box-sizing:border-box;resize:vertical"></textarea>
+      <div class="editor-socials">
+        <span style="font-size:.8rem;color:#555;display:block;margin-bottom:6px">Tus redes</span>
+        <div id="edit-social-chips" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px"></div>
+        <div style="position:relative">
+          <button class="modal-btn secondary" id="add-social-btn" type="button">+ Añadir red</button>
+          <div id="social-picker" hidden style="position:absolute;bottom:100%;left:0;background:var(--paper);border:2px solid var(--ink);border-radius:12px;padding:8px;display:grid;gap:4px;z-index:20;min-width:150px">
+            <button type="button" class="social-opt" data-label="Instagram 📷">Instagram 📷</button>
+            <button type="button" class="social-opt" data-label="Mastodon 🐘">Mastodon 🐘</button>
+            <button type="button" class="social-opt" data-label="Facebook 👍">Facebook 👍</button>
+            <button type="button" class="social-opt" data-label="TikTok 🎵">TikTok 🎵</button>
+            <button type="button" class="social-opt" data-label="Web 🌐">Web 🌐</button>
+            <button type="button" class="social-opt" data-label="Email ✉️">Email ✉️</button>
+          </div>
+        </div>
+      </div>
+      <p id="editor-msg" style="font-size:.82rem;color:var(--magenta);margin-top:10px;line-height:1.5"></p>
     </div>
   </div>
 
@@ -323,6 +432,7 @@
         /* 3. Filter by key */
         var risaClips = filterByUser(risaData, key, 'risa');
         var amaClips  = filterByUser(amaData, key, 'ama');
+        allClips = risaClips.concat(amaClips);
 
         /* 4. Render */
         renderLists(risaClips, amaClips);
@@ -384,20 +494,115 @@
       }
     });
 
+    /* More socials dropdown */
+    var moreLinks = document.getElementById('more-links');
+    if (moreLinks) {
+      moreLinks.addEventListener('click', function(e) {
+        e.stopPropagation();
+        document.getElementById('more-menu').classList.toggle('open');
+      });
+      document.addEventListener('click', function() {
+        document.getElementById('more-menu').classList.remove('open');
+      });
+    }
+
     /* Modals */
     function openModal(id) { document.getElementById(id).classList.add('open'); }
     function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+    /* ── Autenticación para editar ─────────────────────────────────────── */
+    var authed = sessionStorage.getItem('liberada_authed') === username;
     document.getElementById('edit-btn').addEventListener('click', function() {
-      openModal('action-modal');
-      document.getElementById('action-modal-icon').textContent = '✏️';
-      document.getElementById('action-modal-title').textContent = 'Editar perfil';
-      document.getElementById('action-modal-desc').textContent = 'Cambia tu nombre, bio, enlaces y foto.';
+      if (authed) { openEditor(); return; }
+      openModal('auth-modal');
+      document.getElementById('auth-msg').textContent = '';
+      document.getElementById('auth-code').value = '';
+    });
+    document.getElementById('auth-close').addEventListener('click', function() { closeModal('auth-modal'); });
+    document.getElementById('auth-verify').addEventListener('click', function() {
+      var code = (document.getElementById('auth-code').value || '').trim();
+      if (!/^\d{6}$/.test(code)) { document.getElementById('auth-msg').textContent = '⚠️ El código tiene 6 dígitos.'; return; }
+      document.getElementById('auth-msg').textContent = 'Comprobando…';
+      fetch('https://risa.liberada.net/codes.json', { cache: 'no-store' })
+        .then(function(r) { return r.ok ? r.json() : {}; })
+        .then(function(codes) {
+          var hit = codes[code];
+          var today = new Date().toISOString().slice(0, 10);
+          if (!hit || !hit.key || (hit.at && hit.at !== today)) {
+            document.getElementById('auth-msg').textContent = 'Ese código no es válido o ha caducado. Pide uno nuevo con /entrar al bot.';
+            return;
+          }
+          sessionStorage.setItem('liberada_authed', username);
+          authed = true;
+          closeModal('auth-modal');
+          openEditor();
+        })
+        .catch(function() {
+          document.getElementById('auth-msg').textContent = 'No se pudo comprobar el código. Revisa tu conexión.';
+        });
+    });
+    document.getElementById('auth-mail').addEventListener('click', function() {
+      document.getElementById('auth-msg').textContent = '📧 Añade tu email desde el bot (/entrar) y podrás usar esta vía.';
+    });
+
+    /* ── Editor (tras autenticar) + redes con dropdown ─────────────────── */
+    function openEditor() {
+      document.getElementById('edit-name').value = document.querySelector('.name').textContent;
+      document.getElementById('edit-bio').value = document.querySelector('.bio').textContent.replace(/^Perfil de /, '');
+      openModal('editor-modal');
+      document.getElementById('editor-msg').textContent = 'Para aplicarlo: envía /name ' + document.getElementById('edit-name').value + ' al bot.';
+    }
+    document.getElementById('editor-close').addEventListener('click', function() { closeModal('editor-modal'); });
+    document.getElementById('edit-name').addEventListener('input', function() {
+      document.getElementById('editor-msg').textContent = 'Para aplicarlo: envía /name ' + this.value.trim() + ' al bot.';
+    });
+    document.getElementById('edit-bio').addEventListener('input', function() {
+      document.getElementById('editor-msg').textContent = 'La bio extendida se guarda desde la miniapp. De momento puedes verla aquí.';
+    });
+    var socials = ['GitHub 💻', 'Web 🌐'];
+    function renderSocialChips() {
+      var box = document.getElementById('edit-social-chips');
+      box.innerHTML = '';
+      socials.forEach(function(s) {
+        var chip = document.createElement('span');
+        chip.textContent = s;
+        chip.style.cssText = 'padding:4px 12px;border:1.5px solid #ddd;border-radius:999px;font-size:.78rem;background:var(--cream)';
+        box.appendChild(chip);
+      });
+    }
+    var addSocialBtn = document.getElementById('add-social-btn');
+    var socialPicker = document.getElementById('social-picker');
+    addSocialBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      socialPicker.hidden = !socialPicker.hidden;
+    });
+    document.addEventListener('click', function() { socialPicker.hidden = true; });
+    socialPicker.querySelectorAll('.social-opt').forEach(function(opt) {
+      opt.addEventListener('click', function() {
+        var label = opt.dataset.label;
+        if (socials.indexOf(label) === -1) socials.push(label);
+        socialPicker.hidden = true;
+        renderSocialChips();
+      });
+    });
+    renderSocialChips();
+
+    /* ── Mejorar · redo: activa tu perfil en <tu>.liberada.net ────────── */
+    document.getElementById('mejorar-btn').addEventListener('click', function() {
+      var sub = username || 'tunombre';
+      document.getElementById('mejorar-sub-label').textContent = sub + '.liberada.net';
+      openModal('mejorar-modal');
+    });
+    document.getElementById('mejorar-activar').addEventListener('click', function() {
+      // Activar requiere identidad → miniapp #/entrar del bot (código).
+      window.open('https://risa.liberada.net/#/entrar', '_blank');
+      closeModal('mejorar-modal');
     });
     document.getElementById('protect-btn').addEventListener('click', function() {
       openModal('action-modal');
       document.getElementById('action-modal-icon').textContent = '🔒';
-      document.getElementById('action-modal-title').textContent = 'Proteger cuenta';
-      document.getElementById('action-modal-desc').textContent = 'Configura recuperación y verificación en dos pasos.';
+      document.getElementById('action-modal-title').textContent = 'Gestionar mi cuenta';
+      document.getElementById('action-modal-desc').textContent = 'Añade email, contraseña y otras vías para gestionar tu cuenta.';
     });
     document.getElementById('mejorar-btn').addEventListener('click', function() {
       openModal('mejorar-modal');
@@ -436,6 +641,52 @@
       btn.textContent = '⏸';
       currentAudio.addEventListener('ended', function() { btn.textContent = '▶'; });
     });
+
+    /* ── Más apps · flove solo ─────────────────────────────────────────── */
+    var moreAppsBtn = document.getElementById('more-apps-btn');
+    var moreApps = document.getElementById('more-apps');
+    moreAppsBtn.addEventListener('click', function() {
+      var open = moreApps.hidden;
+      moreApps.hidden = !open;
+      moreAppsBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if (open && reduce) moreApps.scrollIntoView();
+      else if (open) moreApps.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+    var knowMoreBtn = document.getElementById('know-more-btn');
+    var tour = document.getElementById('tour');
+    knowMoreBtn.addEventListener('click', function() {
+      var open = tour.hidden;
+      tour.hidden = !open;
+      knowMoreBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+
+    /* Resultados de subida (66%) + exportar (33%) */
+    function renderUploadResults(clips) {
+      var box = document.getElementById('upload-results');
+      if (!clips || !clips.length) {
+        box.innerHTML = '<p style="font-size:.78rem;color:#888">Aún no tienes risas publicadas.</p>';
+        return;
+      }
+      box.innerHTML = clips.slice(0, 4).map(function(c) {
+        return '<div class="result-item"><span>🎧 ' + (c.t || 'Sin título') + '</span><span>' + timeAgo(c.when) + '</span></div>';
+      }).join('');
+    }
+    document.getElementById('export-btn').addEventListener('click', function() {
+      var blob = new Blob([JSON.stringify({ username: username, profile: { name: document.querySelector('.name').textContent, bio: document.querySelector('.bio').textContent }, clips: allClips }, null, 2)], { type: 'application/json' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = username + '-perfil.json';
+      a.click();
+      URL.revokeObjectURL(a.href);
+    });
+
+    /* Engancha el render de resultados a la carga del perfil */
+    var _origLoad = loadProfile;
+    loadProfile = function() {
+      return _origLoad.apply(this, arguments).then(function() {
+        renderUploadResults(allClips);
+      });
+    };
 
     loadProfile();
   </script>
