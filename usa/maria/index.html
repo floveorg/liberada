@@ -210,7 +210,7 @@
     <a class="back" href="https://liberada.net">← liberada.net</a>
     
     <div class="header">
-      <div class="avatar">👩<button class="avatar-badge" id="alias-tick" type="button" title="Aliases" aria-expanded="false" aria-controls="alias-drop" aria-label="Aliases de este perfil">María</button>
+      <div class="avatar">👩<button class="avatar-badge" id="alias-tick" type="button" title="Aliases" aria-expanded="false" aria-controls="alias-drop" aria-label="Aliases de este perfil">✓</button>
         <div class="alias-drop" id="alias-drop" hidden>
           <span class="alias-drop-label">Aliases — clips por alias</span>
           <div id="alias-drop-list"></div>
@@ -1066,7 +1066,8 @@
       all.innerHTML = '<span>María</span><span class="cnt">' + CLIPS.length + '</span>';
       all.addEventListener('click', function(){
         activeAlias = null;
-        document.getElementById('alias-tick').textContent = 'María';
+        // El perfil real (todo) vuelve al tick ✓, sin nombre.
+        document.getElementById('alias-tick').textContent = '✓';
         document.getElementById('alias-drop').hidden = true;
         applyAliasFilter();
       });
@@ -1125,7 +1126,7 @@
     document.getElementById('alias-reset').addEventListener('click', function(e) {
       e.stopPropagation();
       activeAlias = null;
-      tick.textContent = 'María';
+      tick.textContent = '✓';
       drop.hidden = true;
       applyAliasFilter();
     });
