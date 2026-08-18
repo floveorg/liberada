@@ -200,12 +200,16 @@
       <div class="tabs">
         <button class="tab active" data-tab="clips">Risa <span class="tab-count" id="tab-count-risa">0</span></button>
         <button class="tab" data-tab="ama">Ama <span class="tab-count" id="tab-count-ama">0</span></button>
+        <button class="tab" data-tab="cadenas">Cadenas <span class="tab-count" id="tab-count-cadenas">0</span></button>
       </div>
       <div class="tab-panel active" id="panel-clips">
         <ul class="clip-list" id="clip-list"></ul>
       </div>
       <div class="tab-panel" id="panel-ama">
         <ul class="clip-list" id="ama-list"></ul>
+      </div>
+      <div class="tab-panel" id="panel-cadenas">
+        <ul class="clip-list" id="chain-list"></ul>
       </div>
     </div>
     
@@ -418,13 +422,16 @@
       var tags = (c.tags || '').split(',').map(function(t){
         return '<span class="clip-tag">' + t.trim() + '</span>';
       }).join('');
+      var parent = c.parent ? '<div class="clip-meta" style="color:var(--purple);font-size:.7rem">↳ responde a ' + (c.parentTitle || c.parent) + '</div>' : '';
       return '<li class="clip-item" data-id="' + c.id + '" data-app="' + c._app + '">' +
         '<button class="clip-play"' + (c.src && c.src !== '#' ? ' data-src="' + c.src + '"' : '') + '>▶</button>' +
         '<div class="clip-body"><div class="clip-title">' + (c.t || 'Sin título') + '</div>' +
+        parent +
         '<div class="clip-meta">' + appBadge + ' · ' + timeAgo(c.when) + '</div>' +
         '<div class="clip-tags">' + tags + '</div></div>' +
         '<div class="clip-actions">' +
           '<div class="clip-heart-wrap"><button class="clip-heart' + (heartOn ? ' on' : '') + '" data-heart="' + c.id + '">❤️</button><span class="clip-heart-count">' + heartCount + '</span></div>' +
+          '<button class="clip-chain" data-chain="' + c.id + '" title="Acciones de cadena" style="background:none;border:none;font-size:1rem;font-weight:700;cursor:pointer;color:var(--purple)">+</button>' +
           '<button class="clip-action" style="background:none;border:none;font-size:.85rem;cursor:pointer;color:#888">↗</button></div></li>';
     }
 

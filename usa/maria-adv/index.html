@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>María Demostración — liberada.net</title>
+  <title>María Adv — liberada.net (PoC)</title>
   <meta name="description" content="Perfil de María Demostración en las apps liberadas">
   <meta property="og:title" content="María Demostración — liberada.net">
   <meta property="og:description" content="Risas, arte y comunidad">
@@ -198,9 +198,9 @@
     
     <div class="header">
       <div class="avatar">👩<span class="avatar-badge">✓</span></div>
-      <div class="name">María Demostración</div>
-      <p class="up-sub" style="font-size:.85rem;color:var(--purple);font-weight:600;margin:0 0 8px">Perfil editable como si fuera el tuyo</p>
-      <div class="key">@maria</div>
+      <div class="name">María Adv</div>
+      <p class="up-sub" style="font-size:.85rem;color:var(--purple);font-weight:600;margin:0 0 8px">Perfil avanzado · PoC de D1 + plugins</p>
+      <div class="key">@maria-adv</div>
       <div class="bio">Profesora de yoga, amante de las risas spontáneas. Si no me río, no fue bueno.</div>
       <div class="links">
         <a class="link-icon" href="https://t.me/mariagarcia" target="_blank" title="Telegram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg></a>
@@ -442,13 +442,13 @@
       </ol>
       <div class="mejorar-example">
         <span id="mejorar-status" style="font-size:1rem;font-weight:700;color:var(--sage)">✅ Activado</span>
-        <p style="margin:6px 0 0;font-size:.85rem;color:#555">maria.liberada.net — tu perfil redirige a tus últimas risas.</p>
+        <p style="margin:6px 0 0;font-size:.85rem;color:#555">maria-adv.liberada.net — tu perfil redirige a tus últimas risas.</p>
       </div>
       <div class="mejorar-example" id="mejorar-note">
         <strong>Nota:</strong> Este enlace redirigirá a tus últimas risas en tu nuevo perfil.
       </div>
       <div class="modal-actions">
-        <a class="modal-btn primary" id="mejorar-activar" href="https://maria.liberada.net" target="_blank" rel="noopener">(Activar) — maria.liberada.net</a>
+        <a class="modal-btn primary" id="mejorar-activar" href="https://maria-adv.liberada.net" target="_blank" rel="noopener">(Activar) — maria-adv.liberada.net</a>
         <button class="modal-btn secondary" id="mejorar-cancel">Cerrar</button>
       </div>
     </div>
@@ -670,7 +670,7 @@
       openModal('🔒', 'Gestionar mi cuenta', 'Añade email, contraseña y otras vías para gestionar tu cuenta.', 'Configurar');
     });
     document.getElementById('extend-btn').addEventListener('click', function() {
-      document.getElementById('mejorar-sub-label').textContent = 'maria.liberada.net';
+      document.getElementById('mejorar-sub-label').textContent = 'maria-adv.liberada.net';
       document.getElementById('mejorar-status').textContent = '✅ Activado';
       document.getElementById('mejorar-note').hidden = true;
       document.getElementById('mejorar-activar').hidden = true;
@@ -778,7 +778,7 @@
       msg.textContent = 'Comprobando…';
       Promise.all([
         fetch('https://risa.liberada.net/codes.json', { cache: 'no-store' }).then(function(r){ return r.ok ? r.json() : {}; }),
-        fetch('https://risa.liberada.net/api/users/maria', { cache: 'no-store', signal: AbortSignal.timeout(2500) })
+        fetch('https://risa.liberada.net/api/users/maria-adv', { cache: 'no-store', signal: AbortSignal.timeout(2500) })
           .then(function(r){ return r.ok ? r.json() : null; }).catch(function(){ return null; })
       ]).then(function(res) {
         var codes = res[0], profile = res[1];
@@ -794,7 +794,7 @@
           msg.textContent = 'Este código no pertenece a este perfil. Pide el tuyo con /entrar al bot.';
           return;
         }
-        sessionStorage.setItem('liberada_authed', 'maria');
+        sessionStorage.setItem('liberada_authed', 'maria-adv');
         document.getElementById('auth-modal').classList.remove('open');
         openEditor();
       }).catch(function() {
@@ -903,7 +903,7 @@
 
     /* ── v2-d1 · perfil avanzado desde D1 (maria demo advanced).
        Rellena bio extendida + redes reales; fail-silent si la API no está. ── */
-    fetch('https://risa.liberada.net/api/users/maria', { cache: 'no-store', signal: AbortSignal.timeout(2500) })
+    fetch('https://risa.liberada.net/api/users/maria-adv', { cache: 'no-store', signal: AbortSignal.timeout(2500) })
       .then(function(r){ return r.ok ? r.json() : null; })
       .then(function(d){
         if (!d || !d.ok) return;
@@ -981,7 +981,7 @@
     /* ── Aliases (v2): chips filtrables; privados solo para el dueño ────── */
     var activeAlias = null;
     function loadAliases() {
-      fetch('https://risa.liberada.net/api/aliases/maria', { cache: 'no-store', signal: AbortSignal.timeout(2500) })
+      fetch('https://risa.liberada.net/api/aliases/maria-adv', { cache: 'no-store', signal: AbortSignal.timeout(2500) })
         .then(function(r){ return r.ok ? r.json() : null; })
         .then(function(d){
           if (!d || !d.ok || !d.aliases) return;
@@ -1023,7 +1023,7 @@
       var priv = document.getElementById('edit-alias-vis').value === '1';
       fetch('https://risa.liberada.net/api/aliases', {
         method: 'POST', headers: { 'content-type': 'application/json', authorization: 'Bearer devris' },
-        body: JSON.stringify({ key: 'maria', alias: name, private: priv }),
+        body: JSON.stringify({ key: 'maria-adv', alias: name, private: priv }),
         signal: AbortSignal.timeout(2500)
       }).then(function(r){ return r.ok; }).then(function(ok){
         document.getElementById('edit-alias').value = '';
