@@ -490,7 +490,10 @@
       { id: 'w_corta', t: 'Risa corta', when: '2026-08-18', tags: 'carcajada, corta', reactions: 22, src: SEED + 'risa-corta-pd.mp3', app: 'risa', kind: 'audio', alias: 'Carcajada' },
       /* Alias de prueba (público) y su subfeed */
       { id: 'w_grupo', t: 'Grupo pequeño', when: '2026-08-18', tags: 'prueba, grupo', reactions: 12, src: SEED + 'grupo-pequeno.mp3', app: 'risa', kind: 'audio', alias: 'Prueba' },
-      { id: 'w_risa_ale', t: 'Risa (Alemania)', when: '2026-08-18', tags: 'prueba, mundo', reactions: 15, src: SEED + 'gente-riendo.mp3', app: 'risa', kind: 'audio', alias: 'Prueba' }
+      { id: 'w_risa_ale', t: 'Risa (Alemania)', when: '2026-08-18', tags: 'prueba, mundo', reactions: 15, src: SEED + 'gente-riendo.mp3', app: 'risa', kind: 'audio', alias: 'Prueba' },
+      /* Alias privado demo «privi» — contenido real (juego + poesía) */
+      { id: 'p_gato', t: 'Risa de gato', when: '2026-08-18', tags: 'privi, gato, animal', reactions: 18, src: '#', app: 'lovy', kind: 'video', alias: 'privi' },
+      { id: 'p_risa', t: 'Ja-ja amazigh (ⵃⴰⵃⴰ)', when: '2026-08-18', tags: 'privi, mundo, amazigh', reactions: 9, src: SEED + 'risa-lol.mp3', app: 'risa', kind: 'audio', alias: 'privi' }
     ];
 
     const FAVORITES = [
@@ -1059,20 +1062,8 @@
       var box = document.getElementById('alias-drop-list');
       if (!box) return;
       box.innerHTML = '';
-      // «María» es el alias con el username de la usuaria (subfeed completo).
-      var all = document.createElement('button');
-      all.type = 'button';
-      all.className = 'alias-opt';
-      all.innerHTML = '<span>María</span><span class="cnt">' + CLIPS.length + '</span>';
-      all.addEventListener('click', function(){
-        activeAlias = null;
-        // El perfil real (todo) vuelve al tick ✓, sin nombre.
-        document.getElementById('alias-tick').textContent = '✓';
-        document.getElementById('alias-drop').hidden = true;
-        applyAliasFilter();
-      });
-      box.appendChild(all);
-      // Aliases reales (de CLIPS) + el privado solo para el dueño.
+      // Aliases reales (de CLIPS) + los privados solo para el dueño.
+      // El perfil real (todo) vuelve con el ✕ del tick (✓).
       list.forEach(function(a){
         if (a.private && sessionStorage.getItem('liberada_authed') !== 'maria') return;
         var opt = document.createElement('button');
