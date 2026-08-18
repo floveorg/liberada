@@ -390,11 +390,11 @@
 
   <!-- MODAL: EDITOR (tras autenticar) -->
   <div class="modal-overlay" id="editor-modal">
-    <div class="modal">
+    <div class="modal" style="max-height:82vh;overflow-y:auto">
       <button class="modal-close" id="editor-close">×</button>
       <div class="modal-icon">✏️</div>
       <div class="modal-title">Editar perfil</div>
-      <div class="modal-desc">Cambia lo que quieras; se aplica desde el bot de Telegram.</div>
+      <div class="modal-desc">Campos actuales de maria — edita y pulsa Guardar (solo en esta página, se pierde al cerrar).</div>
       <label style="display:block;font-size:.8rem;color:#555;margin-bottom:4px">Nombre público</label>
       <input id="edit-name" type="text" placeholder="Tu nombre" style="width:100%;padding:10px 12px;border:2px solid var(--ink);border-radius:10px;font-size:1rem;margin-bottom:12px;box-sizing:border-box">
       <label style="display:block;font-size:.8rem;color:#555;margin-bottom:4px">Bio extendida</label>
@@ -426,6 +426,10 @@
         </div>
       </div>
       <p id="editor-msg" style="font-size:.82rem;color:var(--magenta);margin-top:10px;line-height:1.5"></p>
+      <div class="modal-actions" style="margin-top:14px">
+        <button class="modal-btn primary" id="editor-save" type="button">💾 Guardar</button>
+        <button class="modal-btn secondary" id="editor-close2" type="button">Cerrar</button>
+      </div>
     </div>
   </div>
 
@@ -490,7 +494,10 @@
       { id: 'w_aplauso', t: 'Risas y aplausos', when: '2026-08-18', tags: 'contagiosa, aplausos', reactions: 38, src: SEED + 'multitud-risa-aplauso.mp3', app: 'risa', kind: 'audio', alias: 'Contagiosa' },
       { id: 'w_carcajada', t: 'Carcajada', when: '2026-08-18', tags: 'carcajada, vientre', reactions: 30, src: SEED + 'carcajada-solo.mp3', app: 'risa', kind: 'audio', alias: 'Carcajada' },
       { id: 'w_carcajadon', t: 'Carcajadón', when: '2026-08-18', tags: 'carcajada, épica', reactions: 27, src: SEED + 'carcajadon.mp3', app: 'risa', kind: 'audio', alias: 'Carcajada' },
-      { id: 'w_corta', t: 'Risa corta', when: '2026-08-18', tags: 'carcajada, corta', reactions: 22, src: SEED + 'risa-corta-pd.mp3', app: 'risa', kind: 'audio', alias: 'Carcajada' }
+      { id: 'w_corta', t: 'Risa corta', when: '2026-08-18', tags: 'carcajada, corta', reactions: 22, src: SEED + 'risa-corta-pd.mp3', app: 'risa', kind: 'audio', alias: 'Carcajada' },
+      /* Alias de prueba (público) y su subfeed */
+      { id: 'w_grupo', t: 'Grupo pequeño', when: '2026-08-18', tags: 'prueba, grupo', reactions: 12, src: SEED + 'grupo-pequeno.mp3', app: 'risa', kind: 'audio', alias: 'Prueba' },
+      { id: 'w_risa_ale', t: 'Risa (Alemania)', when: '2026-08-18', tags: 'prueba, mundo', reactions: 15, src: SEED + 'gente-riendo.mp3', app: 'risa', kind: 'audio', alias: 'Prueba' }
     ];
 
     const FAVORITES = [
@@ -832,40 +839,45 @@
       document.getElementById('auth-msg').textContent = '📧 Añade tu email desde el bot (/entrar) y podrás usar esta vía.';
     });
 
-    /* ── Editor (demo: cualquiera edita; guarda local, en tu navegador) ── */
-    var EDIT_KEY = 'maria-edited';
+    /* ── Editor (demo): campos actuales de maria + Guardar a sessionStorage
+       (solo esta página; al recargar o cerrar se pierde) ── */
+    var EDIT_KEY = 'maria-edited-session';
+    var SESSION_EDIT = null;
+    try { SESSION_EDIT = JSON.parse(sessionStorage.getItem(EDIT_KEY) || 'null'); } catch (_) {}
     function saveEdit() {
       try {
-        localStorage.setItem(EDIT_KEY, JSON.stringify({
+        sessionStorage.setItem(EDIT_KEY, JSON.stringify({
           name: document.getElementById('edit-name').value,
           bio: document.getElementById('edit-bio').value,
           savedAt: new Date().toISOString()
         }));
       } catch (_) {}
     }
-    function applySavedEdit() {
-      try {
-        var saved = JSON.parse(localStorage.getItem(EDIT_KEY) || 'null');
-        if (!saved) return;
-        if (saved.name) { document.querySelector('.name').textContent = saved.name; document.getElementById('edit-name').value = saved.name; }
-        if (saved.bio) { document.querySelector('.bio').textContent = saved.bio; document.getElementById('edit-bio').value = saved.bio; }
-      } catch (_) {}
-    }
     function openEditor() {
-      applySavedEdit();
+      var nameEl = document.querySelector('.name');
+      var bioEl = document.querySelector('.bio');
+      var name = SESSION_EDIT && SESSION_EDIT.name ? SESSION_EDIT.name : (nameEl ? nameEl.textContent : '');
+      var bio = SESSION_EDIT && SESSION_EDIT.bio ? SESSION_EDIT.bio : (bioEl ? bioEl.textContent : '');
+      document.getElementById('edit-name').value = name;
+      document.getElementById('edit-bio').value = bio;
       document.getElementById('editor-modal').classList.add('open');
-      document.getElementById('editor-msg').textContent = '💾 Se guarda una copia en tu navegador (localStorage) — demo local, nada se envía.';
+      document.getElementById('editor-msg').textContent = '✏️ Campos actuales de maria — edita y pulsa 💾 Guardar (solo esta página).';
     }
     document.getElementById('editor-close').addEventListener('click', function() {
       document.getElementById('editor-modal').classList.remove('open');
     });
-    document.getElementById('edit-name').addEventListener('input', function() {
-      saveEdit();
-      document.getElementById('editor-msg').textContent = '💾 Se guarda una copia en tu navegador (localStorage) — demo local, nada se envía.';
+    document.getElementById('editor-close2').addEventListener('click', function() {
+      document.getElementById('editor-modal').classList.remove('open');
     });
-    document.getElementById('edit-bio').addEventListener('input', function() {
+    document.getElementById('editor-save').addEventListener('click', function() {
+      var name = document.getElementById('edit-name').value;
+      var bio = document.getElementById('edit-bio').value;
+      SESSION_EDIT = { name: name, bio: bio };
       saveEdit();
-      document.getElementById('editor-msg').textContent = '💾 Se guarda una copia en tu navegador (localStorage) — demo local, nada se envía.';
+      var nameEl = document.querySelector('.name'); if (nameEl) nameEl.textContent = name;
+      var bioEl = document.querySelector('.bio'); if (bioEl) bioEl.textContent = bio;
+      document.getElementById('editor-msg').textContent = '✅ Guardado en esta página (sessionStorage). Se pierde al recargar o cerrar.';
+      document.getElementById('editor-modal').classList.remove('open');
     });
     var socials = ['Telegram ✈️', 'Web 🌐'];
     function renderSocialChips() {
@@ -1030,7 +1042,19 @@
       var box = document.getElementById('alias-drop-list');
       if (!box) return;
       box.innerHTML = '';
-      // Solo los aliases con clips reales (de CLIPS) + el privado para el dueño.
+      // «María» = todos juntos (primer opción, subfeed completo).
+      var all = document.createElement('button');
+      all.type = 'button';
+      all.className = 'alias-opt';
+      all.innerHTML = '<span>María — todos juntos</span><span class="cnt">' + CLIPS.length + '</span>';
+      all.addEventListener('click', function(){
+        activeAlias = null;
+        document.getElementById('alias-tick').textContent = 'María';
+        document.getElementById('alias-drop').hidden = true;
+        applyAliasFilter();
+      });
+      box.appendChild(all);
+      // Aliases reales (de CLIPS) + el privado solo para el dueño.
       list.forEach(function(a){
         if (a.private && sessionStorage.getItem('liberada_authed') !== 'maria') return;
         var opt = document.createElement('button');
