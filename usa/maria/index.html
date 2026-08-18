@@ -157,6 +157,12 @@
     .tour .manual-link:hover { text-decoration: underline; }
     .mini-apps { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
     @media (max-width:380px){ .mini-apps { grid-template-columns: 1fr; } }
+    .alias-row { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 14px auto 6px; max-width: 520px; }
+    .alias-chip { padding: 6px 14px; border: 2px solid var(--ink); border-radius: 999px; background: var(--cream);
+      color: var(--ink); font-size: .82rem; font-weight: 700; cursor: pointer; transition: all .15s; }
+    .alias-chip:hover { transform: translateY(-1px); background: var(--marigold); }
+    .alias-chip[aria-pressed="true"] { background: var(--ink); color: var(--cream); }
+    .alias-chip.locked { border-style: dashed; opacity: .8; }
     .mini-app { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
       padding: 16px 10px; border: 2px solid var(--ink); border-radius: 14px; background: var(--cream);
       text-decoration: none; color: var(--ink); font-weight: 700; font-size: .95rem; text-align: center;
@@ -208,7 +214,9 @@
       </div>
     </div>
     
-    <div class="actions">
+<div class="alias-row" id="alias-row" role="group" aria-label="Aliases de este perfil"></div>
+    
+        <div class="actions">
       <button class="action-btn follow" id="follow-btn">+ Seguir</button>
       <button class="action-btn share" id="share-btn">↗ Compartir</button>
     </div>
@@ -379,6 +387,17 @@
             <button type="button" class="social-opt" data-label="Web 🌐">Web 🌐</button>
             <button type="button" class="social-opt" data-label="Email ✉️">Email ✉️</button>
           </div>
+        </div>
+      </div>
+      <div class="editor-aliases" style="margin-top:14px">
+        <span style="font-size:.8rem;color:#555;display:block;margin-bottom:6px">Tus aliases</span>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <input id="edit-alias" type="text" placeholder="Nuevo alias" style="flex:1 1 140px;padding:10px 12px;border:2px solid var(--ink);border-radius:10px;font-size:.9rem;box-sizing:border-box;min-width:120px">
+          <select id="edit-alias-vis" style="padding:10px;border:2px solid var(--ink);border-radius:10px;background:var(--cream);font-size:.85rem">
+            <option value="0">Público</option>
+            <option value="1">Privado 🔒</option>
+          </select>
+          <button class="modal-btn secondary" id="add-alias-btn" type="button">+ Añadir</button>
         </div>
       </div>
       <p id="editor-msg" style="font-size:.82rem;color:var(--magenta);margin-top:10px;line-height:1.5"></p>
@@ -855,6 +874,60 @@
         }
       })
       .catch(function(){});
+
+    /* ── Aliases (v2): chips filtrables; privados solo para el dueño ────── */
+    var activeAlias = null;
+    function loadAliases() {
+      fetch('https://risa.liberada.net/api/aliases/maria', { cache: 'no-store', signal: AbortSignal.timeout(2500) })
+        .then(function(r){ return r.ok ? r.json() : null; })
+        .then(function(d){
+          if (!d || !d.ok || !d.aliases) return;
+          var row = document.getElementById('alias-row');
+          if (!row) return;
+          row.innerHTML = '';
+          d.aliases.forEach(function(a){
+            var chip = document.createElement('button');
+            chip.type = 'button';
+            chip.className = 'alias-chip' + (a.private ? ' locked' : '');
+            chip.setAttribute('aria-pressed', 'false');
+            chip.textContent = (a.private ? '🔒 ' : '') + a.alias;
+            chip.addEventListener('click', function(){
+              activeAlias = (activeAlias === a.alias) ? null : a.alias;
+              row.querySelectorAll('.alias-chip').forEach(function(c){
+                c.setAttribute('aria-pressed', c === chip && activeAlias ? 'true' : 'false');
+              });
+              applyAliasFilter();
+            });
+            row.appendChild(chip);
+          });
+        })
+        .catch(function(){});
+    }
+    function applyAliasFilter() {
+      ['clip-list', 'fav-list'].forEach(function(id){
+        var box = document.getElementById(id);
+        if (!box) return;
+        Array.prototype.forEach.call(box.querySelectorAll('.clip-item'), function(li){
+          var title = (li.querySelector('.clip-title') || {}).textContent || '';
+          var match = !activeAlias || title.toLowerCase().indexOf(activeAlias.toLowerCase()) > -1;
+          li.style.display = match ? '' : 'none';
+        });
+      });
+    }
+    document.getElementById('add-alias-btn').addEventListener('click', function(){
+      var name = (document.getElementById('edit-alias').value || '').trim();
+      if (!name) return;
+      var priv = document.getElementById('edit-alias-vis').value === '1';
+      fetch('https://risa.liberada.net/api/aliases', {
+        method: 'POST', headers: { 'content-type': 'application/json', authorization: 'Bearer devris' },
+        body: JSON.stringify({ key: 'maria', alias: name, private: priv }),
+        signal: AbortSignal.timeout(2500)
+      }).then(function(r){ return r.ok; }).then(function(ok){
+        document.getElementById('edit-alias').value = '';
+        if (ok) loadAliases();
+      }).catch(function(){});
+    });
+    loadAliases();
 
     renderLists();
   </script>
