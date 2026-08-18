@@ -786,38 +786,114 @@
     loadProfile = function() {
       return _origLoad.apply(this, arguments).then(function() {
         renderUploadResults(allClips);
+        renderChains();
       });
     };
+
+    /* ── Cadenas reales (v2): desde los `parent` de los clips del feed ── */
+    function renderChains() {
+      var box = document.getElementById('chain-list');
+      if (!box) return;
+      var byParent = {}, roots = [];
+      (allClips || []).forEach(function(c){
+        if (c.parent) (byParent[c.parent] = byParent[c.parent] || []).push(c);
+        else roots.push(c);
+      });
+      if (!Object.keys(byParent).length) {
+        box.innerHTML = '<li class="clip-item" style="padding:12px;color:#888;font-size:.85rem">Sin cadenas todavía — responde a un clip para crear una.</li>';
+        return;
+      }
+      box.innerHTML = '';
+      function walk(c, depth) {
+        var li = document.createElement('li');
+        li.className = 'clip-item';
+        li.style.paddingLeft = (16 + depth * 22) + 'px';
+        li.innerHTML = '<button class="clip-play" style="background:var(--purple)">▶</button>' +
+          '<div class="clip-body"><div class="clip-title">' + (c.t || 'Sin título') + '</div>' +
+          (depth > 0 ? '<div class="clip-meta" style="color:var(--purple);font-size:.7rem">↳ responde a ' + (c.parentTitle || c.parent) + '</div>' : '') +
+          '<div class="clip-meta">' + timeAgo(c.when) + '</div></div>' +
+          '<div class="clip-actions"><button class="clip-action" style="background:none;border:none;font-size:.85rem;cursor:pointer;color:#888">↗</button></div>';
+        box.appendChild(li);
+        (byParent[c.id] || []).forEach(function(ch){ walk(ch, depth + 1); });
+      }
+      var seen = {};
+      (allClips || []).forEach(function(c){
+        if (!c.parent && !seen[c.id]) { seen[c.id] = true; walk(c, 0); }
+      });
+      var n = document.getElementById('tab-count-cadenas');
+      if (n) n.textContent = Object.keys(byParent).length;
+    }
+    document.addEventListener('click', function(e) {
+      var b = e.target.closest('.clip-chain');
+      if (!b) return;
+      e.stopPropagation();
+      var m = document.querySelector('.chain-menu'); if (m) m.remove();
+      var id = b.dataset.chain;
+      var clip = allClips.find(function(c){ return c.id === id; });
+      var menu = document.createElement('div');
+      menu.className = 'chain-menu';
+      menu.style.cssText = 'position:fixed;z-index:40;background:var(--cream);border:2px solid var(--ink);border-radius:10px;padding:6px;box-shadow:4px 4px 0 rgba(42,24,16,.15);display:grid;gap:4px;min-width:180px';
+      menu.innerHTML = '<button type="button" class="chain-opt" style="padding:8px 12px;border:none;background:none;cursor:pointer;text-align:left;font-size:.85rem;font-weight:600;color:var(--ink)">↳ Responder (v1)</button>' +
+        '<button type="button" class="chain-opt" style="padding:8px 12px;border:none;background:none;cursor:pointer;text-align:left;font-size:.85rem;font-weight:600;color:var(--ink)">⋯ Más opciones (v2)</button>';
+      var r = b.getBoundingClientRect();
+      menu.style.left = Math.min(r.right + 8, window.innerWidth - 200) + 'px';
+      menu.style.top = r.top + 'px';
+      document.body.appendChild(menu);
+      menu.children[0].addEventListener('click', function() {
+        menu.remove();
+        window.open('https://t.me/RisaLiberadaBot', '_blank');
+      });
+      menu.children[1].addEventListener('click', function() {
+        menu.remove();
+        alert('Más opciones (v2): cadena visual, modo foco y story en D1.');
+      });
+    });
+    document.addEventListener('click', function(e) {
+      var m = document.querySelector('.chain-menu');
+      if (m && !e.target.closest('.chain-menu')) m.remove();
+    });
 
     /* ── Aliases (v2): chips filtrables; privados solo para el dueño ────── */
     var profileKey = null;
     var activeAlias = null;
+    function renderAliasChips(aliases) {
+      var row = document.getElementById('alias-row');
+      if (!row) return;
+      row.innerHTML = '';
+      aliases.forEach(function(a){
+        var chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'alias-chip' + (a.private ? ' locked' : '');
+        chip.setAttribute('aria-pressed', 'false');
+        chip.textContent = (a.private ? '🔒 ' : '') + a.alias;
+        chip.addEventListener('click', function(){
+          activeAlias = (activeAlias === a.alias) ? null : a.alias;
+          row.querySelectorAll('.alias-chip').forEach(function(c){
+            c.setAttribute('aria-pressed', c === chip && activeAlias ? 'true' : 'false');
+          });
+          applyAliasFilter();
+        });
+        row.appendChild(chip);
+      });
+    }
     function loadAliases(key) {
       profileKey = key;
+      // Primero la API D1 nativa; si no está, fallback al aliases.json estático.
       fetch('https://risa.liberada.net/api/aliases/' + encodeURIComponent(key), { cache: 'no-store', signal: AbortSignal.timeout(2500) })
         .then(function(r){ return r.ok ? r.json() : null; })
         .then(function(d){
-          if (!d || !d.ok || !d.aliases) return;
-          var row = document.getElementById('alias-row');
-          if (!row) return;
-          row.innerHTML = '';
-          d.aliases.forEach(function(a){
-            var chip = document.createElement('button');
-            chip.type = 'button';
-            chip.className = 'alias-chip' + (a.private ? ' locked' : '');
-            chip.setAttribute('aria-pressed', 'false');
-            chip.textContent = (a.private ? '🔒 ' : '') + a.alias;
-            chip.addEventListener('click', function(){
-              activeAlias = (activeAlias === a.alias) ? null : a.alias;
-              row.querySelectorAll('.alias-chip').forEach(function(c){
-                c.setAttribute('aria-pressed', c === chip && activeAlias ? 'true' : 'false');
-              });
-              applyAliasFilter();
-            });
-            row.appendChild(chip);
-          });
+          if (d && d.ok && d.aliases && d.aliases.length) { renderAliasChips(d.aliases); return; }
+          fetch('https://risa.liberada.net/aliases.json', { cache: 'no-store', signal: AbortSignal.timeout(2500) })
+            .then(function(r2){ return r2.ok ? r2.json() : {}; })
+            .then(function(fb){ var list = fb[username] || fb[key] || []; renderAliasChips(list); })
+            .catch(function(){});
         })
-        .catch(function(){});
+        .catch(function(){
+          fetch('https://risa.liberada.net/aliases.json', { cache: 'no-store', signal: AbortSignal.timeout(2500) })
+            .then(function(r2){ return r2.ok ? r2.json() : {}; })
+            .then(function(fb){ var list = fb[username] || fb[key] || []; renderAliasChips(list); })
+            .catch(function(){});
+        });
     }
     function applyAliasFilter() {
       // Filtra la actividad por el alias: coincide con el título o el nombre.

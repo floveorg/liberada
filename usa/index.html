@@ -3,282 +3,73 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Perfil — liberada.net</title>
+  <title>usa.liberada.net — Tu subdominio de perfil</title>
+  <meta name="description" content="Tour: por qué activar tu subdominio <tu>.liberada.net — enlace corto, perfil agregador, edición desde la miniapp, alias y privacidad.">
   <style>
-    :root {
-      --ink: #2a1810;
-      --paper: #faf6f1;
-      --marigold: #ffb020;
-      --magenta: #e63946;
-      --sage: #a8d5ba;
-      --sky: #89c4e1;
-      --purple: #9b5de5;
-    }
+    :root { --ink:#2a1810; --paper:#faf6f1; --cream:#fff8ef; --marigold:#ffb020; --magenta:#e63946;
+      --sage:#a8d5ba; --sky:#89c4e1; --purple:#9b5de5; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: system-ui, -apple-system, sans-serif;
-      background: var(--paper);
-      color: var(--ink);
-      line-height: 1.5;
-      min-height: 100vh;
-    }
-    .profile {
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 40px 20px;
-      text-align: center;
-    }
-    .back {
-      display: inline-block;
-      margin-bottom: 24px;
-      color: var(--magenta);
-      text-decoration: none;
-    }
+    body { font-family: system-ui, -apple-system, sans-serif; background: var(--paper); color: var(--ink);
+      line-height: 1.5; min-height: 100vh; }
+    .wrap { max-width: 620px; margin: 0 auto; padding: 40px 20px 64px; }
+    .back { display: inline-block; margin-bottom: 24px; color: var(--magenta); text-decoration: none; font-size: .875rem; }
     .back:hover { text-decoration: underline; }
-    .avatar {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      background: var(--marigold);
-      display: grid;
-      place-items: center;
-      font-size: 2.5rem;
-      margin: 0 auto 16px;
-      box-shadow: 0 4px 16px rgba(0,0,0,.2);
-    }
-    .name {
-      font-size: 1.75rem;
-      font-weight: 700;
-      margin-bottom: 4px;
-    }
-    .key {
-      font-size: .875rem;
-      color: #666;
-      margin-bottom: 16px;
-    }
-    .bio {
-      font-size: .9rem;
-      color: #444;
-      margin-bottom: 16px;
-      font-style: italic;
-    }
-    .links {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-      margin-bottom: 24px;
-    }
-    .link {
-      font-size: .8rem;
-      color: var(--magenta);
-      text-decoration: none;
-    }
-    .link:hover { text-decoration: underline; }
-    .section-title {
-      font-size: .75rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: #888;
-      margin-bottom: 12px;
-    }
-    .apps-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 12px;
-      margin-bottom: 32px;
-    }
-    .app-card {
-      background: #fff;
-      border: 2px solid var(--ink);
-      padding: 16px;
-      text-decoration: none;
-      color: var(--ink);
-      box-shadow: 4px 4px 0 rgba(42,24,16,.15);
-      transition: transform .15s;
-    }
-    .app-card:hover {
-      transform: translateY(-2px);
-    }
-    .app-emoji {
-      font-size: 1.5rem;
-      margin-bottom: 8px;
-    }
-    .app-name {
-      font-weight: 600;
-      font-size: .9rem;
-      margin-bottom: 4px;
-    }
-    .app-count {
-      font-size: .75rem;
-      color: #666;
-    }
-    .empty {
-      text-align: center;
-      padding: 32px 20px;
-      color: #888;
-    }
-    .empty-icon {
-      font-size: 2.5rem;
-      margin-bottom: 8px;
-    }
-    .mejorar-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 10px 24px;
-      border: 2px solid var(--purple);
-      border-radius: 999px;
-      background: var(--purple);
-      color: white;
-      font-size: .9rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all .15s;
-      margin-bottom: 24px;
-    }
-    .mejorar-btn:hover { transform: translateY(-1px); box-shadow: 3px 3px 0 rgba(42,24,16,.15); }
-
-    /* MODAL */
-    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(42,24,16,.5); z-index: 1000; place-items: center; }
-    .modal-overlay.open { display: grid; }
-    .modal { background: var(--paper); border: 3px solid var(--ink); box-shadow: 8px 8px 0 rgba(42,24,16,.2); padding: 32px; max-width: 480px; width: 90%; text-align: left; position: relative; max-height: 85vh; overflow-y: auto; }
-    .modal-icon { font-size: 2.5rem; margin-bottom: 12px; text-align: center; }
-    .modal-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 8px; text-align: center; }
-    .modal-desc { font-size: .9rem; color: #555; margin-bottom: 20px; }
-    .modal-actions { display: flex; gap: 10px; justify-content: center; margin-top: 16px; }
-    .modal-btn { padding: 10px 24px; border: 2px solid var(--ink); font-size: .9rem; font-weight: 600; cursor: pointer; text-decoration: none; transition: all .15s; }
-    .modal-btn:hover { transform: translateY(-1px); }
-    .modal-btn.primary { background: var(--ink); color: white; }
-    .modal-btn.secondary { background: #fff8ef; color: var(--ink); }
-    .modal-close { position: absolute; top: 12px; right: 16px; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #888; }
-    .mejorar-steps { counter-reset: step; margin: 0; padding: 0; list-style: none; }
-    .mejorar-step { display: flex; gap: 14px; margin-bottom: 18px; align-items: flex-start; }
-    .mejorar-step-num { counter-increment: step; flex: 0 0 auto; width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--purple), var(--pink)); color: white; font-weight: 700; font-size: .9rem; display: grid; place-items: center; }
-    .mejorar-step-num::before { content: counter(step); }
-    .mejorar-step-body { flex: 1; }
-    .mejorar-step-body h4 { font-size: .95rem; font-weight: 700; margin-bottom: 2px; }
-    .mejorar-step-body p { font-size: .85rem; color: #555; margin: 0; }
-    .mejorar-step-body a { color: var(--magenta); font-weight: 600; }
+    h1 { font-size: 1.9rem; margin-bottom: 6px; }
+    .lead { color: #555; margin-bottom: 28px; max-width: 46ch; }
+    .step { display: flex; gap: 16px; margin-bottom: 20px; background: #fff; border: 2px solid var(--ink);
+      border-radius: 14px; padding: 18px; box-shadow: 4px 4px 0 rgba(42,24,16,.12); }
+    .step-num { flex: 0 0 auto; width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center;
+      background: linear-gradient(135deg, var(--purple), var(--marigold)); color: #fff; font-weight: 700; font-size: 1.05rem; }
+    .step h3 { font-size: 1.05rem; margin-bottom: 4px; }
+    .step p { font-size: .9rem; color: #555; }
+    .step code { background: var(--cream); padding: 1px 6px; border-radius: 6px; font-size: .85em; }
+    .cta { text-align: center; margin-top: 30px; }
+    .cta a { display: inline-block; padding: 12px 26px; border: 2px solid var(--ink); border-radius: 999px;
+      background: var(--ink); color: #fff; text-decoration: none; font-weight: 700; font-size: .95rem; }
+    .cta a:hover { background: var(--purple); border-color: var(--purple); }
+    .cta small { display: block; margin-top: 10px; color: #888; font-size: .78rem; }
+    .footer { text-align: center; padding: 24px; font-size: .75rem; color: #aaa; }
+    .footer a { color: var(--magenta); text-decoration: none; }
   </style>
 </head>
 <body>
-  <div class="profile">
-    <a class="back" href="https://liberada.net">← Volver</a>
-    
-    <div class="avatar" id="avatar">🎤</div>
-    <div class="name" id="name">-</div>
-    <div class="key" id="key">-</div>
-    <div class="bio" id="bio"></div>
-    
-    <div class="links" id="links"></div>
+  <div class="wrap">
+    <a class="back" href="https://liberada.net">← liberada.net</a>
+    <h1>Tu subdominio de perfil</h1>
+    <p class="lead">Activa <code>&lt;tu&gt;.liberada.net</code> y dale a tu perfil una URL corta que agregue todo lo que compartes. Cinco pasos de lo que ganas:</p>
 
-    <button class="mejorar-btn" id="mejorar-btn" style="display:none">🌟 Mejorar perfil</button>
-    
-    <div class="section-title">Apps</div>
-    <div class="apps-grid" id="apps-grid">
-      <!-- Loaded from data -->
-    </div>
+    <div class="step"><span class="step-num">1</span><div>
+      <h3>Un enlace corto de verdad</h3>
+      <p><code>&lt;tu&gt;.liberada.net</code> — fácil de decir, de escribir y de compartir. Nada de URL largas con claves raras.</p>
+    </div></div>
 
-    <div class="empty" id="empty-state" hidden>
-      <div class="empty-icon">🌱</div>
-      <p>Perfil no encontrado</p>
-    </div>
-  </div>
+    <div class="step"><span class="step-num">2</span><div>
+      <h3>Un perfil que agrega tus risas y amores</h3>
+      <p>Redirige a tu perfil agregador: todas tus risas, amores y actividad de las apps liberada, juntas.</p>
+    </div></div>
 
-  <!-- MODAL: MEJORAR -->
-  <div class="modal-overlay" id="mejorar-modal">
-    <div class="modal">
-      <button class="modal-close" id="mejorar-close">×</button>
-      <div class="modal-icon">🌟</div>
-      <div class="modal-title">Mejorar tu perfil</div>
-      <div class="modal-desc">Convierte tu perfil v1 en un perfil completo con feeds de <strong>Ama</strong> y <strong>Risa</strong>.</div>
-      
-      <ol class="mejorar-steps">
-        <li class="mejorar-step">
-          <div class="mejorar-step-num"></div>
-          <div class="mejorar-step-body">
-            <h4>Activa tu usuario</h4>
-            <p>Visita tu perfil en liberada.net para ver tu información pública. Allí se muestran tus apps y feeds.</p>
-          </div>
-        </li>
-        <li class="mejorar-step">
-          <div class="mejorar-step-num"></div>
-          <div class="mejorar-step-body">
-            <h4>Sube contenido a Ama</h4>
-            <p>Usa el bot de Telegram <a href="https://t.me/AmaLiberadaBot" target="_blank">@AmaLiberadaBot</a> para grabar audios o subir vídeos de amor.</p>
-          </div>
-        </li>
-        <li class="mejorar-step">
-          <div class="mejorar-step-num"></div>
-          <div class="mejorar-step-body">
-            <h4>Sube contenido a Risa</h4>
-            <p>Usa el bot de Telegram <a href="https://t.me/RisaLiberadaBot" target="_blank">@RisaLiberadaBot</a> para compartir risas con la comunidad.</p>
-          </div>
-        </li>
-        <li class="mejorar-step">
-          <div class="mejorar-step-num"></div>
-          <div class="mejorar-step-body">
-            <h4>Comparte tu perfil</h4>
-            <p>Comparte tu URL de perfil con quien quieras. Tu perfil muestra todo lo que compartes en las apps liberadas.</p>
-          </div>
-        </li>
-      </ol>
+    <div class="step"><span class="step-num">3</span><div>
+      <h3>Editable desde la miniapp</h3>
+      <p>Entra desde la MiniApp de Telegram (<code>/entrar</code> a @RisaLiberadaBot) y edita tras un quick check. Tu identidad viaja ofuscada.</p>
+    </div></div>
 
-      <div class="modal-actions">
-        <a class="modal-btn primary" id="mejorar-goto" href="#">Ir a mi perfil →</a>
-        <button class="modal-btn secondary" id="mejorar-cancel">Cerrar</button>
-      </div>
+    <div class="step"><span class="step-num">4</span><div>
+      <h3>Alias públicos y privados</h3>
+      <p>Crea aliases al editar tu perfil: los públicos aparecen como chips filtrables para todos; los privados solo para ti.</p>
+    </div></div>
+
+    <div class="step"><span class="step-num">5</span><div>
+      <h3>Privado hasta que activas</h3>
+      <p>Antes del claim, tu identidad se mantiene ofuscada. El icono de Telegram aparece en tu perfil solo cuando activas el subdominio.</p>
+    </div></div>
+
+    <div class="cta">
+      <a href="https://risa.liberada.net/#/entrar">Activar mi subdominio</a>
+      <small>Mira la demo: <a href="https://liberada.net/usa/maria/">maria</a> (avanzada) · <a href="https://liberada.net/usa/maria-mini/">maria-mini</a> · <a href="https://liberada.net/usa/maria-adv/">maria-adv</a></small>
     </div>
   </div>
-
-  <script>
-    // Get key from URL: /usa/<key>/
-    const pathParts = location.pathname.split('/');
-    const keyIdx = pathParts.indexOf('usa') + 1;
-    const KEY = pathParts[keyIdx] || '';
-    
-    if (!KEY) {
-      document.getElementById('name').textContent = 'Perfil no encontrado';
-      document.getElementById('empty-state').hidden = false;
-    } else {
-      document.getElementById('key').textContent = '@' + KEY;
-      document.getElementById('name').textContent = KEY;
-      document.getElementById('bio').textContent = 'Perfil de ' + KEY;
-      document.getElementById('mejorar-btn').style.display = 'inline-flex';
-
-      // App cards: always show Risa + Ama
-      document.getElementById('apps-grid').innerHTML = `
-        <a class="app-card" href="https://risa.liberada.net/#/u/${KEY}/">
-          <div class="app-emoji">😹</div>
-          <div class="app-name">Risa</div>
-          <div class="app-count">Ver perfil</div>
-        </a>
-        <a class="app-card" href="https://ama.liberada.net/#/u/${KEY}/">
-          <div class="app-emoji">💗</div>
-          <div class="app-name">Ama</div>
-          <div class="app-count">Ver perfil</div>
-        </a>
-      `;
-
-      // Mejorar button
-      document.getElementById('mejorar-btn').addEventListener('click', function() {
-        document.getElementById('mejorar-modal').classList.add('open');
-        document.getElementById('mejorar-goto').href = 'https://liberada.net/usa/' + KEY + '/';
-      });
-    }
-
-    // Modal close handlers
-    document.getElementById('mejorar-close').addEventListener('click', function() {
-      document.getElementById('mejorar-modal').classList.remove('open');
-    });
-    document.getElementById('mejorar-cancel').addEventListener('click', function() {
-      document.getElementById('mejorar-modal').classList.remove('open');
-    });
-    document.querySelectorAll('.modal-overlay').forEach(function(m) {
-      m.addEventListener('click', function(e) {
-        if (e.target === e.currentTarget) e.currentTarget.classList.remove('open');
-      });
-    });
-  </script>
+  <div class="footer">
+    <p>liberada.net — <a href="https://liberada.net">apps de la comunidad</a></p>
+  </div>
 </body>
 </html>

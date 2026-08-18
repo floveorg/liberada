@@ -984,27 +984,37 @@
       fetch('https://risa.liberada.net/api/aliases/maria', { cache: 'no-store', signal: AbortSignal.timeout(2500) })
         .then(function(r){ return r.ok ? r.json() : null; })
         .then(function(d){
-          if (!d || !d.ok || !d.aliases) return;
-          var row = document.getElementById('alias-row');
-          if (!row) return;
-          row.innerHTML = '';
-          d.aliases.forEach(function(a){
-            var chip = document.createElement('button');
-            chip.type = 'button';
-            chip.className = 'alias-chip' + (a.private ? ' locked' : '');
-            chip.setAttribute('aria-pressed', 'false');
-            chip.textContent = (a.private ? '🔒 ' : '') + a.alias;
-            chip.addEventListener('click', function(){
-              activeAlias = (activeAlias === a.alias) ? null : a.alias;
-              row.querySelectorAll('.alias-chip').forEach(function(c){
-                c.setAttribute('aria-pressed', c === chip && activeAlias ? 'true' : 'false');
-              });
-              applyAliasFilter();
-            });
-            row.appendChild(chip);
-          });
+          if (d && d.ok && d.aliases && d.aliases.length) { renderAliasChips(d.aliases); return; }
+          return fetch('https://risa.liberada.net/aliases.json', { cache: 'no-store', signal: AbortSignal.timeout(2500) })
+            .then(function(r2){ return r2.ok ? r2.json() : {}; })
+            .then(function(fb){ renderAliasChips(fb['maria'] || []); });
         })
-        .catch(function(){});
+        .catch(function(){
+          fetch('https://risa.liberada.net/aliases.json', { cache: 'no-store', signal: AbortSignal.timeout(2500) })
+            .then(function(r2){ return r2.ok ? r2.json() : {}; })
+            .then(function(fb){ renderAliasChips(fb['maria'] || []); })
+            .catch(function(){});
+        });
+    }
+    function renderAliasChips(list) {
+      var row = document.getElementById('alias-row');
+      if (!row) return;
+      row.innerHTML = '';
+      list.forEach(function(a){
+        var chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'alias-chip' + (a.private ? ' locked' : '');
+        chip.setAttribute('aria-pressed', 'false');
+        chip.textContent = (a.private ? '🔒 ' : '') + a.alias;
+        chip.addEventListener('click', function(){
+          activeAlias = (activeAlias === a.alias) ? null : a.alias;
+          row.querySelectorAll('.alias-chip').forEach(function(c){
+            c.setAttribute('aria-pressed', c === chip && activeAlias ? 'true' : 'false');
+          });
+          applyAliasFilter();
+        });
+        row.appendChild(chip);
+      });
     }
     function applyAliasFilter() {
       ['clip-list', 'fav-list'].forEach(function(id){

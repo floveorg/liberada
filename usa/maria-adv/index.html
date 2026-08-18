@@ -454,6 +454,45 @@
     </div>
   </div>
 
+  <!-- BROWSY PoC (v2-d1): activación de la barra fija de navegación central -->
+  <style>
+    .browsy-bar { display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 60;
+      background: var(--paper); border-top: 2px solid var(--ink); padding: 8px 12px;
+      box-shadow: 0 -4px 12px rgba(0,0,0,.12); }
+    .browsy-bar.on { display: flex; }
+    .browsy-bar a { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px;
+      text-decoration: none; color: var(--ink); font-size: .62rem; font-weight: 600; }
+    .browsy-bar a .ico { font-size: 1.15rem; }
+    .browsy-toggle { position: fixed; right: 14px; bottom: 12px; z-index: 61; padding: 8px 14px;
+      border: 2px solid var(--ink); border-radius: 999px; background: var(--marigold); color: var(--ink);
+      font-size: .78rem; font-weight: 700; cursor: pointer; box-shadow: 3px 3px 0 rgba(42,24,16,.15); }
+    .browsy-toggle.on { background: var(--ink); color: var(--paper); }
+  </style>
+  <nav class="browsy-bar" id="browsy-bar" aria-label="Navegación central (browsy)">
+    <a href="https://risa.liberada.net"><span class="ico">😹</span>Risa</a>
+    <a href="https://ama.liberada.net"><span class="ico">💗</span>Ama</a>
+    <a href="https://liberada.net"><span class="ico">🌐</span>Liberada</a>
+    <a href="https://flove.org/apps/appy/appy-basic.html"><span class="ico">🧩</span>Appy</a>
+    <a href="https://flove.org"><span class="ico">✨</span>Flove</a>
+  </nav>
+  <button class="browsy-toggle" id="browsy-toggle" type="button" aria-pressed="false">🌐 browsy</button>
+  <script>
+    /* browsy activation PoC: toggle de la barra fija central, persiste en localStorage */
+    (function(){
+      var bar = document.getElementById('browsy-bar'), btn = document.getElementById('browsy-toggle');
+      function set(on){
+        bar.classList.toggle('on', on);
+        btn.classList.toggle('on', on);
+        btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+        document.body.style.paddingBottom = on ? '64px' : '';
+        try { localStorage.setItem('maria-adv-browsy', on ? '1' : '0'); } catch (_) {}
+      }
+      btn.addEventListener('click', function(){ set(!bar.classList.contains('on')); });
+      var saved = null;
+      try { saved = localStorage.getItem('maria-adv-browsy') === '1'; } catch (_) {}
+      set(!!saved);
+    })();
+  </script>
   <script>
     const CLIPS = [
       { id: 'q_001', t: 'Yoga y risa', when: '2026-08-16', tags: 'yoga, relajación', reactions: 12, src: '#', app: 'risa', kind: 'audio' },
