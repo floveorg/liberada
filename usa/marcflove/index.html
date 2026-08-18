@@ -134,9 +134,15 @@
     .tour ol { margin: 0; padding-left: 20px; color: #555; line-height: 1.6; }
     .tour .manual-link { display: inline-block; margin-top: 12px; color: var(--magenta); font-weight: 700; text-decoration: none; }
     .tour .manual-link:hover { text-decoration: underline; }
-    .mini-apps { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
-    .mini-app { padding: 6px 14px; border: 1.5px solid #ddd; border-radius: 999px; font-size: .8rem; font-weight: 600; background: var(--cream); text-decoration: none; color: var(--ink); }
-    .mini-app:hover { border-color: var(--magenta); color: var(--magenta); }
+    .mini-apps { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+    @media (max-width:380px){ .mini-apps { grid-template-columns: 1fr; } }
+    .mini-app { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+      padding: 16px 10px; border: 2px solid var(--ink); border-radius: 14px; background: var(--cream);
+      text-decoration: none; color: var(--ink); font-weight: 700; font-size: .95rem; text-align: center;
+      box-shadow: 3px 3px 0 rgba(42,24,16,.12); transition: transform .15s; }
+    .mini-app:hover { transform: translateY(-2px); }
+    .mini-app .app-logo { width: 42px; height: 42px; display: block; }
+    .mini-app.mf-wide { grid-column: 1/-1; }
     .results-row { display: grid; grid-template-columns: 2fr 1fr; gap: 12px; margin-top: 18px; }
     @media (max-width:560px){ .results-row { grid-template-columns: 1fr; } }
     .result-card { padding: 14px; border: 1.5px solid #eee; border-radius: 12px; background: var(--cream); }
@@ -213,19 +219,33 @@
         <ol>
           <li><strong>Descarga</strong> flove solo desde flove.org y descomprímelo: sirve en localhost sin conexión.</li>
           <li><strong>Juega</strong> las apps: cada una es un mini-juego o práctica para una dimensión de tu vida.</li>
-          <li><strong>Tu perfil</strong> guarda lo que juegas y lo que subes, en privado, en tu máquina.</li>
-          <li><strong>Comparte</strong> cuando quieras: tus risas y amores llegan aquí, a tu perfil liberada.</li>
+          <li><strong>Tu perfil</strong> guarda lo que juegas y lo que subes, en privado, en tu máquina. Te serán útiles para conocerte y para nuestro futuro agente sugerirte mejores amores.</li>
+          <li><strong>Juegalas y Compártelas</strong> cuando quieras aquí, junto a tus risas y amores.</li>
         </ol>
         <a class="manual-link" href="https://flove.org/solo/start.html" target="_blank" rel="noopener">Manual completo →</a>
       </div>
       <div class="mini-apps">
-        <a class="mini-app" href="https://flove.org/apps/metas/goddy.html" target="_blank" rel="noopener">Goddy</a>
-        <a class="mini-app" href="https://flove.org/apps/metas/souls.html" target="_blank" rel="noopener">Souls</a>
-        <a class="mini-app" href="https://flove.org/apps/bio/pracsys.html" target="_blank" rel="noopener">Pracsys</a>
-        <a class="mini-app" href="https://flove.org/apps/trusty/myfamily.html" target="_blank" rel="noopener">Myfamily</a>
-        <a class="mini-app" href="https://flove.org/apps/economy/dealy/inventary.html" target="_blank" rel="noopener">Inventary</a>
-        <a class="mini-app" href="https://flove.org/apps/realy.html" target="_blank" rel="noopener">Realy</a>
-        <a class="mini-app" href="https://flove.org/apps/puzzy/keys/keys-advanced.html" target="_blank" rel="noopener">Keys</a>
+        <a class="mini-app" href="https://flove.org/apps/metas/goddy.html" target="_blank" rel="noopener">
+          <svg class="app-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:#e23b3b"><circle cx="12" cy="13.5" r="3.2"/><path d="M12 4v2M5.6 6.6l1.5 1.5M18.4 6.6l-1.5 1.5M3.5 13.5h2M18.5 13.5h2"/><path d="M8 8.8a5 5 0 0 1 8 0"/></svg>
+          <span>Goddy</span></a>
+        <a class="mini-app" href="https://flove.org/apps/puzzy/keys/keys-advanced.html" target="_blank" rel="noopener">
+          <svg class="app-logo" viewBox="0 0 100 100" fill="currentColor" style="color:#9b51e0"><g transform="rotate(0 50 50)"><ellipse cx="50" cy="26" rx="6.5" ry="17"/></g><g transform="rotate(72 50 50)"><ellipse cx="50" cy="26" rx="6.5" ry="17"/></g><g transform="rotate(288 50 50)"><ellipse cx="50" cy="26" rx="6.5" ry="17"/></g><circle cx="50" cy="50" r="4.5"/></svg>
+          <span>Keys</span></a>
+        <a class="mini-app" href="https://flove.org/apps/bio/pracsys.html" target="_blank" rel="noopener">
+          <svg class="app-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:#e3bb12"><circle cx="6" cy="8" r="2"/><circle cx="18" cy="8" r="2"/><circle cx="12" cy="17" r="2"/><path d="M7.6 9.4l3 6M16.4 9.4l-3 6M8 8h8"/></svg>
+          <span>Pracsys</span></a>
+        <a class="mini-app" href="https://flove.org/apps/metas/souls.html" target="_blank" rel="noopener">
+          <svg class="app-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:#ef7d1a"><circle cx="12" cy="12" r="2.6"/><path d="M7.4 12a4.6 4.6 0 0 1 9.2 0"/><path d="M4.8 12a7.2 7.2 0 0 1 14.4 0"/></svg>
+          <span>Souls</span></a>
+        <a class="mini-app" href="https://flove.org/apps/realy.html" target="_blank" rel="noopener">
+          <svg class="app-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#5a4fd0"><path d="M12 21c4-4.5 6-7.7 6-11a6 6 0 0 0-12 0c0 3.3 2 6.5 6 11z"/><circle cx="12" cy="10" r="2.2"/></svg>
+          <span>Realy</span></a>
+        <a class="mini-app" href="https://flove.org/apps/economy/dealy/inventary.html" target="_blank" rel="noopener">
+          <svg class="app-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" style="color:#2f7fd6"><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/><rect x="8.5" y="4" width="7" height="7" rx="1"/></svg>
+          <span>Inventary</span></a>
+        <a class="mini-app mf-wide" href="https://flove.org/apps/trusty/myfamily.html" target="_blank" rel="noopener">
+          <svg class="app-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#34b36b"><circle cx="9" cy="8" r="2.3"/><path d="M5 18a4 4 0 0 1 8 0"/><circle cx="16.5" cy="9.5" r="1.9"/><path d="M14 18a3.4 3.4 0 0 1 6.4-1.6"/></svg>
+          <span>Myfamily</span></a>
       </div>
       <div class="results-row">
         <div class="result-card">
