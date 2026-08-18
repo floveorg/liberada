@@ -1042,11 +1042,11 @@
       var box = document.getElementById('alias-drop-list');
       if (!box) return;
       box.innerHTML = '';
-      // «María» = todos juntos (primer opción, subfeed completo).
+      // «María» es el alias con el username de la usuaria (subfeed completo).
       var all = document.createElement('button');
       all.type = 'button';
       all.className = 'alias-opt';
-      all.innerHTML = '<span>María — todos juntos</span><span class="cnt">' + CLIPS.length + '</span>';
+      all.innerHTML = '<span>María</span><span class="cnt">' + CLIPS.length + '</span>';
       all.addEventListener('click', function(){
         activeAlias = null;
         document.getElementById('alias-tick').textContent = 'María';
