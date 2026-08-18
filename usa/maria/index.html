@@ -27,7 +27,20 @@
     .back:hover { text-decoration: underline; }
     .header { text-align: center; margin-bottom: 24px; }
     .avatar { width: 96px; height: 96px; border-radius: 50%; background: linear-gradient(135deg, var(--marigold), var(--pink)); display: grid; place-items: center; font-size: 2.5rem; margin: 0 auto 16px; box-shadow: 0 4px 20px rgba(0,0,0,.15); position: relative; }
-    .avatar-badge { position: absolute; bottom: 0; right: 0; width: 28px; height: 28px; background: var(--sage); border: 3px solid var(--paper); border-radius: 50%; display: grid; place-items: center; font-size: .9rem; }
+    .avatar-badge { position: absolute; bottom: -4px; right: -6px; min-width: 34px; padding: 3px 8px; background: var(--sage);
+      border: 3px solid var(--paper); border-radius: 999px; display: grid; place-items: center; font-size: .72rem;
+      font-weight: 700; cursor: pointer; color: var(--ink); }
+    .avatar-badge:hover { background: var(--marigold); }
+    .alias-drop { position: absolute; top: calc(100% + 6px); right: 0; background: var(--paper); border: 2px solid var(--ink);
+      border-radius: 12px; padding: 8px; box-shadow: 4px 4px 0 rgba(42,24,16,.15); min-width: 180px; z-index: 30; text-align: left; }
+    .alias-drop-label { display: block; font-size: .68rem; letter-spacing: .06em; text-transform: uppercase; color: #888; margin: 0 0 6px; }
+    .alias-opt { display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 10px;
+      border: none; background: none; cursor: pointer; font-size: .85rem; font-weight: 600; color: var(--ink); border-radius: 8px; }
+    .alias-opt:hover { background: var(--cream); }
+    .alias-opt .cnt { font-size: .7rem; color: #999; font-weight: 700; }
+    .alias-reset { display: flex; width: 100%; align-items: center; gap: 8px; padding: 8px 10px; margin-top: 6px;
+      border: none; border-top: 1px solid #eee; background: none; cursor: pointer; font-size: .8rem; font-weight: 700; color: var(--magenta); }
+    .alias-reset:hover { background: var(--cream); }
     .name { font-size: 1.75rem; font-weight: 700; margin-bottom: 2px; }
     .key { font-size: .8rem; color: #888; margin-bottom: 8px; }
     .bio { font-size: .9rem; color: #555; margin-bottom: 12px; max-width: 40ch; margin-left: auto; margin-right: auto; }
@@ -197,7 +210,13 @@
     <a class="back" href="https://liberada.net">← liberada.net</a>
     
     <div class="header">
-      <div class="avatar">👩<span class="avatar-badge">✓</span></div>
+      <div class="avatar">👩<button class="avatar-badge" id="alias-tick" type="button" title="Aliases" aria-expanded="false" aria-controls="alias-drop" aria-label="Aliases de este perfil">María</button>
+        <div class="alias-drop" id="alias-drop" hidden>
+          <span class="alias-drop-label">Aliases — clips por alias</span>
+          <div id="alias-drop-list"></div>
+          <button type="button" class="alias-reset" id="alias-reset">✕ María (todo)</button>
+        </div>
+      </div>
       <div class="name">María Demostración</div>
       <p class="up-sub" style="font-size:.85rem;color:var(--purple);font-weight:600;margin:0 0 8px">Perfil editable como si fuera el tuyo</p>
       <div class="key">@maria</div>
@@ -455,15 +474,23 @@
   </div>
 
   <script>
+    const SEED = 'https://pub-e3cbc6c5f1c945358670af27745479f1.r2.dev/risa/seed/audio/';
     const CLIPS = [
-      { id: 'q_001', t: 'Yoga y risa', when: '2026-08-16', tags: 'yoga, relajación', reactions: 12, src: '#', app: 'risa', kind: 'audio' },
-      { id: 'q_002', t: 'La que no para', when: '2026-08-14', tags: 'contagiosa, felicidad', reactions: 24, src: '#', app: 'risa', kind: 'audio' },
-      { id: 'q_003', t: 'Risa de gato', when: '2026-08-12', tags: 'gato, animal', reactions: 18, src: '#', app: 'lovy', kind: 'video' },
-      { id: 'q_004', t: 'Clase de mañana', when: '2026-08-10', tags: 'yoga, energía', reactions: 8, src: '#', app: 'risa', kind: 'audio' },
-      { id: 'q_005', t: 'Con las alumnas', when: '2026-08-08', tags: 'amigas, comunidad', reactions: 15, src: '#', app: 'risa', kind: 'video' },
-      { id: 'q_006', t: 'Besito de buenos días', when: '2026-08-06', tags: 'amor, buenos días', reactions: 22, src: '#', app: 'lovy', kind: 'audio' },
-      { id: 'q_007', t: 'Foto del parcito', when: '2026-08-04', tags: 'parque, naturaleza', reactions: 11, src: '#', app: 'lovy', kind: 'video' },
-      { id: 'q_008', t: 'Risa compartida', when: '2026-08-02', tags: 'comunidad, risa', reactions: 19, src: '#', app: 'lovy', kind: 'audio' }
+      { id: 'q_001', t: 'Yoga y risa', when: '2026-08-16', tags: 'yoga, relajación', reactions: 12, src: '#', app: 'risa', kind: 'audio', alias: 'La Risa Yoga' },
+      { id: 'q_002', t: 'La que no para', when: '2026-08-14', tags: 'contagiosa, felicidad', reactions: 24, src: '#', app: 'risa', kind: 'audio', alias: 'Contagiosa' },
+      { id: 'q_003', t: 'Risa de gato', when: '2026-08-12', tags: 'gato, animal', reactions: 18, src: '#', app: 'lovy', kind: 'video', alias: 'María' },
+      { id: 'q_004', t: 'Clase de mañana', when: '2026-08-10', tags: 'yoga, energía', reactions: 8, src: '#', app: 'risa', kind: 'audio', alias: 'La Risa Yoga' },
+      { id: 'q_005', t: 'Con las alumnas', when: '2026-08-08', tags: 'amigas, comunidad', reactions: 15, src: '#', app: 'risa', kind: 'video', alias: 'La Risa Yoga' },
+      { id: 'q_006', t: 'Besito de buenos días', when: '2026-08-06', tags: 'amor, buenos días', reactions: 22, src: '#', app: 'lovy', kind: 'audio', alias: 'María' },
+      { id: 'q_007', t: 'Foto del parcito', when: '2026-08-04', tags: 'parque, naturaleza', reactions: 11, src: '#', app: 'lovy', kind: 'video', alias: 'María' },
+      { id: 'q_008', t: 'Risa compartida', when: '2026-08-02', tags: 'comunidad, risa', reactions: 19, src: '#', app: 'lovy', kind: 'audio', alias: 'María' },
+      /* Clips reales de la playlist «Risas del mundo» por alias */
+      { id: 'w_multitud', t: 'Risa de multitud', when: '2026-08-18', tags: 'contagiosa, multitud', reactions: 40, src: SEED + 'multitud-risa.mp3', app: 'risa', kind: 'audio', alias: 'Contagiosa' },
+      { id: 'w_solo', t: 'Solo risas', when: '2026-08-18', tags: 'contagiosa, multitud', reactions: 35, src: SEED + 'multitud-solo.mp3', app: 'risa', kind: 'audio', alias: 'Contagiosa' },
+      { id: 'w_aplauso', t: 'Risas y aplausos', when: '2026-08-18', tags: 'contagiosa, aplausos', reactions: 38, src: SEED + 'multitud-risa-aplauso.mp3', app: 'risa', kind: 'audio', alias: 'Contagiosa' },
+      { id: 'w_carcajada', t: 'Carcajada', when: '2026-08-18', tags: 'carcajada, vientre', reactions: 30, src: SEED + 'carcajada-solo.mp3', app: 'risa', kind: 'audio', alias: 'Carcajada' },
+      { id: 'w_carcajadon', t: 'Carcajadón', when: '2026-08-18', tags: 'carcajada, épica', reactions: 27, src: SEED + 'carcajadon.mp3', app: 'risa', kind: 'audio', alias: 'Carcajada' },
+      { id: 'w_corta', t: 'Risa corta', when: '2026-08-18', tags: 'carcajada, corta', reactions: 22, src: SEED + 'risa-corta-pd.mp3', app: 'risa', kind: 'audio', alias: 'Carcajada' }
     ];
 
     const FAVORITES = [
@@ -996,33 +1023,37 @@
             .catch(function(){});
         });
     }
+    function countAlias(alias) {
+      return CLIPS.filter(function(c){ return c.alias === alias; }).length;
+    }
     function renderAliasChips(list) {
-      var row = document.getElementById('alias-row');
-      if (!row) return;
-      row.innerHTML = '';
+      var box = document.getElementById('alias-drop-list');
+      if (!box) return;
+      box.innerHTML = '';
+      // Solo los aliases con clips reales (de CLIPS) + el privado para el dueño.
       list.forEach(function(a){
-        var chip = document.createElement('button');
-        chip.type = 'button';
-        chip.className = 'alias-chip' + (a.private ? ' locked' : '');
-        chip.setAttribute('aria-pressed', 'false');
-        chip.textContent = (a.private ? '🔒 ' : '') + a.alias;
-        chip.addEventListener('click', function(){
-          activeAlias = (activeAlias === a.alias) ? null : a.alias;
-          row.querySelectorAll('.alias-chip').forEach(function(c){
-            c.setAttribute('aria-pressed', c === chip && activeAlias ? 'true' : 'false');
-          });
+        if (a.private && sessionStorage.getItem('liberada_authed') !== 'maria') return;
+        var opt = document.createElement('button');
+        opt.type = 'button';
+        opt.className = 'alias-opt';
+        opt.innerHTML = '<span>' + (a.private ? '🔒 ' : '') + a.alias + '</span><span class="cnt">' + countAlias(a.alias) + '</span>';
+        opt.addEventListener('click', function(){
+          activeAlias = a.alias;
+          document.getElementById('alias-tick').textContent = a.alias.length > 8 ? a.alias.slice(0, 7) + '…' : a.alias;
+          document.getElementById('alias-drop').hidden = true;
           applyAliasFilter();
         });
-        row.appendChild(chip);
+        box.appendChild(opt);
       });
     }
     function applyAliasFilter() {
-      ['clip-list', 'fav-list'].forEach(function(id){
+      // Filtra los clips por su alias real; sin alias → todo el contenido de maria.
+      ['clip-list', 'fav-list', 'chain-list'].forEach(function(id){
         var box = document.getElementById(id);
         if (!box) return;
         Array.prototype.forEach.call(box.querySelectorAll('.clip-item'), function(li){
-          var title = (li.querySelector('.clip-title') || {}).textContent || '';
-          var match = !activeAlias || title.toLowerCase().indexOf(activeAlias.toLowerCase()) > -1;
+          var c = CLIPS.concat(FAVORITES).find(function(x){ return x.id === (li.dataset ? li.dataset.id : ''); });
+          var match = !activeAlias || (c && c.alias === activeAlias);
           li.style.display = match ? '' : 'none';
         });
       });
@@ -1040,6 +1071,24 @@
         if (ok) loadAliases();
       }).catch(function(){});
     });
+    /* Tick de aliases: colapsado por defecto (María), onclick expande. */
+    var tick = document.getElementById('alias-tick');
+    var drop = document.getElementById('alias-drop');
+    tick.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var open = drop.hidden;
+      drop.hidden = !open;
+      tick.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    document.addEventListener('click', function() { drop.hidden = true; tick.setAttribute('aria-expanded', 'false'); });
+    document.getElementById('alias-reset').addEventListener('click', function(e) {
+      e.stopPropagation();
+      activeAlias = null;
+      tick.textContent = 'María';
+      drop.hidden = true;
+      applyAliasFilter();
+    });
+
     loadAliases();
     renderChains();
 
