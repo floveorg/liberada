@@ -401,17 +401,10 @@
       <textarea id="edit-bio" rows="3" placeholder="Cuéntanos quién eres…" style="width:100%;padding:10px 12px;border:2px solid var(--ink);border-radius:10px;font-size:.9rem;margin-bottom:12px;box-sizing:border-box;resize:vertical"></textarea>
       <div class="editor-socials">
         <span style="font-size:.8rem;color:#555;display:block;margin-bottom:6px">Tus redes</span>
-        <div id="edit-social-chips" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px"></div>
-        <div style="position:relative">
-          <button class="modal-btn secondary" id="add-social-btn" type="button">+ Añadir red</button>
-          <div id="social-picker" hidden style="position:absolute;bottom:100%;left:0;background:var(--paper);border:2px solid var(--ink);border-radius:12px;padding:8px;display:grid;gap:4px;z-index:20;min-width:150px">
-            <button type="button" class="social-opt" data-label="Instagram 📷">Instagram 📷</button>
-            <button type="button" class="social-opt" data-label="Mastodon 🐘">Mastodon 🐘</button>
-            <button type="button" class="social-opt" data-label="Facebook 👍">Facebook 👍</button>
-            <button type="button" class="social-opt" data-label="TikTok 🎵">TikTok 🎵</button>
-            <button type="button" class="social-opt" data-label="Web 🌐">Web 🌐</button>
-            <button type="button" class="social-opt" data-label="Email ✉️">Email ✉️</button>
-          </div>
+        <div id="edit-social-chips" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;align-items:center"></div>
+        <div id="edit-social-new" hidden style="display:flex;gap:8px;flex-wrap:wrap">
+          <input id="social-new-input" type="text" placeholder="red: https://…" style="flex:1 1 160px;padding:8px 10px;border:2px solid var(--ink);border-radius:10px;font-size:.85rem;box-sizing:border-box;min-width:120px">
+          <button class="modal-btn secondary" id="social-new-add" type="button">Añadir</button>
         </div>
       </div>
       <div class="editor-aliases" style="margin-top:14px">
@@ -879,32 +872,56 @@
       document.getElementById('editor-msg').textContent = '✅ Guardado en esta página (sessionStorage). Se pierde al recargar o cerrar.';
       document.getElementById('editor-modal').classList.remove('open');
     });
-    var socials = ['Telegram ✈️', 'Web 🌐'];
+    var SOCIAL_ICONS = {
+      'Telegram': '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg>',
+      'GitHub': '💻', 'Web': '🌐', 'Instagram': '📷', 'Mastodon': '🐘', 'Facebook': '👍', 'Email': '✉️', 'TikTok': '🎵'
+    };
+    var socials = [
+      { net: 'Telegram', url: 'https://t.me/mariagarcia' },
+      { net: 'Web', url: 'https://mariagarcia.com' }
+    ];
     function renderSocialChips() {
       var box = document.getElementById('edit-social-chips');
       box.innerHTML = '';
+      // Chips expandidos por defecto, con su logo original.
       socials.forEach(function(s) {
         var chip = document.createElement('span');
-        chip.textContent = s;
-        chip.style.cssText = 'padding:4px 12px;border:1.5px solid #ddd;border-radius:999px;font-size:.78rem;background:var(--cream)';
+        chip.innerHTML = SOCIAL_ICONS[s.net] || '🔗';
+        chip.title = s.net + ' · ' + s.url;
+        chip.style.cssText = 'padding:4px 10px;border:1.5px solid #ddd;border-radius:999px;font-size:.95rem;background:var(--cream);display:inline-flex;align-items:center;gap:5px';
+        chip.appendChild(document.createTextNode(' ' + s.net));
         box.appendChild(chip);
       });
+      // «+» para añadir: al pulsarlo muestra campo de texto + Añadir.
+      var plus = document.createElement('button');
+      plus.type = 'button';
+      plus.id = 'social-plus';
+      plus.textContent = '+';
+      plus.title = 'Añadir red';
+      plus.setAttribute('aria-label', 'Añadir red');
+      plus.style.cssText = 'padding:4px 12px;border:1.5px solid var(--ink);border-radius:999px;font-size:.95rem;background:var(--marigold);cursor:pointer;font-weight:700;color:var(--ink)';
+      box.appendChild(plus);
     }
-    var addSocialBtn = document.getElementById('add-social-btn');
-    var socialPicker = document.getElementById('social-picker');
-    addSocialBtn.addEventListener('click', function(e) {
-      e.stopPropagation();
-      socialPicker.hidden = !socialPicker.hidden;
+    var socialNew = document.getElementById('edit-social-new');
+    var socialInput = document.getElementById('social-new-input');
+    var socialAdd = document.getElementById('social-new-add');
+    function toggleSocialNew(open) { socialNew.hidden = !open; if (open) socialInput.focus(); }
+    document.getElementById('edit-social-chips').addEventListener('click', function(e) {
+      if (e.target.id === 'social-plus') toggleSocialNew(socialNew.hidden);
     });
-    document.addEventListener('click', function() { socialPicker.hidden = true; });
-    socialPicker.querySelectorAll('.social-opt').forEach(function(opt) {
-      opt.addEventListener('click', function() {
-        var label = opt.dataset.label;
-        if (socials.indexOf(label) === -1) socials.push(label);
-        socialPicker.hidden = true;
-        renderSocialChips();
-      });
-    });
+    function addSocialFromInput() {
+      var raw = (socialInput.value || '').trim();
+      if (!raw) return;
+      var m = /^(.+?)\s*[:\s]\s*(https?:\/\/.+)$/.exec(raw);
+      var net = m ? m[1].trim() : raw;
+      var url = m ? m[2].trim() : '#';
+      if (!socials.some(function(s){ return s.net.toLowerCase() === net.toLowerCase(); })) socials.push({ net: net, url: url });
+      socialInput.value = '';
+      toggleSocialNew(false);
+      renderSocialChips();
+    }
+    socialAdd.addEventListener('click', addSocialFromInput);
+    socialInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') { e.preventDefault(); addSocialFromInput(); } });
     renderSocialChips();
 
     /* ── Más apps · flove solo + resultados/exportar ───────────────────── */
