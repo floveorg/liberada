@@ -893,6 +893,12 @@
         var li = document.createElement('li');
         li.className = 'clip-item';
         li.dataset.id = c.id;
+        li.style.cursor = 'pointer';
+        li.title = 'Ver en el hilo';
+        li.addEventListener('click', function(e){
+          if (e.target.closest('.clip-play')) return;
+          window.open('https://risa.liberada.net/#/c/' + encodeURIComponent(c.id), '_blank');
+        });
         li.style.paddingLeft = (16 + depth * 22) + 'px';
         li.innerHTML = '<button class="clip-play" style="background:' + (mineNode ? 'var(--marigold)' : 'var(--purple)') + '">▶</button>' +
           '<div class="clip-body"><div class="clip-title">' + (c.t || 'Sin título') + '</div>' +
