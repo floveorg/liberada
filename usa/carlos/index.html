@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>contagiosa — liberada.net (demo)</title>
-  <meta name="description" content="Perfil de Marc en las apps liberadas">
+  <title>Carlos Ruiz — liberada.net</title>
+  <meta name="description" content="Perfil de Carlos Ruiz en las apps liberadas">
   <style>
     :root {
       --ink: #2a1810;
@@ -42,7 +42,6 @@
     .action-btn.follow { background: var(--magenta); color: white; border-color: var(--magenta); }
     .action-btn.follow:hover { background: #c0303d; }
     .action-btn.share { background: var(--ink); color: white; border-color: var(--ink); }
-    .v1-badge { display: inline-block; padding: 3px 12px; border-radius: 999px; background: var(--marigold); color: var(--ink); font-size: .7rem; font-weight: 700; margin-bottom: 16px; }
     .section { margin-bottom: 28px; }
     .tabs { display: flex; gap: 0; margin-bottom: 16px; border-bottom: 2px solid #eee; }
     .tab { padding: 8px 16px; font-size: .85rem; font-weight: 600; background: none; border: none; border-bottom: 2px solid transparent; margin-bottom: -2px; cursor: pointer; color: #888; }
@@ -166,13 +165,13 @@
     <a class="back" href="https://liberada.net">← liberada.net</a>
     
     <div class="header">
-      <div class="avatar">🧔<span class="avatar-badge">✓</span></div>
-      <div class="name">Marc</div>
-      <div class="key">@marcflove</div>
-      <div class="bio">Risas y código. Buenos Aires.</div>
+      <div class="avatar">🎵<span class="avatar-badge">✓</span></div>
+      <div class="name">Carlos Ruiz</div>
+      <div class="key">@carlos</div>
+      <div class="bio">Músico callejero. Ritmo, melodía y carcajadas — la risa también se afina.</div>
       <div class="links">
-        <a class="link-icon" href="https://t.me/marcflove" target="_blank" title="Telegram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg></a>
-        <a class="link-icon" href="https://github.com/marcflove" target="_blank" title="GitHub">💻</a>
+        <a class="link-icon" href="https://t.me/carlosruiz" target="_blank" title="Telegram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg></a>
+        <a class="link-icon" href="https://github.com/carlosruiz" target="_blank" title="GitHub">💻</a>
         <a class="link-icon" href="https://flove.org" target="_blank" title="Web">🌐</a>
         <span class="link-icon more" id="more-links" title="Más redes">+
           <span class="link-more-menu" id="more-menu">
@@ -183,10 +182,6 @@
           </span>
         </span>
       </div>
-    </div>
-
-    <div style="text-align:center">
-      <span class="v1-badge">Demo 😄</span>
     </div>
 
     <div class="alias-row" id="alias-row" role="group" aria-label="Aliases de este perfil"></div>
@@ -396,13 +391,15 @@
     var RISA_URL  = 'https://risa.liberada.net/risa.json';
     var AMA_URL   = 'https://ama.liberada.net/ama.json';
     var USERS_URL = 'https://risa.liberada.net/usernames.json';
-    var R2_BASE   = 'https://pub-e3cbc6c5f1c945358670af27745479f1.r2.dev';
 
-    /* Extract username from path: /usa/marcflove/ → "marcflove" */
-    var username = (location.pathname.match(/\/usa\/([^/]+)\/?/) || [])[1] || '';
+    /* Username desde el path (/usa/<user>/) o el subdominio (<user>.liberada.net) */
+    var _pathUser = (location.pathname.match(/\/usa\/([^/]+)\/?/) || [])[1] || '';
+    var _hostUser = (location.hostname.match(/^([a-z0-9_-]+)\.liberada\.net$/i) || [])[1] || '';
+    var username = (_pathUser || _hostUser).toLowerCase();
 
     var liked = new Set();
     var allClips = [];   // merged risa + ama clips for this user
+    var feedAll  = [];   // feed completo (risa + ama): resuelve padres de cadenas
 
     function timeAgo(d) {
       var days = Math.floor((Date.now() - new Date(d)) / 86400000);
@@ -422,7 +419,12 @@
       var tags = (c.tags || '').split(',').map(function(t){
         return '<span class="clip-tag">' + t.trim() + '</span>';
       }).join('');
-      var parent = c.parent ? '<div class="clip-meta" style="color:var(--purple);font-size:.7rem">↳ responde a ' + (c.parentTitle || c.parent) + '</div>' : '';
+      var parentTitle = c.parentTitle || '';
+      if (!parentTitle && c.parent && feedAll.length) {
+        var pClip = feedAll.find(function(o){ return o.id === c.parent; });
+        if (pClip) parentTitle = pClip.t || pClip.name || '';
+      }
+      var parent = c.parent ? '<div class="clip-meta" style="color:var(--purple);font-size:.7rem">↳ responde a ' + (parentTitle || c.parent) + '</div>' : '';
       return '<li class="clip-item" data-id="' + c.id + '" data-app="' + c._app + '">' +
         '<button class="clip-play"' + (c.src && c.src !== '#' ? ' data-src="' + c.src + '"' : '') + '>▶</button>' +
         '<div class="clip-body"><div class="clip-title">' + (c.t || 'Sin título') + '</div>' +
@@ -499,6 +501,7 @@
         ]);
         var risaData = Array.isArray(results[0]) ? results[0] : (results[0].clips || []);
         var amaData  = results[1].clips || [];
+        feedAll = risaData.concat(amaData);
 
         /* 3. Filter by key */
         var risaClips = filterByUser(risaData, key, 'risa');
@@ -791,37 +794,54 @@
     };
 
     /* ── Cadenas reales (v2): desde los `parent` de los clips del feed ── */
+    function parentTitleOf(id) {
+      var c = feedAll.find(function(o){ return o.id === id; });
+      return c ? (c.t || c.name || id) : id;
+    }
     function renderChains() {
       var box = document.getElementById('chain-list');
       if (!box) return;
-      var byParent = {}, roots = [];
-      (allClips || []).forEach(function(c){
-        if (c.parent) (byParent[c.parent] = byParent[c.parent] || []).push(c);
-        else roots.push(c);
+      var mine = {};
+      (allClips || []).forEach(function(c){ mine[c.id] = true; });
+      var byParent = {};
+      (feedAll || []).forEach(function(c){
+        if (c && c.parent) (byParent[c.parent] = byParent[c.parent] || []).push(c);
       });
-      if (!Object.keys(byParent).length) {
+      // Raíces: mis piezas sin padre + (si alguna pieza mía responde a otra
+      // persona) el clip padre real para mostrar el hilo completo.
+      var roots = [];
+      (allClips || []).forEach(function(c){
+        if (!c.parent) { if (roots.indexOf(c) === -1) roots.push(c); return; }
+        var inFeed = feedAll.some(function(o){ return o.id === c.parent; });
+        if (!inFeed && roots.indexOf(c) === -1) roots.push(c);
+      });
+      (allClips || []).forEach(function(c){
+        if (!c.parent) return;
+        var p = feedAll.find(function(o){ return o.id === c.parent && !mine[o.id]; });
+        if (p && roots.indexOf(p) === -1) roots.push(p);
+      });
+      if (!roots.length) {
         box.innerHTML = '<li class="clip-item" style="padding:12px;color:#888;font-size:.85rem">Sin cadenas todavía — responde a un clip para crear una.</li>';
         return;
       }
       box.innerHTML = '';
       function walk(c, depth) {
+        var mineNode = !!mine[c.id];
         var li = document.createElement('li');
         li.className = 'clip-item';
         li.style.paddingLeft = (16 + depth * 22) + 'px';
-        li.innerHTML = '<button class="clip-play" style="background:var(--purple)">▶</button>' +
+        li.innerHTML = '<button class="clip-play" style="background:' + (mineNode ? 'var(--marigold)' : 'var(--purple)') + '">▶</button>' +
           '<div class="clip-body"><div class="clip-title">' + (c.t || 'Sin título') + '</div>' +
-          (depth > 0 ? '<div class="clip-meta" style="color:var(--purple);font-size:.7rem">↳ responde a ' + (c.parentTitle || c.parent) + '</div>' : '') +
+          (!mineNode ? '<div class="clip-meta" style="color:var(--purple);font-size:.7rem">de ' + (c.name || 'alguien') + '</div>' : '') +
+          (depth > 0 ? '<div class="clip-meta" style="color:var(--purple);font-size:.7rem">↳ responde a ' + parentTitleOf(c.parent) + '</div>' : '') +
           '<div class="clip-meta">' + timeAgo(c.when) + '</div></div>' +
           '<div class="clip-actions"><button class="clip-action" style="background:none;border:none;font-size:.85rem;cursor:pointer;color:#888">↗</button></div>';
         box.appendChild(li);
         (byParent[c.id] || []).forEach(function(ch){ walk(ch, depth + 1); });
       }
-      var seen = {};
-      (allClips || []).forEach(function(c){
-        if (!c.parent && !seen[c.id]) { seen[c.id] = true; walk(c, 0); }
-      });
+      roots.forEach(function(r){ walk(r, 0); });
       var n = document.getElementById('tab-count-cadenas');
-      if (n) n.textContent = Object.keys(byParent).length;
+      if (n) n.textContent = (allClips || []).filter(function(c){ return c.parent; }).length;
     }
     document.addEventListener('click', function(e) {
       var b = e.target.closest('.clip-chain');

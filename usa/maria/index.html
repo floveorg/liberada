@@ -285,7 +285,7 @@
     <div class="section">
       <div class="tabs">
         <button class="tab active" data-tab="following">Siguiendo <span class="tab-count" id="tab-following-count">5</span></button>
-        <button class="tab" data-tab="followers">Seguidores <span class="tab-count" id="tab-followers-count">3</span></button>
+        <button class="tab" data-tab="followers">Seguidores <span class="tab-count" id="tab-followers-count">2</span></button>
       </div>
       <div class="tab-panel active" id="panel-following">
         <div id="following-list"></div>
@@ -469,11 +469,13 @@
   </div>
 
   <script>
-    // Canónico: maria.liberada.net (el Worker sirve este mismo perfil ahí).
-    // Si llegas por liberada.net/usa/maria.html, redirige al subdominio.
-    if (location.hostname !== 'maria.liberada.net') location.replace('https://maria.liberada.net');
+    // Este perfil se sirve en liberada.net/usa/maria/ y, si maria.liberada.net
+    // está CNAMEado a GitHub Pages, también llega aquí vía la redirección del
+    // index raíz (que detecta el host y salta a esta misma página). Nada de
+    // saltos forzosos a un subdominio: la página siempre se muestra. El enlace
+    // canónico del subdominio se ofrece en los botones, no se impone.
 
-    const SEED = 'https://pub-e3cbc6c5f1c945358670af27745479f1.r2.dev/risa/seed/audio/';
+    const SEED = 'https://commons.wikimedia.org/wiki/Special:FilePath/';
     const CLIPS = [
       { id: 'q_001', t: 'Yoga y risa', when: '2026-08-16', tags: 'yoga, relajación', reactions: 12, src: '#', app: 'risa', kind: 'audio', alias: 'La Risa Yoga' },
       { id: 'q_002', t: 'La que no para', when: '2026-08-14', tags: 'contagiosa, felicidad', reactions: 24, src: '#', app: 'risa', kind: 'audio', alias: 'Contagiosa' },
@@ -484,19 +486,19 @@
       { id: 'q_007', t: 'Foto del parcito', when: '2026-08-04', tags: 'parque, naturaleza', reactions: 11, src: '#', app: 'lovy', kind: 'video', alias: 'María' },
       { id: 'q_008', t: 'Risa compartida', when: '2026-08-02', tags: 'comunidad, risa', reactions: 19, src: '#', app: 'lovy', kind: 'audio', alias: 'María' },
       /* Clips reales de la playlist «Risas del mundo» por alias */
-      { id: 'w_multitud', t: 'Risa de multitud', when: '2026-08-18', tags: 'contagiosa, multitud', reactions: 40, src: SEED + 'multitud-risa.mp3', app: 'risa', kind: 'audio', alias: 'Contagiosa' },
-      { id: 'w_solo', t: 'Solo risas', when: '2026-08-18', tags: 'contagiosa, multitud', reactions: 35, src: SEED + 'multitud-solo.mp3', app: 'risa', kind: 'audio', alias: 'Contagiosa' },
-      { id: 'w_aplauso', t: 'Risas y aplausos', when: '2026-08-18', tags: 'contagiosa, aplausos', reactions: 38, src: SEED + 'multitud-risa-aplauso.mp3', app: 'risa', kind: 'audio', alias: 'Contagiosa' },
-      { id: 'w_carcajada', t: 'Carcajada', when: '2026-08-18', tags: 'carcajada, vientre', reactions: 30, src: SEED + 'carcajada-solo.mp3', app: 'risa', kind: 'audio', alias: 'Carcajada' },
-      { id: 'w_carcajadon', t: 'Carcajadón', when: '2026-08-18', tags: 'carcajada, épica', reactions: 27, src: SEED + 'carcajadon.mp3', app: 'risa', kind: 'audio', alias: 'Carcajada' },
-      { id: 'w_corta', t: 'Risa corta', when: '2026-08-18', tags: 'carcajada, corta', reactions: 22, src: SEED + 'risa-corta-pd.mp3', app: 'risa', kind: 'audio', alias: 'Carcajada' },
+      { id: 'w_multitud', t: 'Risa de multitud', when: '2026-08-18', tags: 'contagiosa, multitud', reactions: 40, src: SEED + '72842_lonemonk_approx-800-laugh-1.wav', app: 'risa', kind: 'audio', alias: 'Contagiosa' },
+      { id: 'w_solo', t: 'Solo risas', when: '2026-08-18', tags: 'contagiosa, multitud', reactions: 35, src: SEED + '72843_lonemonk_approx-800-laughter-only-1.wav', app: 'risa', kind: 'audio', alias: 'Contagiosa' },
+      { id: 'w_aplauso', t: 'Risas y aplausos', when: '2026-08-18', tags: 'contagiosa, aplausos', reactions: 38, src: SEED + '72844_lonemonk_approx-800-laughter-and-clapter-1.wav', app: 'risa', kind: 'audio', alias: 'Contagiosa' },
+      { id: 'w_carcajada', t: 'Carcajada', when: '2026-08-18', tags: 'carcajada, vientre', reactions: 30, src: SEED + 'Laugh.wav', app: 'risa', kind: 'audio', alias: 'Carcajada' },
+      { id: 'w_carcajadon', t: 'Carcajadón', when: '2026-08-18', tags: 'carcajada, épica', reactions: 27, src: SEED + 'Laughter.ogg', app: 'risa', kind: 'audio', alias: 'Carcajada' },
+      { id: 'w_corta', t: 'Risa corta', when: '2026-08-18', tags: 'carcajada, corta', reactions: 22, src: SEED + 'En-us-laugh.ogg', app: 'risa', kind: 'audio', alias: 'Carcajada' },
       /* Alias de prueba (público) y su subfeed */
-      { id: 'w_grupo', t: 'Grupo pequeño', when: '2026-08-18', tags: 'prueba, grupo', reactions: 12, src: SEED + 'grupo-pequeno.mp3', app: 'risa', kind: 'audio', alias: 'Prueba' },
-      { id: 'w_risa_ale', t: 'Risa (Alemania)', when: '2026-08-18', tags: 'prueba, mundo', reactions: 15, src: SEED + 'gente-riendo.mp3', app: 'risa', kind: 'audio', alias: 'Prueba' },
+      { id: 'w_grupo', t: 'Grupo pequeño', when: '2026-08-18', tags: 'prueba, grupo', reactions: 12, src: SEED + 'Small_group_laughter.ogg', app: 'risa', kind: 'audio', alias: 'Prueba' },
+      { id: 'w_risa_ale', t: 'Risa (Alemania)', when: '2026-08-18', tags: 'prueba, mundo', reactions: 15, src: SEED + 'Menschen-Lachen.ogg', app: 'risa', kind: 'audio', alias: 'Prueba' },
       /* Alias privado «privi» — solo su contenido real (colección privada) */
-      { id: 'p_bebe', t: 'Risa de bebé (Francia)', when: '2026-08-18', tags: 'privi, bebé', reactions: 11, src: SEED + 'bebe-frances.mp3', app: 'risa', kind: 'audio', alias: 'privi' },
-      { id: 'p_paris', t: 'Rire (París)', when: '2026-08-18', tags: 'privi, mundo, francés', reactions: 7, src: SEED + 'rire-paris.mp3', app: 'risa', kind: 'audio', alias: 'privi' },
-      { id: 'p_lol', t: 'Risa «lol»', when: '2026-08-18', tags: 'privi, lol', reactions: 5, src: SEED + 'risa-lol.mp3', app: 'risa', kind: 'audio', alias: 'privi' }
+      { id: 'p_bebe', t: 'Risa de bebé (Francia)', when: '2026-08-18', tags: 'privi, bebé', reactions: 11, src: SEED + 'Rire_de_b%C3%A9b%C3%A9_de_9_mois.ogg', app: 'risa', kind: 'audio', alias: 'privi' },
+      { id: 'p_paris', t: 'Rire (París)', when: '2026-08-18', tags: 'privi, mundo, francés', reactions: 7, src: SEED + 'Fr-Rire-fr-Paris.ogg', app: 'risa', kind: 'audio', alias: 'privi' },
+      { id: 'p_lol', t: 'Risa «lol»', when: '2026-08-18', tags: 'privi, lol', reactions: 5, src: SEED + 'Man_saying_lol.oga', app: 'risa', kind: 'audio', alias: 'privi' }
     ];
 
     const FAVORITES = [
@@ -513,15 +515,14 @@
     const FOLLOWING = [
       { key: 'marcflove', name: 'Marc', emoji: '🧔', risas: 3, bio: 'Creador de Risa' },
       { key: 'loko-puro', name: 'Loko Puro', emoji: '🤪', risas: 4, bio: 'Risas sin filtro' },
-      { key: 'ana-yoga', name: 'Ana Pérez', emoji: '🧘', risas: 6, bio: 'Yoga y risa' },
-      { key: 'carlos-musica', name: 'Carlos Ruiz', emoji: '🎵', risas: 2, bio: 'Músico' },
-      { key: 'laura-arte', name: 'Laura Díaz', emoji: '🎨', risas: 4, bio: 'Arte y color' }
+      { key: 'ana', name: 'Ana Pérez', emoji: '🧘', risas: 2, bio: 'Yoga y risa' },
+      { key: 'carlos', name: 'Carlos Ruiz', emoji: '🎵', risas: 3, bio: 'Músico' },
+      { key: 'laura', name: 'Laura Díaz', emoji: '🎨', risas: 3, bio: 'Arte y color' }
     ];
 
     const FOLLOWERS = [
-      { key: 'pedro-run', name: 'Pedro López', emoji: '🏃', bio: 'Runner y risueño' },
-      { key: 'sofia-dance', name: 'Sofía Torres', emoji: '💃', bio: 'Baila y ríe' },
-      { key: 'diego-foto', name: 'Diego Ruiz', emoji: '📸', bio: 'Fotógrafo' }
+      { key: 'pedro', name: 'Pedro López', emoji: '🏃', risas: 3, bio: 'Runner y risueño' },
+      { key: 'sofia', name: 'Sofía Torres', emoji: '💃', risas: 3, bio: 'Baila y ríe' }
     ];
 
     let activeApps = new Set();

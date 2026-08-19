@@ -4,6 +4,31 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>liberada.net — Perfil de usuario</title>
+  <script>
+    // Subdominios <user>.liberada.net → perfil agregador.
+    // GitHub Pages sirve ESTE mismo repo en cualquier subdominio CNAMEado a
+    // floveorg.github.io (o con un comodín *.liberada.net → floveorg.github.io).
+    // Aquí detectamos el host y redirigimos al perfil del usuario. risa/ama/www
+    // viven en otros repos y nunca llegan a esta página.
+    (function () {
+      var m = (location.hostname || '').match(/^([a-z0-9_-]+)\.liberada\.net$/i);
+      if (!m) return;
+      var sub = m[1].toLowerCase();
+      if (sub === 'www') return;
+      function go(url) { location.replace(url); }
+      fetch('https://risa.liberada.net/usernames.json', { cache: 'force-cache' })
+        .then(function (r) { return r.ok ? r.json() : {}; })
+        .then(function (users) {
+          go(users[sub]
+            ? 'https://liberada.net/usa/' + encodeURIComponent(sub) + '/'
+            : 'https://liberada.net');
+        })
+        .catch(function () {
+          // Sin red: probamos el perfil igualmente (si no existe, la página lo dirá).
+          go('https://liberada.net/usa/' + encodeURIComponent(sub) + '/');
+        });
+    })();
+  </script>
   <style>
     :root {
       --ink: #2a1810;
