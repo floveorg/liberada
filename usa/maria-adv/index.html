@@ -576,12 +576,22 @@
     function renderProfileCard(p, showClaim) {
       var card = document.createElement('div');
       card.className = 'profile-card';
+      card.style.cursor = 'pointer';
+      card.title = 'Abrir perfil de ' + p.name;
       var inner = '<div class="profile-avatar" style="background:linear-gradient(135deg,var(--sky),var(--sage))">' + p.emoji + '</div>' +
         '<div class="profile-info"><div class="profile-name">' + p.name + '</div><div class="profile-detail">' + p.bio + (p.risas ? ' · ' + p.risas + ' risas' : '') + '</div></div>';
       if (showClaim) {
         inner += '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px"><a href="#" data-claim class="link-icon" style="width:auto;height:auto;padding:6px 12px;font-size:.75rem;background:var(--magenta);color:white;border-color:var(--magenta);text-decoration:none;border-radius:999px">Mejorar perfil →</a></div>';
+        card.addEventListener('click', function(e) {
+          if (e.target.closest('[data-claim]')) return; // el botón abre su modal
+          openModal('🔍', 'Reclamar perfil', 'Irías a su perfil agregador (aún sin reclamar).', 'Ir al perfil');
+        });
       } else {
         inner += '<a href="https://liberada.net/usa/' + p.key + '/" style="color:#ccc;text-decoration:none">→</a>';
+        card.addEventListener('click', function(e) {
+          if (e.target.closest('a')) return; // el enlace → ya navega
+          location.href = 'https://liberada.net/usa/' + p.key + '/';
+        });
       }
       card.innerHTML = inner;
       return card;
