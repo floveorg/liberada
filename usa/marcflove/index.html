@@ -62,6 +62,20 @@
     .clip-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
     .clip-tag { font-size: .65rem; padding: 2px 8px; background: var(--cream); border: 1px solid #ddd; border-radius: 999px; color: #666; }
     .clip-actions { display: flex; gap: 8px; align-items: center; }
+    .thread-item { display: flex; align-items: center; gap: 12px; width: 100%; }
+    .clip-star { flex:0 0 auto; width:30px; height:30px; border-radius:50%; background:none; color:#ccc;
+      border:2px solid var(--ink); display:grid; place-items:center; cursor:pointer; font-size:1.1rem;
+      line-height:1; transition:transform .12s; }
+    .clip-star:hover { transform:scale(1.15); }
+    .clip-star.on { color:var(--marigold); }
+    .clip-reply, .clip-dl, .clip-share { flex:0 0 auto; width:21px; height:21px; border-radius:50%;
+      display:grid; place-items:center; font-size:.78rem; line-height:1; cursor:pointer; text-decoration:none;
+      box-shadow:0 1px 0 rgba(42,24,16,.15); transition:transform .12s; }
+    .clip-reply:hover, .clip-dl:hover, .clip-share:hover { transform:translateY(-1px); }
+    .clip-reply { background:var(--marigold); color:var(--ink); border:2px solid var(--ink); font-weight:700; }
+    .clip-dl { background:#9a9a9a; color:#fff; border:2px solid var(--ink); }
+    .clip-share { background:none; color:var(--ink); border:2px solid var(--ink); }
+
     .clip-heart-wrap { display: flex; align-items: center; gap: 3px; }
     .clip-heart { background: none; border: none; font-size: .95rem; cursor: pointer; padding: 2px; transition: transform .15s; }
     .clip-heart:hover { transform: scale(1.2); }
@@ -407,8 +421,27 @@
     var username = (_pathUser || _hostUser).toLowerCase();
 
     var liked = new Set();
+    var starred = new Set();
     var allClips = [];   // merged risa + ama clips for this user
     var feedAll  = [];   // feed completo (risa + ama): resuelve padres de cadenas
+    var depthMap = {};   // profundidad en el hilo (igual que en la portada)
+    function buildDepthMap() {
+      depthMap = {};
+      var byId = {};
+      (feedAll || []).forEach(function(c){ if (c && c.id) byId[c.id] = c; });
+      var byParent = {}, roots = [];
+      (feedAll || []).forEach(function(c){
+        if (!c) return;
+        var p = c.parent;
+        if (p && byId[p]) (byParent[p] = byParent[p] || []).push(c); else roots.push(c);
+      });
+      function walk(c, depth) {
+        depthMap[c.id] = depth;
+        (byParent[c.id] || []).forEach(function(ch){ walk(ch, depth + 1); });
+      }
+      roots.forEach(function(r){ walk(r, 0); });
+      (feedAll || []).forEach(function(c){ if (c && c.id && depthMap[c.id] == null) depthMap[c.id] = 0; });
+    }
 
     function timeAgo(d) {
       var days = Math.floor((Date.now() - new Date(d)) / 86400000);
@@ -420,8 +453,6 @@
     }
 
     function renderClipItem(c) {
-      var heartOn = liked.has(c.id);
-      var heartCount = (c.reactions || 0) + (heartOn ? 1 : 0);
       var appBadge = c._app === 'ama'
         ? '<span class="clip-tag" style="background:var(--magenta);color:white;border-color:var(--magenta)">💗 ama</span>'
         : '<span class="clip-tag" style="background:var(--marigold);color:var(--ink);border-color:var(--marigold)">😹 risa</span>';
@@ -433,17 +464,26 @@
         var pClip = feedAll.find(function(o){ return o.id === c.parent; });
         if (pClip) parentTitle = pClip.t || pClip.name || '';
       }
-      var parent = c.parent ? '<div class="clip-meta" style="color:var(--purple);font-size:.7rem">↳ responde a ' + (parentTitle || c.parent) + '</div>' : '';
+      var parentLabel = c.parent
+        ? '<div class="clip-meta" style="color:var(--purple);font-size:.7rem">↳ responde a ' + (parentTitle || c.parent) + '</div>'
+        : '';
+      var src = (c.src && c.src !== '#') ? c.src : '';
+      var clipUrl = 'https://risa.liberada.net/#' + encodeURIComponent(c.id || '');
+      var starOn = starred.has(c.id);
+      var depth = depthMap[c.id] || 0;
       return '<li class="clip-item" data-id="' + c.id + '" data-app="' + c._app + '">' +
-        '<button class="clip-play"' + (c.src && c.src !== '#' ? ' data-src="' + c.src + '"' : '') + '>▶</button>' +
+        '<div class="thread-item" style="padding-left:' + (depth * 20) + 'px">' +
+        '<button class="clip-play"' + (src ? ' data-src="' + src + '"' : '') + '>▶</button>' +
         '<div class="clip-body"><div class="clip-title">' + (c.t || 'Sin título') + '</div>' +
-        parent +
+        parentLabel +
         '<div class="clip-meta">' + appBadge + ' · ' + timeAgo(c.when) + '</div>' +
         '<div class="clip-tags">' + tags + '</div></div>' +
         '<div class="clip-actions">' +
-          '<div class="clip-heart-wrap"><button class="clip-heart' + (heartOn ? ' on' : '') + '" data-heart="' + c.id + '">❤️</button><span class="clip-heart-count">' + heartCount + '</span></div>' +
-          '<button class="clip-chain" data-chain="' + c.id + '" title="Acciones de cadena" style="background:none;border:none;font-size:1rem;font-weight:700;cursor:pointer;color:var(--purple)">+</button>' +
-          '<button class="clip-action" style="background:none;border:none;font-size:.85rem;cursor:pointer;color:#888">↗</button></div></li>';
+          '<button class="clip-star' + (starOn ? ' on' : '') + '" data-star="' + c.id + '" title="Favorita" aria-label="Marcar como favorita">' + (starOn ? '★' : '☆') + '</button>' +
+          '<button class="clip-reply clip-chain" data-chain="' + c.id + '" title="Responder en cadena" aria-label="Responder en cadena">+</button>' +
+          (src ? '<a class="clip-dl" href="' + src + '" download="' + src.split('/').pop() + '" title="Descargar" aria-label="Descargar">↓</a>' : '') +
+          '<button class="clip-share" data-clip="' + clipUrl + '" title="Compartir" aria-label="Compartir">↗</button>' +
+        '</div></div></li>';
     }
 
     function renderLists(risaClips, amaClips) {
@@ -511,6 +551,7 @@
         var risaData = Array.isArray(results[0]) ? results[0] : (results[0].clips || []);
         var amaData  = results[1].clips || [];
         feedAll = risaData.concat(amaData);
+        buildDepthMap();
 
         /* 3. Filter by key */
         var risaClips = filterByUser(risaData, key, 'risa');
@@ -537,24 +578,24 @@
       }
     }
 
-    /* Hearts (local only) */
+    /* Favoritas (star, como en la portada) + compartir — local only */
     document.addEventListener('click', function(e) {
-      var h = e.target.closest('[data-heart]');
-      if (h) {
-        var id = h.dataset.heart;
-        if (liked.has(id)) liked.delete(id); else liked.add(id);
-        var on = liked.has(id);
-        h.classList.toggle('on', on);
-        var wrap = h.parentElement;
-        var clip = allClips.find(function(c){ return c.id === id; });
-        wrap.querySelector('.clip-heart-count').textContent = ((clip && clip.reactions) || 0) + (on ? 1 : 0);
-        if (on) {
-          var floater = document.createElement('span');
-          floater.className = 'heart-float';
-          floater.textContent = '❤️';
-          h.appendChild(floater);
-          setTimeout(function(){ floater.remove(); }, 700);
-        }
+      var s = e.target.closest('[data-star]');
+      if (s) {
+        var id = s.dataset.star;
+        if (starred.has(id)) starred.delete(id); else starred.add(id);
+        var on = starred.has(id);
+        s.classList.toggle('on', on);
+        s.textContent = on ? '★' : '☆';
+        e.stopPropagation();
+        return;
+      }
+      var sh = e.target.closest('[data-clip]');
+      if (sh) {
+        var url = sh.dataset.clip;
+        var text = 'Escucha esta risa 😂';
+        if (navigator.share) navigator.share({ title: 'Risa liberada', text: text, url: url }).catch(function(){});
+        else window.open('https://t.me/share/url?url=' + encodeURIComponent(url) + '&text=' + encodeURIComponent(text), '_blank', 'noopener');
         e.stopPropagation();
       }
     });
@@ -741,18 +782,33 @@
       });
     });
 
-    /* Play audio */
+    /* Play audio: al terminar, sigue con el clip que queda por debajo (cadenas) */
     var currentAudio = null;
+    var currentPlayBtn = null;
+    function stopPlayback() {
+      if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+      if (currentPlayBtn) { currentPlayBtn.textContent = '▶'; currentPlayBtn = null; }
+    }
     document.addEventListener('click', function(e) {
       var btn = e.target.closest('.clip-play');
       if (!btn) return;
-      var src = btn.dataset.src;
+      var li = btn.closest('.clip-item');
+      var id = li && li.dataset.id;
+      var clip = feedAll.find(function(c){ return c.id === id; });
+      var src = clip && clip.src;
       if (!src || src === '#') return;
-      if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+      stopPlayback();
       currentAudio = new Audio(src);
-      currentAudio.play();
+      currentPlayBtn = btn;
       btn.textContent = '⏸';
-      currentAudio.addEventListener('ended', function() { btn.textContent = '▶'; });
+      currentAudio.play();
+      currentAudio.addEventListener('ended', function() {
+        if (btn) btn.textContent = '▶';
+        currentPlayBtn = null;
+        var next = li && li.nextElementSibling;
+        while (next && !next.querySelector('.clip-play')) next = next.nextElementSibling;
+        if (next) { var nb = next.querySelector('.clip-play'); nb.click(); }
+      });
     });
 
     /* ── Más apps · flove solo ─────────────────────────────────────────── */
@@ -836,6 +892,7 @@
         var mineNode = !!mine[c.id];
         var li = document.createElement('li');
         li.className = 'clip-item';
+        li.dataset.id = c.id;
         li.style.paddingLeft = (16 + depth * 22) + 'px';
         li.innerHTML = '<button class="clip-play" style="background:' + (mineNode ? 'var(--marigold)' : 'var(--purple)') + '">▶</button>' +
           '<div class="clip-body"><div class="clip-title">' + (c.t || 'Sin título') + '</div>' +

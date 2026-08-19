@@ -1012,8 +1012,13 @@
       if (n) n.textContent = THREADS.length;
     }
 
-    /* Reproducir clips (lista y cadenas): usa el src real de cada clip. */
+    /* Reproducir clips (lista y cadenas): al terminar sigue con el que queda por debajo. */
     var currentAudio = null;
+    var currentPlayBtn = null;
+    function stopPlayback() {
+      if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+      if (currentPlayBtn) { currentPlayBtn.textContent = '▶'; currentPlayBtn = null; }
+    }
     document.addEventListener('click', function(e) {
       var btn = e.target.closest('.clip-play');
       if (!btn) return;
@@ -1022,11 +1027,18 @@
       var clip = CLIPS.concat(FAVORITES).find(function(c){ return c.id === id; });
       var src = clip && clip.src;
       if (!src || src === '#') return;
-      if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+      stopPlayback();
       currentAudio = new Audio(src);
-      currentAudio.play();
+      currentPlayBtn = btn;
       btn.textContent = '⏸';
-      currentAudio.addEventListener('ended', function() { btn.textContent = '▶'; });
+      currentAudio.play();
+      currentAudio.addEventListener('ended', function() {
+        if (btn) btn.textContent = '▶';
+        currentPlayBtn = null;
+        var next = li && li.nextElementSibling;
+        while (next && !next.querySelector('.clip-play')) next = next.nextElementSibling;
+        if (next) { var nb = next.querySelector('.clip-play'); nb.click(); }
+      });
     });
     document.addEventListener('click', function(e) {
       var b = e.target.closest('.clip-chain');
