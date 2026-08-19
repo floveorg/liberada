@@ -477,14 +477,14 @@
 
     const SEED = 'https://commons.wikimedia.org/wiki/Special:FilePath/';
     const CLIPS = [
-      { id: 'q_001', t: 'Yoga y risa', when: '2026-08-16', tags: 'yoga, relajación', reactions: 12, src: '#', app: 'risa', kind: 'audio', alias: 'La Risa Yoga' },
-      { id: 'q_002', t: 'La que no para', when: '2026-08-14', tags: 'contagiosa, felicidad', reactions: 24, src: '#', app: 'risa', kind: 'audio', alias: 'Contagiosa' },
-      { id: 'q_003', t: 'Risa de gato', when: '2026-08-12', tags: 'gato, animal', reactions: 18, src: '#', app: 'lovy', kind: 'video', alias: 'María' },
-      { id: 'q_004', t: 'Clase de mañana', when: '2026-08-10', tags: 'yoga, energía', reactions: 8, src: '#', app: 'risa', kind: 'audio', alias: 'La Risa Yoga' },
-      { id: 'q_005', t: 'Con las alumnas', when: '2026-08-08', tags: 'amigas, comunidad', reactions: 15, src: '#', app: 'risa', kind: 'video', alias: 'La Risa Yoga' },
-      { id: 'q_006', t: 'Besito de buenos días', when: '2026-08-06', tags: 'amor, buenos días', reactions: 22, src: '#', app: 'lovy', kind: 'audio', alias: 'María' },
-      { id: 'q_007', t: 'Foto del parcito', when: '2026-08-04', tags: 'parque, naturaleza', reactions: 11, src: '#', app: 'lovy', kind: 'video', alias: 'María' },
-      { id: 'q_008', t: 'Risa compartida', when: '2026-08-02', tags: 'comunidad, risa', reactions: 19, src: '#', app: 'lovy', kind: 'audio', alias: 'María' },
+      { id: 'q_001', t: 'Yoga y risa', when: '2026-08-16', tags: 'yoga, relajación', reactions: 12, src: SEED + 'Small_group_laughter.ogg', app: 'risa', kind: 'audio', alias: 'La Risa Yoga' },
+      { id: 'q_002', t: 'La que no para', when: '2026-08-14', tags: 'contagiosa, felicidad', reactions: 24, src: SEED + '72842_lonemonk_approx-800-laugh-1.wav', app: 'risa', kind: 'audio', alias: 'Contagiosa' },
+      { id: 'q_003', t: 'Risa de gato', when: '2026-08-12', tags: 'gato, animal', reactions: 18, src: SEED + 'En-au-guffaw.ogg', app: 'lovy', kind: 'video', alias: 'María' },
+      { id: 'q_004', t: 'Clase de mañana', when: '2026-08-10', tags: 'yoga, energía', reactions: 8, src: SEED + 'Menschen-Lachen.ogg', app: 'risa', kind: 'audio', alias: 'La Risa Yoga' },
+      { id: 'q_005', t: 'Con las alumnas', when: '2026-08-08', tags: 'amigas, comunidad', reactions: 15, src: SEED + '72843_lonemonk_approx-800-laughter-only-1.wav', app: 'risa', kind: 'video', alias: 'La Risa Yoga' },
+      { id: 'q_006', t: 'Besito de buenos días', when: '2026-08-06', tags: 'amor, buenos días', reactions: 22, src: SEED + 'Baby_Laugh.ogg', app: 'lovy', kind: 'audio', alias: 'María' },
+      { id: 'q_007', t: 'Foto del parcito', when: '2026-08-04', tags: 'parque, naturaleza', reactions: 11, src: SEED + 'En-au-giggle_berries.ogg', app: 'lovy', kind: 'video', alias: 'María' },
+      { id: 'q_008', t: 'Risa compartida', when: '2026-08-02', tags: 'comunidad, risa', reactions: 19, src: SEED + '72844_lonemonk_approx-800-laughter-and-clapter-1.wav', app: 'lovy', kind: 'audio', alias: 'María' },
       /* Clips reales de la playlist «Risas del mundo» por alias */
       { id: 'w_multitud', t: 'Risa de multitud', when: '2026-08-18', tags: 'contagiosa, multitud', reactions: 40, src: SEED + '72842_lonemonk_approx-800-laugh-1.wav', app: 'risa', kind: 'audio', alias: 'Contagiosa' },
       { id: 'w_solo', t: 'Solo risas', when: '2026-08-18', tags: 'contagiosa, multitud', reactions: 35, src: SEED + '72843_lonemonk_approx-800-laughter-only-1.wav', app: 'risa', kind: 'audio', alias: 'Contagiosa' },
@@ -996,6 +996,7 @@
       function walk(c, depth) {
         var li = document.createElement('li');
         li.className = 'clip-item';
+        li.dataset.id = c.id;
         li.style.paddingLeft = (16 + depth * 22) + 'px';
         li.innerHTML = '<button class="clip-play lovy">▶</button>' +
           '<div class="clip-body"><div class="clip-title">' + c.t + '</div>' +
@@ -1010,6 +1011,23 @@
       var n = document.getElementById('tab-cadenas-count');
       if (n) n.textContent = THREADS.length;
     }
+
+    /* Reproducir clips (lista y cadenas): usa el src real de cada clip. */
+    var currentAudio = null;
+    document.addEventListener('click', function(e) {
+      var btn = e.target.closest('.clip-play');
+      if (!btn) return;
+      var li = btn.closest('.clip-item');
+      var id = li && li.dataset.id;
+      var clip = CLIPS.concat(FAVORITES).find(function(c){ return c.id === id; });
+      var src = clip && clip.src;
+      if (!src || src === '#') return;
+      if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+      currentAudio = new Audio(src);
+      currentAudio.play();
+      btn.textContent = '⏸';
+      currentAudio.addEventListener('ended', function() { btn.textContent = '▶'; });
+    });
     document.addEventListener('click', function(e) {
       var b = e.target.closest('.clip-chain');
       if (!b) return;
