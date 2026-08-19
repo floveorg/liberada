@@ -10,7 +10,11 @@
     // floveorg.github.io (o con un comodín *.liberada.net → floveorg.github.io).
     // Aquí detectamos el host y redirigimos al perfil del usuario. risa/ama/www
     // viven en otros repos y nunca llegan a esta página.
+    // TEMPORAL: redirección de subdominios desactivada (DNS aún no apunta aquí).
+    var SUBDOMAIN_REDIRECTS_ENABLED = false; // pon true al activar el DNS
     (function () {
+      if (!SUBDOMAIN_REDIRECTS_ENABLED) return;
+      var m = (location.hostname || '').match(/^([a-z0-9_-]+)\.liberada\.net$/i);
       var m = (location.hostname || '').match(/^([a-z0-9_-]+)\.liberada\.net$/i);
       if (!m) return;
       var sub = m[1].toLowerCase();
