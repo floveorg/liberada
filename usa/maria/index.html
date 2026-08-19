@@ -88,6 +88,7 @@
     .tab.media-check:not(.active) { color: #aaa; }
     .tab-count { font-size: .7rem; color: #aaa; margin-left: 4px; }
     .tab-panel { display: none; }
+    .react-row{font-size:.82rem; color:var(--ink-soft); padding:3px 0}
     .tab-panel.active { display: block; }
     .clip-list { list-style: none; }
     .clip-item { display: flex; align-items: center; gap: 12px; padding: 12px; border-bottom: 1px solid #eee; }
@@ -265,6 +266,7 @@
           <button class="tab active" data-tab="clips">Yo <span class="tab-count" id="tab-yo-count">0</span></button>
           <button class="tab" data-tab="favs">Favoritos <span class="tab-count" id="tab-favs-count">0</span></button>
           <button class="tab" data-tab="cadenas">Cadenas <span class="tab-count" id="tab-cadenas-count">0</span></button>
+          <button class="tab" data-tab="reacciones" title="Reacciones" aria-label="Reacciones">❤️ <span class="tab-count" id="tab-reacciones-count">0</span></button>
         </div>
         <div class="tabs-right" id="media-tabs">
           <button class="tab media-check" data-media="audio">🎵 Audio</button>
@@ -279,6 +281,9 @@
       </div>
       <div class="tab-panel" id="panel-cadenas">
         <ul class="clip-list" id="chain-list"></ul>
+      </div>
+      <div class="tab-panel" id="panel-reacciones">
+        <ul class="clip-list" id="react-list"></ul>
       </div>
     </div>
     
@@ -477,30 +482,11 @@
 
     const SEED = 'https://commons.wikimedia.org/wiki/Special:FilePath/';
     const CLIPS = [
-      { id: 'q_001', t: 'Yoga y risa', when: '2026-08-16', tags: 'yoga, relajación', reactions: 12, src: SEED + 'Small_group_laughter.ogg', app: 'risa', kind: 'audio', alias: 'La Risa Yoga' },
-      { id: 'q_002', t: 'La que no para', when: '2026-08-14', tags: 'contagiosa, felicidad', reactions: 24, src: SEED + '72842_lonemonk_approx-800-laugh-1.wav', app: 'risa', kind: 'audio', alias: 'Contagiosa' },
-      { id: 'q_003', t: 'Risa de gato', when: '2026-08-12', tags: 'gato, animal', reactions: 18, src: SEED + 'En-au-guffaw.ogg', app: 'lovy', kind: 'video', alias: 'María' },
-      { id: 'q_004', t: 'Clase de mañana', when: '2026-08-10', tags: 'yoga, energía', reactions: 8, src: SEED + 'Menschen-Lachen.ogg', app: 'risa', kind: 'audio', alias: 'La Risa Yoga' },
-      { id: 'q_005', t: 'Con las alumnas', when: '2026-08-08', tags: 'amigas, comunidad', reactions: 15, src: SEED + '72843_lonemonk_approx-800-laughter-only-1.wav', app: 'risa', kind: 'video', alias: 'La Risa Yoga' },
-      { id: 'q_006', t: 'Besito de buenos días', when: '2026-08-06', tags: 'amor, buenos días', reactions: 22, src: SEED + 'Baby_Laugh.ogg', app: 'lovy', kind: 'audio', alias: 'María' },
-      { id: 'q_007', t: 'Foto del parcito', when: '2026-08-04', tags: 'parque, naturaleza', reactions: 11, src: SEED + 'En-au-giggle_berries.ogg', app: 'lovy', kind: 'video', alias: 'María' },
-      { id: 'q_008', t: 'Risa compartida', when: '2026-08-02', tags: 'comunidad, risa', reactions: 19, src: SEED + '72844_lonemonk_approx-800-laughter-and-clapter-1.wav', app: 'lovy', kind: 'audio', alias: 'María' },
-      /* Clips reales de la playlist «Risas del mundo» por alias */
-      { id: 'w_multitud', t: 'Risa de multitud', when: '2026-08-18', tags: 'contagiosa, multitud', reactions: 40, src: SEED + '72842_lonemonk_approx-800-laugh-1.wav', app: 'risa', kind: 'audio', alias: 'Contagiosa' },
-      { id: 'w_solo', t: 'Solo risas', when: '2026-08-18', tags: 'contagiosa, multitud', reactions: 35, src: SEED + '72843_lonemonk_approx-800-laughter-only-1.wav', app: 'risa', kind: 'audio', alias: 'Contagiosa' },
-      { id: 'w_aplauso', t: 'Risas y aplausos', when: '2026-08-18', tags: 'contagiosa, aplausos', reactions: 38, src: SEED + '72844_lonemonk_approx-800-laughter-and-clapter-1.wav', app: 'risa', kind: 'audio', alias: 'Contagiosa' },
-      { id: 'w_carcajada', t: 'Carcajada', when: '2026-08-18', tags: 'carcajada, vientre', reactions: 30, src: SEED + 'Laugh.wav', app: 'risa', kind: 'audio', alias: 'Carcajada' },
-      { id: 'w_carcajadon', t: 'Carcajadón', when: '2026-08-18', tags: 'carcajada, épica', reactions: 27, src: SEED + 'Laughter.ogg', app: 'risa', kind: 'audio', alias: 'Carcajada' },
-      { id: 'w_corta', t: 'Risa corta', when: '2026-08-18', tags: 'carcajada, corta', reactions: 22, src: SEED + 'En-us-laugh.ogg', app: 'risa', kind: 'audio', alias: 'Carcajada' },
-      /* Alias de prueba (público) y su subfeed */
-      { id: 'w_grupo', t: 'Grupo pequeño', when: '2026-08-18', tags: 'prueba, grupo', reactions: 12, src: SEED + 'Small_group_laughter.ogg', app: 'risa', kind: 'audio', alias: 'Prueba' },
-      { id: 'w_risa_ale', t: 'Risa (Alemania)', when: '2026-08-18', tags: 'prueba, mundo', reactions: 15, src: SEED + 'Menschen-Lachen.ogg', app: 'risa', kind: 'audio', alias: 'Prueba' },
-      /* Alias privado «privi» — solo su contenido real (colección privada) */
-      { id: 'p_bebe', t: 'Risa de bebé (Francia)', when: '2026-08-18', tags: 'privi, bebé', reactions: 11, src: SEED + 'Rire_de_b%C3%A9b%C3%A9_de_9_mois.ogg', app: 'risa', kind: 'audio', alias: 'privi' },
-      { id: 'p_paris', t: 'Rire (París)', when: '2026-08-18', tags: 'privi, mundo, francés', reactions: 7, src: SEED + 'Fr-Rire-fr-Paris.ogg', app: 'risa', kind: 'audio', alias: 'privi' },
-      { id: 'p_lol', t: 'Risa «lol»', when: '2026-08-18', tags: 'privi, lol', reactions: 5, src: SEED + 'Man_saying_lol.oga', app: 'risa', kind: 'audio', alias: 'privi' }
+      /* Clips reales de maria publicados en el banco de risa (feed risa.json). */
+      { id: 'w_maria_yoga', t: 'Yoga y risa', when: '2026-08-19', tags: 'yoga, relajación', reactions: 5, src: SEED + 'Small_group_laughter.ogg', app: 'risa', kind: 'audio', alias: 'María' },
+      { id: 'w_maria_clase', t: 'Con las alumnas', when: '2026-08-18', tags: 'clase, grupo', reactions: 0, src: SEED + '72843_lonemonk_approx-800-laughter-only-1.wav', app: 'risa', kind: 'audio', alias: 'María' },
+      { id: 'w_maria_mañana', t: 'Clase de mañana', when: '2026-08-17', tags: 'yoga, energía', reactions: 0, src: SEED + 'Menschen-Lachen.ogg', app: 'risa', kind: 'audio', alias: 'María' }
     ];
-
     const FAVORITES = [
       { id: 'f_001', t: 'Risa épica', author: 'Loko Puro', when: '2026-08-15', tags: 'épica', reactions: 31, src: '#', app: 'risa', kind: 'audio' },
       { id: 'f_002', t: 'De la boda', author: 'Marc', when: '2026-08-13', tags: 'boda', reactions: 12, src: '#', app: 'risa', kind: 'video' },
@@ -607,6 +593,39 @@
       document.getElementById('aplicar-btn').classList.toggle('visible', totalClips > 1000);
     }
 
+    /* ── Pestaña «❤️» (Reacciones, tras Cadenas): reacciones recibidas en los
+       clips de maria con el emoji por defecto del que reacciona. ── */
+    function renderReactions() {
+      var list = document.getElementById('react-list');
+      if (!list) return;
+      var REACTS = [
+        { clip: 'Yoga y risa', emojis: [
+          { emoji: '😄', n: 1, users: ['Ana Pérez'] },
+          { emoji: '🤣', n: 1, users: ['Sofía Torres'] },
+          { emoji: '😂', n: 1, users: ['Pedro López'] },
+          { emoji: '👏', n: 1, users: ['Laura Díaz'] },
+          { emoji: '😹', n: 1, users: ['Carlos Ruiz'] }
+        ]},
+        { clip: 'Clase de mañana', emojis: [
+          { emoji: '❤️', n: 1, users: ['María Demostración'] }
+        ]}
+      ];
+      var total = 0;
+      REACTS.forEach(function (r) { r.emojis.forEach(function (e) { total += e.n; }); });
+      var c = document.getElementById('tab-reacciones-count');
+      if (c) c.textContent = total;
+      list.innerHTML = REACTS.map(function (r) {
+        return '<li class="clip-item"><div class="clip-body"><div class="clip-title">' + r.clip + '</div>' +
+          r.emojis.map(function (e) {
+            return '<div class="react-row">' + e.emoji + ' <b>' + e.n + '</b> — ' +
+              e.users.map(function (u) {
+                var key = u.toLowerCase().replace(/[^a-záéíóúñ]/g, '').replace(/á/g, 'a').replace(/é/g, 'e').replace(/í/g, 'i').replace(/ó/g, 'o').replace(/ú/g, 'u').replace(/ñ/g, 'n');
+                return '<a class="clip-author" href="#/u/' + key + '">' + u + '</a>';
+              }).join(', ') + '</div>';
+          }).join('') + '</div></li>';
+      }).join('');
+    }
+
     function renderLists() {
       var cl = document.getElementById('clip-list');
       cl.innerHTML = '';
@@ -622,6 +641,7 @@
       FOLLOWERS.forEach(function(p){ fwl.appendChild(renderProfileCard(p)); });
       updateCounts();
       updatePublishButtons();
+      renderReactions();
     }
 
     document.querySelectorAll('.app-card-toggle').forEach(function(btn) {
