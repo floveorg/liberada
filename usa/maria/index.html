@@ -266,7 +266,7 @@
           <button class="tab active" data-tab="clips">Yo <span class="tab-count" id="tab-yo-count">0</span></button>
           <button class="tab" data-tab="favs">Favoritos <span class="tab-count" id="tab-favs-count">0</span></button>
           <button class="tab" data-tab="cadenas">Cadenas <span class="tab-count" id="tab-cadenas-count">0</span></button>
-          <button class="tab" data-tab="reacciones" title="Reacciones" aria-label="Reacciones">❤️ <span class="tab-count" id="tab-reacciones-count">0</span></button>
+          <button class="tab" data-tab="reacciones" title="Reacciones" aria-label="Reacciones">🤣 <span class="tab-count" id="tab-reacciones-count">0</span></button>
         </div>
         <div class="tabs-right" id="media-tabs">
           <button class="tab media-check" data-media="audio">🎵 Audio</button>
@@ -593,36 +593,23 @@
       document.getElementById('aplicar-btn').classList.toggle('visible', totalClips > 1000);
     }
 
-    /* ── Pestaña «❤️» (Reacciones, tras Cadenas): reacciones recibidas en los
-       clips de maria con el emoji por defecto del que reacciona. ── */
+    /* ── Pestaña «🤣» (Reacciones, tras Cadenas): las últimas reacciones de
+       maria a clips del círculo (su emoji por defecto). ── */
     function renderReactions() {
       var list = document.getElementById('react-list');
       if (!list) return;
       var REACTS = [
-        { clip: 'Yoga y risa', emojis: [
-          { emoji: '😄', n: 1, users: ['Ana Pérez'] },
-          { emoji: '🤣', n: 1, users: ['Sofía Torres'] },
-          { emoji: '😂', n: 1, users: ['Pedro López'] },
-          { emoji: '👏', n: 1, users: ['Laura Díaz'] },
-          { emoji: '😹', n: 1, users: ['Carlos Ruiz'] }
-        ]},
-        { clip: 'Clase de mañana', emojis: [
-          { emoji: '❤️', n: 1, users: ['María Demostración'] }
-        ]}
+        { clip: 'Surreal', by: 'Marc', emoji: '🤣' },
+        { clip: 'Risa Maliciosa', by: 'Guillem', emoji: '🤣' },
+        { clip: 'Risotada', by: 'Loko Puro', emoji: '🤣' },
+        { clip: 'Risa de multitud', by: 'Ana Pérez', emoji: '🤣' }
       ];
-      var total = 0;
-      REACTS.forEach(function (r) { r.emojis.forEach(function (e) { total += e.n; }); });
       var c = document.getElementById('tab-reacciones-count');
-      if (c) c.textContent = total;
+      if (c) c.textContent = REACTS.length;
       list.innerHTML = REACTS.map(function (r) {
-        return '<li class="clip-item"><div class="clip-body"><div class="clip-title">' + r.clip + '</div>' +
-          r.emojis.map(function (e) {
-            return '<div class="react-row">' + e.emoji + ' <b>' + e.n + '</b> — ' +
-              e.users.map(function (u) {
-                var key = u.toLowerCase().replace(/[^a-záéíóúñ]/g, '').replace(/á/g, 'a').replace(/é/g, 'e').replace(/í/g, 'i').replace(/ó/g, 'o').replace(/ú/g, 'u').replace(/ñ/g, 'n');
-                return '<a class="clip-author" href="#/u/' + key + '">' + u + '</a>';
-              }).join(', ') + '</div>';
-          }).join('') + '</div></li>';
+        var key = r.by.toLowerCase().replace(/[^a-záéíóúñ]/g, '').replace(/á/g, 'a').replace(/é/g, 'e').replace(/í/g, 'i').replace(/ó/g, 'o').replace(/ú/g, 'u').replace(/ñ/g, 'n');
+        return '<li class="clip-item"><div class="clip-body"><div class="clip-title">' + r.emoji + ' · ' + r.clip + '</div>' +
+          '<div class="clip-meta"><a class="clip-author" href="#/u/' + key + '">' + r.by + '</a></div></div></li>';
       }).join('');
     }
 
